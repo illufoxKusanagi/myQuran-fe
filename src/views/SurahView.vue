@@ -25,9 +25,16 @@ interface Ayah {
   juz: number
 }
 
+type BookPage =
+  | { type: 'cover-front'; key: string }
+  | { type: 'ayah'; key: string; ayah: Ayah; ayahIndex: number }
+  | { type: 'blank'; key: string; side: 'front' | 'back' }
+  | { type: 'cover-back'; key: string }
+
 const ayahs = ref<Ayah[]>([])
 const surahName = ref('')
 const surahArabic = ref('')
+const surahTranslation = ref('')
 const loading = ref(true)
 const error = ref<string | null>(null)
 
@@ -41,12 +48,90 @@ const currentIndex = ref(0)
 
 // Whether we're in portrait (single-page) mode
 const isPortrait = ref(false)
+const isRtlBook = computed(() => surahArabic.value.trim().length > 0)
+
+/**
+ * Book page order:
+ * 1) front cover (hard)
+ * 2) front blank page
+ * 3) ayah pages (RTL spread order for Arabic)
+ * 4) optional extra back blank when ayah count is odd
+ * 5) back blank page
+ * 6) back cover (hard)
+ *
+ * This keeps the spread aligned and makes ayah 1 start on page 3
+ * when counting the front cover as page 1.
+ */
+const bookPages = computed<BookPage[]>(() => {
+  const pages: BookPage[] = []
+
+  if (!isRtlBook.value) {
+    pages.push({ type: 'cover-front', key: 'cover-front' })
+    pages.push({ type: 'blank', key: 'front-blank', side: 'front' })
+
+    ayahs.value.forEach((ayah, i) => {
+      pages.push({
+        type: 'ayah',
+        key: `ayah-${ayah.id ?? ayah.ayahNumber}`,
+        ayah,
+        ayahIndex: i
+      })
+    })
+
+    // To maintain spread rhythm, padding is needed if length before back covers is odd
+    if (pages.length % 2 !== 0) {
+      pages.push({ type: 'blank', key: 'back-blank-extra', side: 'back' })
+    }
+    pages.push({ type: 'blank', key: 'back-blank', side: 'back' })
+    pages.push({ type: 'cover-back', key: 'cover-back' })
+
+  } else {
+    // Logically build physical pages then reverse for perfect RTL simulation.
+    const logicPages: BookPage[] = []
+    logicPages.push({ type: 'cover-front', key: 'cover-front' })
+    logicPages.push({ type: 'blank', key: 'front-blank', side: 'front' })
+
+    ayahs.value.forEach((ayah, i) => {
+      logicPages.push({
+        type: 'ayah',
+        key: `ayah-${ayah.id ?? ayah.ayahNumber}`,
+        ayah,
+        ayahIndex: i
+      })
+    })
+
+    // Total length must be even so reversed array renders correctly.
+    if ((logicPages.length + 2) % 2 !== 0) {
+      logicPages.push({ type: 'blank', key: 'padding-extra', side: 'back' })
+    }
+    logicPages.push({ type: 'blank', key: 'back-blank', side: 'back' })
+    logicPages.push({ type: 'cover-back', key: 'cover-back' })
+
+    pages.push(...logicPages.reverse())
+  }
+
+  return pages
+})
+
+const totalBookPages = computed(() => bookPages.value.length)
+const hasPrevPage = computed(() => currentIndex.value > 0)
+const hasNextPage = computed(() => currentIndex.value < totalBookPages.value - 1)
+
+const leftPage = computed<BookPage | undefined>(() => bookPages.value[currentIndex.value])
+const rightPage = computed<BookPage | undefined>(() => {
+  if (isPortrait.value) return undefined
+  return bookPages.value[currentIndex.value + 1]
+})
 
 // The two currently visible ayahs (left page + right page in spread)
-const leftAyah = computed<Ayah | undefined>(() => ayahs.value[currentIndex.value])
+const leftAyah = computed<Ayah | undefined>(() => {
+  if (leftPage.value?.type !== 'ayah') return undefined
+  return leftPage.value.ayah
+})
+
 const rightAyah = computed<Ayah | undefined>(() => {
-  if (isPortrait.value) return undefined
-  return ayahs.value[currentIndex.value + 1]
+  if (rightPage.value?.type !== 'ayah') return undefined
+  return rightPage.value.ayah
 })
 
 // Audio
@@ -69,6 +154,8 @@ onMounted(async () => {
     const surahData = await surahRes.json()
     surahName.value = surahData.surahName || `Surah ${surahId}`
     surahArabic.value = surahData.arabic || ''
+    surahTranslation.value =
+      surahData.translation || surahData.indonesianTranslation || surahData.arti || ''
     ayahs.value = await ayahRes.json()
   } catch (err) {
     error.value = 'Failed to load Surah data'
@@ -105,7 +192,7 @@ function handleResize() {
 }
 
 function initPageFlip() {
-  if (!bookWrapRef.value || !stageRef.value || ayahs.value.length === 0) return
+  if (!bookWrapRef.value || !stageRef.value || bookPages.value.length === 0) return
   const pages = Array.from(stageRef.value.querySelectorAll('.pf-page'))
   if (pages.length === 0) return
 
@@ -114,19 +201,26 @@ function initPageFlip() {
   const containerH = wrap.clientHeight
   const pageW = isPortrait.value ? containerW : Math.floor(containerW / 2)
 
+  // RTL starts at the very end of the array (the visual Front Cover).
+  const startPage = isRtlBook.value ? Math.max(0, bookPages.value.length - 1) : 0
+
   book = new PageFlip(wrap, {
     width: pageW,
     height: containerH,
-    showCover: false,
+    // `showCover: true` tells StPageFlip to treat first/last pages as hard covers.
+    showCover: true,
     useMouseEvents: true,
     drawShadow: true,
     maxShadowOpacity: 0.45,
     flippingTime: 600,
+    startZIndex: 10,
+    startPage,
     usePortrait: isPortrait.value,
     autoSize: false,
   })
 
   book.loadFromHTML(pages)
+  currentIndex.value = startPage
 
   book.on('flip', (e: any) => {
     currentIndex.value = e.data
@@ -135,11 +229,26 @@ function initPageFlip() {
 
 // ── Navigation ─────────────────────────────────────────
 function flipNext() {
-  if (book && currentIndex.value < ayahs.value.length - 1) book.flipNext('top')
+  if (book && hasNextPage.value) book.flipNext('top')
 }
 
 function flipPrev() {
-  if (book && currentIndex.value > 0) book.flipPrev('top')
+  if (book && hasPrevPage.value) book.flipPrev('top')
+}
+
+const leftArrowDisabled = computed(() => !hasPrevPage.value)
+const rightArrowDisabled = computed(() => !hasNextPage.value)
+
+function onLeftArrow() {
+  // Arrow Left = user visually pulling left page backward. 
+  // Native PageFlip flipPrev does exactly this.
+  flipPrev()
+}
+
+function onRightArrow() {
+  // Arrow Right = user visually pulling right page forward.
+  // Native PageFlip flipNext does exactly this.
+  flipNext()
 }
 
 // ── Audio ──────────────────────────────────────────────
@@ -149,13 +258,29 @@ function getAudioUrl(ayahNumber: number) {
   return `https://everyayah.com/data/Alafasy_128kbps/${s}${a}.mp3`
 }
 
-function playSingleAyah(index: number) {
-  const ayah = ayahs.value[index]
-  if (!ayah) { isPlaying.value = false; return }
+function getAyahByPageIndex(pageIndex: number) {
+  const page = bookPages.value[pageIndex]
+  if (!page || page.type !== 'ayah') return undefined
+  return page.ayah
+}
+
+function hasContentToAdvance(lastVisibleIndex: number) {
+  if (isRtlBook.value) {
+    // Array is reversed. Next unread content belongs to lower indices.
+    return bookPages.value.slice(0, lastVisibleIndex).some(page => page.type === 'ayah')
+  } else {
+    return bookPages.value.slice(lastVisibleIndex + 1).some(page => page.type === 'ayah')
+  }
+}
+
+function playSingleAyah(pageIndex: number) {
+  const ayah = getAyahByPageIndex(pageIndex)
+  if (!ayah) return false
   if (!audioEl) audioEl = new Audio()
   audioEl.src = getAudioUrl(ayah.ayahNumber)
   audioEl.play()
   isPlaying.value = true
+  return true
 }
 
 /**
@@ -165,32 +290,50 @@ function playSingleAyah(index: number) {
  * The page NEVER flips until both visible ayahs are done.
  */
 function playSpread(startIndex: number) {
-  const leftIdx = startIndex
-  const rightIdx = isPortrait.value ? -1 : startIndex + 1
-  const hasRight = rightIdx >= 0 && rightIdx < ayahs.value.length
+  const visiblePageIndexes = isPortrait.value
+    ? [startIndex]
+    : [startIndex, startIndex + 1]
 
-  // Play the left page
-  playSingleAyah(leftIdx)
-  if (!audioEl) return
+  const readingOrderIndexes = (!isPortrait.value && isRtlBook.value)
+    ? [...visiblePageIndexes].reverse()
+    : visiblePageIndexes
 
-  audioEl.onended = () => {
-    if (hasRight) {
-      // Play the right page (no flip!)
-      playSingleAyah(rightIdx)
-      if (!audioEl) return
-      audioEl.onended = () => {
-        onSpreadDone(rightIdx)
+  const playablePageIndexes = readingOrderIndexes.filter(
+    pageIndex => getAyahByPageIndex(pageIndex) !== undefined
+  )
+
+  if (playablePageIndexes.length === 0) {
+    isPlaying.value = false
+    return
+  }
+
+  const lastVisibleIndex = visiblePageIndexes[visiblePageIndexes.length - 1]
+
+  const playQueue = (queueIndex: number) => {
+    const started = playSingleAyah(playablePageIndexes[queueIndex])
+    if (!started || !audioEl) {
+      isPlaying.value = false
+      return
+    }
+
+    audioEl.onended = () => {
+      if (queueIndex < playablePageIndexes.length - 1) {
+        playQueue(queueIndex + 1)
+      } else {
+        onSpreadDone(lastVisibleIndex)
       }
-    } else {
-      onSpreadDone(leftIdx)
     }
   }
+
+  playQueue(0)
 }
 
-function onSpreadDone(lastPlayedIndex: number) {
-  if (isContinuous.value && lastPlayedIndex < ayahs.value.length - 1) {
-    // Flip to next spread, then play it
-    book?.flipNext('top')
+function onSpreadDone(lastVisibleIndex: number) {
+  if (isContinuous.value && hasContentToAdvance(lastVisibleIndex)) {
+    // Flip physically left-to-right (prev) to advance if RTL book
+    if (isRtlBook.value) book?.flipPrev('top')
+    else book?.flipNext('top')
+
     setTimeout(() => {
       // currentIndex will be updated by the 'flip' event
       playSpread(currentIndex.value)
@@ -259,25 +402,51 @@ function openTafsir(side: 'left' | 'right') {
       <!-- Hidden staging div — PageFlip reads .pf-page nodes from here -->
       <div ref="stageRef" aria-hidden="true"
         style="position:absolute;visibility:hidden;pointer-events:none;left:-9999px;">
-        <div v-for="ayah in ayahs" :key="ayah.ayahNumber" class="pf-page">
-          <div class="pf-badge">{{ ayah.ayahNumber }}</div>
-          <p class="pf-arabic">{{ ayah.arabic }}</p>
-          <div class="pf-lower">
-            <p class="pf-latin">{{ ayah.latin }}</p>
-            <p class="pf-translation">{{ ayah.translation }}</p>
-          </div>
+        <!-- Only covers are hard pages. Ayah and blank leaves stay soft. -->
+        <div v-for="page in bookPages" :key="page.key" class="pf-page" :class="{
+          'pf-cover-front': page.type === 'cover-front',
+          'pf-cover-back': page.type === 'cover-back',
+          'pf-blank': page.type === 'blank',
+          'pf-blank-front': page.type === 'blank' && page.side === 'front',
+          'pf-blank-back': page.type === 'blank' && page.side === 'back'
+        }" :data-density="page.type === 'ayah' || page.type === 'blank' ? 'soft' : 'hard'">
+          <!-- Front cover content (title, Indonesian translation, Arabic) -->
+          <template v-if="page.type === 'cover-front'">
+            <div class="pf-cover-inner">
+              <p class="pf-cover-label">Surah</p>
+              <h2 class="pf-cover-title">{{ surahName }}</h2>
+              <p v-if="surahTranslation" class="pf-cover-translation">{{ surahTranslation }}</p>
+              <p class="pf-cover-arabic">{{ surahArabic }}</p>
+            </div>
+          </template>
+
+          <!-- Main ayah page content -->
+          <template v-else-if="page.type === 'ayah'">
+            <div class="pf-badge">{{ page.ayah.ayahNumber }}</div>
+            <p class="pf-arabic">{{ page.ayah.arabic }}</p>
+            <div class="pf-lower">
+              <p class="pf-latin">{{ page.ayah.latin }}</p>
+              <p class="pf-translation">{{ page.ayah.translation }}</p>
+            </div>
+          </template>
+
+          <!-- Blank helper leaves used to keep pagination/book rhythm -->
+          <div v-else-if="page.type === 'blank'" class="pf-blank-inner" />
+
+          <!-- Back cover is intentionally visual-only -->
+          <div v-else class="pf-cover-back-inner" />
         </div>
       </div>
 
       <!-- Book + nav arrows -->
-      <main class="flex-1 flex items-center justify-center gap-3 overflow-hidden px-2 py-4">
-        <button class="nav-arrow" :disabled="currentIndex === 0" @click="flipPrev">
+      <main class="flex-1 flex items-center justify-center gap-3 overflow-visible px-2 py-4">
+        <button class="nav-arrow" :disabled="leftArrowDisabled" @click="onLeftArrow">
           <ChevronLeft class="w-5 h-5" />
         </button>
 
         <div ref="bookWrapRef" class="book-mount"></div>
 
-        <button class="nav-arrow" :disabled="currentIndex >= ayahs.length - 1" @click="flipNext">
+        <button class="nav-arrow" :disabled="rightArrowDisabled" @click="onRightArrow">
           <ChevronRight class="w-5 h-5" />
         </button>
       </main>
@@ -402,6 +571,13 @@ function openTafsir(side: 'left' | 'right') {
   /* two-page on desktop, narrower on mobile for single-page */
   width: min(880px, calc(100vw - 120px));
   height: min(640px, calc(100vh - 160px));
+  position: relative;
+  border-radius: 8px;
+  overflow: visible;
+  box-shadow:
+    0 16px 28px rgba(15, 23, 42, 0.12),
+    0 3px 8px rgba(15, 23, 42, 0.08),
+    inset 0 0 0 1px rgba(15, 23, 42, 0.05);
 }
 
 @media (max-width: 767px) {
@@ -483,6 +659,7 @@ function openTafsir(side: 'left' | 'right') {
   height: 100%;
   /* Use solid white background, not oklch variable — avoids cross-browser paint issues */
   background: #ffffff;
+  border: 1px solid #e5e7eb;
   display: flex;
   flex-direction: column;
   padding: 24px 20px 16px;
@@ -490,6 +667,107 @@ function openTafsir(side: 'left' | 'right') {
   overflow: hidden;
   /* Prevent content from leaking into adjacent pages */
   contain: paint;
+}
+
+.pf-page.--hard {
+  /* Default base for hard pages (covers). */
+  background: #efe1c7;
+  border-color: #d5c1a0;
+}
+
+/* Book-specific page roles. */
+.pf-cover-front,
+.pf-cover-back,
+.pf-blank {
+  gap: 0;
+}
+
+.pf-cover-front,
+.pf-cover-back {
+  /* Cover spacing. Increase/decrease for different visual density. */
+  padding: 28px 22px;
+}
+
+.pf-cover-inner {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 10px;
+}
+
+.pf-cover-label {
+  margin: 0;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #8b6d45;
+}
+
+.pf-cover-title {
+  margin: 0;
+  font-size: clamp(22px, 4vw, 34px);
+  line-height: 1.2;
+  font-weight: 700;
+  color: #6f5332;
+}
+
+.pf-cover-translation {
+  margin: 0;
+  font-size: 13px;
+  color: #8b6d45;
+}
+
+.pf-cover-arabic {
+  margin: 4px 0 0;
+  font-family: 'LPMQ Isep Misbah', 'Amiri', 'Traditional Arabic', serif;
+  direction: rtl;
+  text-align: center;
+  line-height: 1.8;
+  font-size: clamp(24px, 4.5vw, 36px);
+  color: #5d4428;
+}
+
+.pf-cover-back {
+  /* Back cover color. */
+  background: #ddc8a6;
+}
+
+.pf-cover-back-inner {
+  width: 100%;
+  height: 100%;
+  border: 1px solid rgba(111, 83, 50, 0.16);
+  border-radius: 2px;
+}
+
+.pf-blank {
+  /* Blank leaf color between content and back cover. */
+  background: #fbf8f2;
+}
+
+/*
+  Cover customization guide:
+  1) Change front cover color by adding `background` in .pf-cover-front.
+  2) Change back cover color in .pf-cover-back.
+  3) Change blank leaf color in .pf-blank.
+  4) Change title/arabic text colors in .pf-cover-title and .pf-cover-arabic.
+
+  Example front cover image:
+  .pf-cover-front {
+    background-image: url('/images/your-cover.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+*/
+
+.pf-blank-inner {
+  width: 100%;
+  height: 100%;
 }
 
 .pf-badge {
@@ -519,6 +797,17 @@ function openTafsir(side: 'left' | 'right') {
   /* Force text wrapping so long ayahs don't overflow the page */
   word-wrap: break-word;
   overflow-wrap: break-word;
+}
+
+/* Match StPageFlip demo strategy: page-depth belongs to each page layer */
+.pf-page.--left {
+  border-right: 0;
+  box-shadow: inset -10px 0 26px -10px rgba(15, 23, 42, 0.24);
+}
+
+.pf-page.--right {
+  border-left: 0;
+  box-shadow: inset 10px 0 26px -10px rgba(15, 23, 42, 0.24);
 }
 
 .pf-lower {
