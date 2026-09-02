@@ -105,6 +105,64 @@ useReaderShortcuts({
   },
 })
 
+function attachScrollGuards() {
+  if (!bookWrapRef.value) return
+  const roots = bookWrapRef.value.querySelectorAll('.pf-scroll')
+  roots.forEach((el) => {
+    const container = el as HTMLElement
+    if ((container as any)._scrollGuarded) return
+    container.addEventListener(
+      'wheel',
+      (e: WheelEvent) => {
+        const canScrollUp = container.scrollTop > 0 && e.deltaY < 0
+        const canScrollDown = container.scrollTop + container.clientHeight < container.scrollHeight && e.deltaY > 0
+        if (canScrollUp || canScrollDown) {
+          container.scrollTop += e.deltaY
+          e.stopPropagation()
+          e.preventDefault()
+        }
+      },
+      { passive: false, capture: true } as any
+    )
+    container.addEventListener(
+      'mousedown',
+      (e: MouseEvent) => {
+        e.stopPropagation()
+      },
+      { capture: true } as any
+    )
+    let startY = 0
+    container.addEventListener(
+      'touchstart',
+      (e: TouchEvent) => {
+        if (e.touches.length === 1) {
+          startY = e.touches[0].clientY
+          e.stopPropagation()
+        }
+      },
+      { passive: true, capture: true } as any
+    )
+    container.addEventListener(
+      'touchmove',
+      (e: TouchEvent) => {
+        if (e.touches.length === 1) {
+          const currentY = e.touches[0].clientY
+          const deltaY = startY - currentY
+          const canScrollUp = container.scrollTop > 0 && deltaY < 0
+          const canScrollDown = container.scrollTop + container.clientHeight < container.scrollHeight && deltaY > 0
+          if (canScrollUp || canScrollDown) {
+            container.scrollTop += deltaY
+            startY = currentY
+            e.stopPropagation()
+          }
+        }
+      },
+      { passive: true, capture: true } as any
+    )
+    ;(container as any)._scrollGuarded = true
+  })
+}
+
 function syncBookTheme() {
   if (!bookWrapRef.value) return
   const root = bookWrapRef.value
@@ -117,6 +175,7 @@ function syncBookTheme() {
   if (!readingSettings.value.showLatin) root.classList.add('hide-latin')
   if (!readingSettings.value.showTranslation) root.classList.add('hide-translation')
   ensureBookAlive()
+  nextTick(() => requestAnimationFrame(() => attachScrollGuards()))
 }
 
 function ensureBookAlive() {
@@ -145,7 +204,7 @@ watch(activeAyahNumber, (num) => {
   })
 })
 
-watch(
+  watch(
   [leftAyah, rightAyah, currentIndex],
   () => {
     const ayah = leftAyah.value ?? rightAyah.value
@@ -157,6 +216,7 @@ watch(
       ayahNumber: ayah.ayahNumber,
       totalAyahs: ayahs.value.length,
     })
+    nextTick(() => requestAnimationFrame(() => attachScrollGuards()))
   }
 )
 
@@ -183,7 +243,10 @@ onMounted(async () => {
   requestAnimationFrame(() => {
     initPageFlip()
     attachObserver()
-    requestAnimationFrame(() => syncBookTheme())
+    requestAnimationFrame(() => {
+      syncBookTheme()
+      attachScrollGuards()
+    })
   })
   window.addEventListener('resize', handleResize)
   const qAyah = Number(route.query.ayah)

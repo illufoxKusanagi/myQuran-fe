@@ -22,6 +22,43 @@
   overflow: visible !important;
 }
 
+.stf__parent canvas,
+.stf__outerShadow,
+.stf__innerShadow,
+.stf__hardShadow,
+.stf__hardInnerShadow {
+  pointer-events: none !important;
+}
+
+.pf-scroll {
+  flex: 1 1 auto;
+  min-height: 0;
+  max-height: 520px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: #d4d4d8 transparent;
+  touch-action: pan-y;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  padding-right: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  isolation: isolate;
+  pointer-events: auto;
+  position: relative;
+  z-index: 2;
+  user-select: text;
+  -webkit-user-select: text;
+}
+
+@media (max-width: 767px) {
+  .pf-scroll {
+    max-height: 460px;
+  }
+}
+
 .nav-arrow {
   display: flex;
   align-items: center;
@@ -167,19 +204,6 @@
   flex-shrink: 0;
   word-wrap: break-word;
   overflow-wrap: break-word;
-}
-
-.pf-scroll {
-  flex: 1;
-  min-height: 0;
-  overflow-y: auto;
-  overflow-x: hidden;
-  scrollbar-width: thin;
-  scrollbar-color: #d4d4d8 transparent;
-  padding-right: 4px;
-  display: flex;
-  flex-direction: column;
-  gap: 0;
 }
 
 .pf-scroll::-webkit-scrollbar {

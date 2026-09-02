@@ -133,7 +133,7 @@ Support power users and accessibility standards (WCAG 2.1 AA).
 2. **Slice 6.2**: Decompose [`HomeView.vue`](file:///home/illufoxkusanagi/Documents/myQuran-frontend/src/views/HomeView.vue) into [`SurahDirectoryCard.vue`](file:///home/illufoxkusanagi/Documents/myQuran-frontend/src/features/home/components/SurahDirectoryCard.vue) (<100 lines total).
 
 ---
-
+  
 ## 🛡️ Verification Gate per Slice
 Every increment must pass:
 1. `bun run build` (`vue-tsc -b && vite build`) with zero TypeScript errors.
