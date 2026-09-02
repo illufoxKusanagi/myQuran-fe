@@ -5,6 +5,7 @@ export interface Ayah {
   arabic: string
   latin: string
   translation: string
+  footnote: string | null
   wajizTafsir: string
   tahliliTafsir: string
   page: number

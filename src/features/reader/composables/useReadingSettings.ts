@@ -5,6 +5,7 @@ export type PaperTheme = 'default' | 'sepia' | 'dark' | 'amoled'
 export interface ReadingSettings {
   arabicFontSize: number
   translationFontSize: number
+  showArabic: boolean
   showLatin: boolean
   showTranslation: boolean
   paperTheme: PaperTheme
@@ -15,6 +16,7 @@ const STORAGE_KEY = 'myquran_reading_settings'
 const defaults: ReadingSettings = {
   arabicFontSize: 26,
   translationFontSize: 12,
+  showArabic: true,
   showLatin: true,
   showTranslation: true,
   paperTheme: 'default',
@@ -28,6 +30,7 @@ function load(): ReadingSettings {
     return {
       arabicFontSize: clamp(Number.isFinite(parsed.arabicFontSize as number) ? (parsed.arabicFontSize as number) : defaults.arabicFontSize, 20, 40),
       translationFontSize: clamp(Number.isFinite(parsed.translationFontSize as number) ? (parsed.translationFontSize as number) : defaults.translationFontSize, 11, 16),
+      showArabic: parsed.showArabic ?? defaults.showArabic,
       showLatin: parsed.showLatin ?? defaults.showLatin,
       showTranslation: parsed.showTranslation ?? defaults.showTranslation,
       paperTheme: isPaperTheme(parsed.paperTheme) ? parsed.paperTheme! : defaults.paperTheme,

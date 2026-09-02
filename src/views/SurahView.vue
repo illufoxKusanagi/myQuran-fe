@@ -68,6 +68,11 @@ function openTafsir(side: 'left' | 'right') {
   isTafsirOpen.value = true
 }
 
+function formatTranslation(t: string): string {
+  const esc = t.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+  return esc.replace(/(\d+)\)/g, '<sup class="footnote-marker">$1)</sup>')
+}
+
 const { saveLastRead } = useLastRead()
 const { settings: readingSettings } = useReadingSettings()
 const isSettingsOpen = ref(false)
@@ -106,8 +111,9 @@ function syncBookTheme() {
   root.style.setProperty('--arabic-size', readingSettings.value.arabicFontSize + 'px')
   root.style.setProperty('--translation-size', readingSettings.value.translationFontSize + 'px')
   root.style.setProperty('--latin-size', readingSettings.value.translationFontSize + 'px')
-  root.classList.remove('paper-sepia', 'paper-dark', 'paper-amoled', 'hide-latin', 'hide-translation')
+  root.classList.remove('paper-sepia', 'paper-dark', 'paper-amoled', 'hide-arabic', 'hide-latin', 'hide-translation')
   if (readingSettings.value.paperTheme !== 'default') root.classList.add(`paper-${readingSettings.value.paperTheme}`)
+  if (!readingSettings.value.showArabic) root.classList.add('hide-arabic')
   if (!readingSettings.value.showLatin) root.classList.add('hide-latin')
   if (!readingSettings.value.showTranslation) root.classList.add('hide-translation')
   ensureBookAlive()
@@ -122,7 +128,7 @@ function ensureBookAlive() {
 }
 
 watch(
-  () => [readingSettings.value.paperTheme, readingSettings.value.arabicFontSize, readingSettings.value.translationFontSize, readingSettings.value.showLatin, readingSettings.value.showTranslation],
+  () => [readingSettings.value.paperTheme, readingSettings.value.arabicFontSize, readingSettings.value.translationFontSize, readingSettings.value.showArabic, readingSettings.value.showLatin, readingSettings.value.showTranslation],
   () => {
     if (loading.value) return
     nextTick(() => requestAnimationFrame(() => syncBookTheme()))
@@ -226,10 +232,16 @@ onBeforeUnmount(() => {
           </template>
           <template v-else-if="page.type === 'ayah'">
             <div class="pf-badge">{{ page.ayah.ayahNumber }}</div>
-            <p class="pf-arabic">{{ page.ayah.arabic }}</p>
-            <div class="pf-lower">
-              <p class="pf-latin">{{ page.ayah.latin }}</p>
-              <p class="pf-translation">{{ page.ayah.translation }}</p>
+            <div class="pf-scroll">
+              <p class="pf-arabic">{{ page.ayah.arabic }}</p>
+              <div class="pf-lower">
+                <p class="pf-latin">{{ page.ayah.latin }}</p>
+                <p class="pf-translation" v-html="formatTranslation(page.ayah.translation)"></p>
+                <div v-if="page.ayah.footnote" class="pf-footnote">
+                  <p class="pf-footnote-label">Catatan Kaki</p>
+                  <p class="pf-footnote-text">{{ page.ayah.footnote }}</p>
+                </div>
+              </div>
             </div>
           </template>
           <div v-else-if="page.type === 'blank'" class="pf-blank-inner" />

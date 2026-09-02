@@ -71,6 +71,19 @@ onBeforeUnmount(() => document.removeEventListener('keydown', handleEsc))
           </div>
 
           <div class="flex items-center justify-between">
+            <span class="text-sm font-medium text-foreground">Tampilkan Arab</span>
+            <button
+              class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors"
+              :class="settings.showArabic ? 'bg-primary' : 'bg-muted'"
+              role="switch"
+              :aria-checked="settings.showArabic"
+              @click="settings.showArabic = !settings.showArabic"
+            >
+              <span class="inline-block h-4 w-4 transform rounded-full bg-white transition-transform" :class="settings.showArabic ? 'translate-x-6' : 'translate-x-1'" />
+            </button>
+          </div>
+
+          <div class="flex items-center justify-between">
             <span class="text-sm font-medium text-foreground">Tampilkan Latin</span>
             <button
               class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors"

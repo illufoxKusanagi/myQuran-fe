@@ -162,12 +162,37 @@
   direction: rtl;
   text-align: right;
   font-size: var(--arabic-size, 26px);
-  line-height: 2;
+  line-height: 1.9;
   color: #18181b;
-  flex: 1;
-  overflow: hidden;
+  flex-shrink: 0;
   word-wrap: break-word;
   overflow-wrap: break-word;
+}
+
+.pf-scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: #d4d4d8 transparent;
+  padding-right: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.pf-scroll::-webkit-scrollbar {
+  width: 4px;
+}
+
+.pf-scroll::-webkit-scrollbar-thumb {
+  background: #d4d4d8;
+  border-radius: 999px;
+}
+
+.pf-scroll::-webkit-scrollbar-track {
+  background: transparent;
 }
 
 .pf-page.--left {
@@ -186,6 +211,7 @@
   display: flex;
   flex-direction: column;
   gap: 4px;
+  flex-shrink: 0;
 }
 
 .pf-latin {
@@ -199,6 +225,34 @@
   font-size: var(--translation-size, 11px);
   color: #71717a;
   line-height: 1.4;
+}
+
+.footnote-marker {
+  color: #dc2626;
+  font-size: 0.75em;
+  vertical-align: super;
+  font-weight: 700;
+  margin-left: 1px;
+}
+
+.pf-footnote {
+  margin-top: 6px;
+  padding-top: 6px;
+  border-top: 1px dashed #e7e5e4;
+}
+
+.pf-footnote-label {
+  font-size: 10px;
+  font-weight: 700;
+  color: #1c1917;
+  margin: 0 0 4px;
+}
+
+.pf-footnote-text {
+  font-size: 9px;
+  color: #57534e;
+  line-height: 1.5;
+  margin: 0;
 }
 
 .pf-page.paper-sepia,
@@ -222,6 +276,22 @@
 .book-mount.paper-dark .pf-page .pf-translation {
   color: #94a3b8;
 }
+.pf-page.paper-dark .pf-footnote,
+.book-mount.paper-dark .pf-footnote {
+  border-color: #334155 !important;
+}
+.pf-page.paper-dark .pf-footnote-label,
+.book-mount.paper-dark .pf-footnote-label {
+  color: #e2e8f0;
+}
+.pf-page.paper-dark .pf-footnote-text,
+.book-mount.paper-dark .pf-footnote-text {
+  color: #94a3b8;
+}
+.pf-page.paper-dark .footnote-marker,
+.book-mount.paper-dark .footnote-marker {
+  color: #f87171;
+}
 .pf-page.paper-amoled,
 .book-mount.paper-amoled .pf-page {
   background: #000000 !important;
@@ -237,13 +307,38 @@
 .book-mount.paper-amoled .pf-page .pf-translation {
   color: #a1a1aa;
 }
+.pf-page.paper-amoled .pf-footnote,
+.book-mount.paper-amoled .pf-footnote {
+  border-color: #27272a !important;
+}
+.pf-page.paper-amoled .pf-footnote-label,
+.book-mount.paper-amoled .pf-footnote-label {
+  color: #fafafa;
+}
+.pf-page.paper-amoled .pf-footnote-text,
+.book-mount.paper-amoled .pf-footnote-text {
+  color: #a1a1aa;
+}
+.pf-page.paper-amoled .footnote-marker,
+.book-mount.paper-amoled .footnote-marker {
+  color: #f87171;
+}
 
+.book-mount.hide-arabic .pf-arabic {
+  display: none !important;
+}
 .book-mount.hide-latin .pf-latin,
-.book-mount.hide-translation .pf-translation {
+.book-mount.hide-translation .pf-translation,
+.book-mount.hide-translation .pf-footnote {
   display: none !important;
 }
 .book-mount.hide-latin.hide-translation .pf-lower {
   display: none !important;
+}
+.book-mount.hide-arabic.hide-latin.hide-translation .pf-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .pf-page.is-active-ayah {
   box-shadow:
