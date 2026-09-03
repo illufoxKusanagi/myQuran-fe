@@ -1,0 +1,1876 @@
+{
+  "bukhari": [
+    {
+      "no": 1,
+      "name": "Kitab Permulaan Wahyu",
+      "total": 7,
+      "startNumber": 1
+    },
+    {
+      "no": 2,
+      "name": "Kitab Iman",
+      "total": 51,
+      "startNumber": 8
+    },
+    {
+      "no": 3,
+      "name": "Kitab Ilmu",
+      "total": 76,
+      "startNumber": 59
+    },
+    {
+      "no": 4,
+      "name": "Kitab Wudhu",
+      "total": 113,
+      "startNumber": 135
+    },
+    {
+      "no": 5,
+      "name": "Kitab Mandi",
+      "total": 46,
+      "startNumber": 248
+    },
+    {
+      "no": 6,
+      "name": "Kitab Haid",
+      "total": 40,
+      "startNumber": 294
+    },
+    {
+      "no": 7,
+      "name": "Kitab Tayammum",
+      "total": 15,
+      "startNumber": 334
+    },
+    {
+      "no": 8,
+      "name": "Kitab Shalat",
+      "total": 172,
+      "startNumber": 349
+    },
+    {
+      "no": 9,
+      "name": "Kitab Waktu Shalat",
+      "total": 82,
+      "startNumber": 521
+    },
+    {
+      "no": 10,
+      "name": "Kitab Adzan",
+      "total": 273,
+      "startNumber": 603
+    },
+    {
+      "no": 11,
+      "name": "Shahih Bukhari",
+      "total": 66,
+      "startNumber": 876
+    },
+    {
+      "no": 12,
+      "name": "Kitab Shalat Khauf",
+      "total": 6,
+      "startNumber": 942
+    },
+    {
+      "no": 13,
+      "name": "Kitab Idul Adha",
+      "total": 42,
+      "startNumber": 948
+    },
+    {
+      "no": 14,
+      "name": "Kitab Witr",
+      "total": 15,
+      "startNumber": 990
+    },
+    {
+      "no": 15,
+      "name": "Kitab Istisqa'",
+      "total": 35,
+      "startNumber": 1005
+    },
+    {
+      "no": 16,
+      "name": "Kitab Gerhana",
+      "total": 27,
+      "startNumber": 1040
+    },
+    {
+      "no": 17,
+      "name": "Kitab Sujud Al-Qur'an",
+      "total": 13,
+      "startNumber": 1067
+    },
+    {
+      "no": 18,
+      "name": "Kitab Memendekkan Shalat",
+      "total": 40,
+      "startNumber": 1080
+    },
+    {
+      "no": 19,
+      "name": "Kitab Tahajjud",
+      "total": 68,
+      "startNumber": 1120
+    },
+    {
+      "no": 20,
+      "name": "Kitab Keutamaan Shalat di Masjid Makkah dan Madinah",
+      "total": 10,
+      "startNumber": 1188
+    },
+    {
+      "no": 21,
+      "name": "Kitab Amalan dalam Shalat",
+      "total": 26,
+      "startNumber": 1198
+    },
+    {
+      "no": 22,
+      "name": "Kitab Kesalahan",
+      "total": 13,
+      "startNumber": 1224
+    },
+    {
+      "no": 23,
+      "name": "Kitab Jenazah",
+      "total": 158,
+      "startNumber": 1237
+    },
+    {
+      "no": 24,
+      "name": "Kitab Zakat",
+      "total": 118,
+      "startNumber": 1395
+    },
+    {
+      "no": 25,
+      "name": "Kitab Haji",
+      "total": 260,
+      "startNumber": 1513
+    },
+    {
+      "no": 26,
+      "name": "Kitab Umrah",
+      "total": 33,
+      "startNumber": 1773
+    },
+    {
+      "no": 27,
+      "name": "Kitab Al-Muhrim",
+      "total": 15,
+      "startNumber": 1806
+    },
+    {
+      "no": 28,
+      "name": "Kitab Balasan terhadap Hewan Buruan",
+      "total": 46,
+      "startNumber": 1821
+    },
+    {
+      "no": 29,
+      "name": "Kitab Keutamaan Madinah",
+      "total": 24,
+      "startNumber": 1867
+    },
+    {
+      "no": 30,
+      "name": "Kitab Puasa",
+      "total": 117,
+      "startNumber": 1891
+    },
+    {
+      "no": 31,
+      "name": "Kitab Shalat Tarawih",
+      "total": 6,
+      "startNumber": 2008
+    },
+    {
+      "no": 32,
+      "name": "Kitab Keutamaan Malam Lailatul Qadar",
+      "total": 11,
+      "startNumber": 2014
+    },
+    {
+      "no": 33,
+      "name": "Kitab I'tikaf",
+      "total": 22,
+      "startNumber": 2025
+    },
+    {
+      "no": 34,
+      "name": "Kitab Jual Beli",
+      "total": 192,
+      "startNumber": 2047
+    },
+    {
+      "no": 35,
+      "name": "Kitab Jual Beli",
+      "total": 18,
+      "startNumber": 2239
+    },
+    {
+      "no": 36,
+      "name": "Kitab Syuf'ah",
+      "total": 3,
+      "startNumber": 2257
+    },
+    {
+      "no": 37,
+      "name": "Kitab Penyewaan",
+      "total": 27,
+      "startNumber": 2260
+    },
+    {
+      "no": 38,
+      "name": "Kitab Pengalihan Utang",
+      "total": 3,
+      "startNumber": 2287
+    },
+    {
+      "no": 39,
+      "name": "Kitab Penjaminan",
+      "total": 9,
+      "startNumber": 2290
+    },
+    {
+      "no": 40,
+      "name": "Kitab Perwakilan",
+      "total": 21,
+      "startNumber": 2299
+    },
+    {
+      "no": 41,
+      "name": "Kitab Pertanian",
+      "total": 31,
+      "startNumber": 2320
+    },
+    {
+      "no": 42,
+      "name": "Kitab Musaqah",
+      "total": 34,
+      "startNumber": 2351
+    },
+    {
+      "no": 43,
+      "name": "Kitab tentang utang",
+      "total": 25,
+      "startNumber": 2385
+    },
+    {
+      "no": 44,
+      "name": "Kitab Al-Khasamat",
+      "total": 16,
+      "startNumber": 2410
+    },
+    {
+      "no": 45,
+      "name": "Kitab tentang Barang Temuan",
+      "total": 14,
+      "startNumber": 2426
+    },
+    {
+      "no": 46,
+      "name": "Kitab Penganiayaan",
+      "total": 43,
+      "startNumber": 2440
+    },
+    {
+      "no": 47,
+      "name": "Kitab Perdagangan",
+      "total": 25,
+      "startNumber": 2483
+    },
+    {
+      "no": 48,
+      "name": "Kitab Jaminan",
+      "total": 9,
+      "startNumber": 2508
+    },
+    {
+      "no": 49,
+      "name": "Kitab Pembebasan",
+      "total": 43,
+      "startNumber": 2517
+    },
+    {
+      "no": 50,
+      "name": "Kitab Para Budak",
+      "total": 6,
+      "startNumber": 2560
+    },
+    {
+      "no": 51,
+      "name": "Kitab Hadiah dan Keutamaannya serta Anjurannya",
+      "total": 71,
+      "startNumber": 2566
+    },
+    {
+      "no": 52,
+      "name": "Kitab Kesaksian",
+      "total": 53,
+      "startNumber": 2637
+    },
+    {
+      "no": 53,
+      "name": "Kitab Perdamaian",
+      "total": 21,
+      "startNumber": 2690
+    },
+    {
+      "no": 54,
+      "name": "Kitab Syarat",
+      "total": 27,
+      "startNumber": 2711
+    },
+    {
+      "no": 55,
+      "name": "Kitab Wasiat",
+      "total": 44,
+      "startNumber": 2738
+    },
+    {
+      "no": 56,
+      "name": "Kitab Jihad dan Perang",
+      "total": 309,
+      "startNumber": 2782
+    },
+    {
+      "no": 57,
+      "name": "Kitab Kewajiban Khumus",
+      "total": 65,
+      "startNumber": 3091
+    },
+    {
+      "no": 58,
+      "name": "Kitab Jizyah dan Perjanjian",
+      "total": 34,
+      "startNumber": 3156
+    },
+    {
+      "no": 59,
+      "name": "Kitab Permulaan Penciptaan",
+      "total": 136,
+      "startNumber": 3190
+    },
+    {
+      "no": 60,
+      "name": "Kitab Hadits Para Nabi",
+      "total": 163,
+      "startNumber": 3326
+    },
+    {
+      "no": 61,
+      "name": "Kitab Manfaat",
+      "total": 160,
+      "startNumber": 3489
+    },
+    {
+      "no": 62,
+      "name": "Kitab Keutamaan Sahabat Nabi",
+      "total": 127,
+      "startNumber": 3649
+    },
+    {
+      "no": 63,
+      "name": "Kitab Keutamaan Ansar",
+      "total": 173,
+      "startNumber": 3776
+    },
+    {
+      "no": 64,
+      "name": "Kitab Perang",
+      "total": 525,
+      "startNumber": 3949
+    },
+    {
+      "no": 65,
+      "name": "Kitab Tafsir",
+      "total": 504,
+      "startNumber": 4474
+    },
+    {
+      "no": 66,
+      "name": "Kitab Keutamaan Al-Qur'an",
+      "total": 85,
+      "startNumber": 4978
+    },
+    {
+      "no": 67,
+      "name": "Kitab Pernikahan",
+      "total": 188,
+      "startNumber": 5063
+    },
+    {
+      "no": 68,
+      "name": "Kitab Talak",
+      "total": 100,
+      "startNumber": 5251
+    },
+    {
+      "no": 69,
+      "name": "Kitab Pengeluaran",
+      "total": 22,
+      "startNumber": 5351
+    },
+    {
+      "no": 70,
+      "name": "Kitab Makanan",
+      "total": 94,
+      "startNumber": 5373
+    },
+    {
+      "no": 71,
+      "name": "Kitab Aqiqah",
+      "total": 8,
+      "startNumber": 5467
+    },
+    {
+      "no": 72,
+      "name": "Kitab Penyembelihan dan Perburuan",
+      "total": 70,
+      "startNumber": 5475
+    },
+    {
+      "no": 73,
+      "name": "Kitab Qurban",
+      "total": 30,
+      "startNumber": 5545
+    },
+    {
+      "no": 74,
+      "name": "Kitab Minuman",
+      "total": 65,
+      "startNumber": 5575
+    },
+    {
+      "no": 75,
+      "name": "Kitab Penyakit",
+      "total": 38,
+      "startNumber": 5640
+    },
+    {
+      "no": 76,
+      "name": "Kitab Kedokteran",
+      "total": 100,
+      "startNumber": 5678
+    },
+    {
+      "no": 77,
+      "name": "Kitab Pakaian",
+      "total": 187,
+      "startNumber": 5783
+    },
+    {
+      "no": 78,
+      "name": "Kitab Adab",
+      "total": 253,
+      "startNumber": 5970
+    },
+    {
+      "no": 79,
+      "name": "Kitab Izin Masuk",
+      "total": 77,
+      "startNumber": 6227
+    },
+    {
+      "no": 80,
+      "name": "Kitab Doa",
+      "total": 108,
+      "startNumber": 6304
+    },
+    {
+      "no": 81,
+      "name": "Kitab Raqaq",
+      "total": 182,
+      "startNumber": 6412
+    },
+    {
+      "no": 82,
+      "name": "Kitab Qadar",
+      "total": 27,
+      "startNumber": 6594
+    },
+    {
+      "no": 83,
+      "name": "Kitab Sumpah dan Nazhar",
+      "total": 87,
+      "startNumber": 6621
+    },
+    {
+      "no": 84,
+      "name": "Kitab Kaffarat Sumpah",
+      "total": 15,
+      "startNumber": 6708
+    },
+    {
+      "no": 85,
+      "name": "Kitab Warisan",
+      "total": 49,
+      "startNumber": 6723
+    },
+    {
+      "no": 86,
+      "name": "Kitab Hudud",
+      "total": 89,
+      "startNumber": 6772
+    },
+    {
+      "no": 87,
+      "name": "Kitab Diyat",
+      "total": 57,
+      "startNumber": 6861
+    },
+    {
+      "no": 88,
+      "name": "Kitab Penetapan Hukum bagi Orang Murtad dan Penentangan serta Perang Melawan Mereka",
+      "total": 22,
+      "startNumber": 6918
+    },
+    {
+      "no": 90,
+      "name": "Kitab tentang tipu daya",
+      "total": 29,
+      "startNumber": 6953
+    }
+  ],
+  "muslim": [
+    {
+      "no": 1,
+      "name": "Kitab Iman",
+      "total": 215,
+      "startNumber": 8
+    },
+    {
+      "no": 2,
+      "name": "Kitab Thaharah",
+      "total": 70,
+      "startNumber": 223
+    },
+    {
+      "no": 3,
+      "name": "Kitab Haid",
+      "total": 84,
+      "startNumber": 293
+    },
+    {
+      "no": 4,
+      "name": "Kitab Shalat",
+      "total": 143,
+      "startNumber": 377
+    },
+    {
+      "no": 5,
+      "name": "Kitab Masjid dan Tempat Shalat",
+      "total": 165,
+      "startNumber": 520
+    },
+    {
+      "no": 6,
+      "name": "Kitab Shalat Musafir dan Qashar",
+      "total": 159,
+      "startNumber": 685
+    },
+    {
+      "no": 7,
+      "name": "Kitab Jumu'ah",
+      "total": 40,
+      "startNumber": 844
+    },
+    {
+      "no": 8,
+      "name": "Kitab Shalat Idul Fitri",
+      "total": 10,
+      "startNumber": 884
+    },
+    {
+      "no": 9,
+      "name": "Kitab Doa Memohon Hujan",
+      "total": 7,
+      "startNumber": 894
+    },
+    {
+      "no": 10,
+      "name": "Kitab Gerhana",
+      "total": 15,
+      "startNumber": 901
+    },
+    {
+      "no": 11,
+      "name": "Kitab Jenazah",
+      "total": 63,
+      "startNumber": 916
+    },
+    {
+      "no": 12,
+      "name": "Kitab Zakat",
+      "total": 100,
+      "startNumber": 979
+    },
+    {
+      "no": 13,
+      "name": "Kitab Puasa",
+      "total": 92,
+      "startNumber": 1079
+    },
+    {
+      "no": 14,
+      "name": "Kitab I'tikaf",
+      "total": 6,
+      "startNumber": 1171
+    },
+    {
+      "no": 15,
+      "name": "Kitab Haji",
+      "total": 223,
+      "startNumber": 1177
+    },
+    {
+      "no": 16,
+      "name": "Kitab Nikah",
+      "total": 44,
+      "startNumber": 1400
+    },
+    {
+      "no": 17,
+      "name": "Kitab Menyusui",
+      "total": 27,
+      "startNumber": 1444
+    },
+    {
+      "no": 18,
+      "name": "Kitab Talak",
+      "total": 21,
+      "startNumber": 1471
+    },
+    {
+      "no": 19,
+      "name": "Kitab Li'an",
+      "total": 9,
+      "startNumber": 1492
+    },
+    {
+      "no": 20,
+      "name": "Kitab Pembebasan",
+      "total": 10,
+      "startNumber": 1501
+    },
+    {
+      "no": 21,
+      "name": "Kitab Jual Beli",
+      "total": 40,
+      "startNumber": 1511
+    },
+    {
+      "no": 22,
+      "name": "Kitab Musaqah",
+      "total": 63,
+      "startNumber": 1551
+    },
+    {
+      "no": 23,
+      "name": "Kitab Warisan",
+      "total": 6,
+      "startNumber": 1614
+    },
+    {
+      "no": 24,
+      "name": "Kitab Hibah",
+      "total": 7,
+      "startNumber": 1620
+    },
+    {
+      "no": 25,
+      "name": "Kitab Wasiat",
+      "total": 11,
+      "startNumber": 1627
+    },
+    {
+      "no": 26,
+      "name": "Kitab Nadzar",
+      "total": 8,
+      "startNumber": 1638
+    },
+    {
+      "no": 27,
+      "name": "Kitab Sumpah",
+      "total": 23,
+      "startNumber": 1646
+    },
+    {
+      "no": 28,
+      "name": "Kitab Qisas, Pembunuhan, dan Diyat",
+      "total": 15,
+      "startNumber": 1669
+    },
+    {
+      "no": 29,
+      "name": "Kitab Hudud",
+      "total": 26,
+      "startNumber": 1684
+    },
+    {
+      "no": 30,
+      "name": "Kitab Hukum",
+      "total": 11,
+      "startNumber": 1711
+    },
+    {
+      "no": 31,
+      "name": "Kitab Barang Temuan",
+      "total": 8,
+      "startNumber": 1722
+    },
+    {
+      "no": 32,
+      "name": "Kitab Jihad dan Perang",
+      "total": 88,
+      "startNumber": 1730
+    },
+    {
+      "no": 33,
+      "name": "Kitab Kepemimpinan",
+      "total": 110,
+      "startNumber": 1818
+    },
+    {
+      "no": 34,
+      "name": "Kitab Perburuan dan Penyembelihan serta Apa yang Dihalalkan dari Hewan",
+      "total": 31,
+      "startNumber": 1929
+    },
+    {
+      "no": 35,
+      "name": "Kitab Kurban",
+      "total": 19,
+      "startNumber": 1960
+    },
+    {
+      "no": 36,
+      "name": "Kitab Minuman",
+      "total": 86,
+      "startNumber": 1979
+    },
+    {
+      "no": 37,
+      "name": "Kitab Pakaian dan Perhiasan",
+      "total": 66,
+      "startNumber": 2065
+    },
+    {
+      "no": 38,
+      "name": "Kitab Adab",
+      "total": 29,
+      "startNumber": 2131
+    },
+    {
+      "no": 39,
+      "name": "Kitab Salam",
+      "total": 86,
+      "startNumber": 2160
+    },
+    {
+      "no": 40,
+      "name": "Kitab Al-Alfaz dari Adab dan Lainnya",
+      "total": 9,
+      "startNumber": 2246
+    },
+    {
+      "no": 41,
+      "name": "Kitab Puisi",
+      "total": 6,
+      "startNumber": 2255
+    },
+    {
+      "no": 42,
+      "name": "Kitab Mimpi",
+      "total": 15,
+      "startNumber": 2261
+    },
+    {
+      "no": 43,
+      "name": "Kitab Fadhail",
+      "total": 105,
+      "startNumber": 2276
+    },
+    {
+      "no": 44,
+      "name": "Kitab Keutamaan Para Sahabat",
+      "total": 166,
+      "startNumber": 2381
+    },
+    {
+      "no": 45,
+      "name": "Kitab Kebaikan, Silaturahmi, dan Adab",
+      "total": 95,
+      "startNumber": 2548
+    },
+    {
+      "no": 46,
+      "name": "Kitab Takdir",
+      "total": 22,
+      "startNumber": 2643
+    },
+    {
+      "no": 47,
+      "name": "Kitab Ilmu",
+      "total": 10,
+      "startNumber": 2665
+    },
+    {
+      "no": 48,
+      "name": "Kitab Zikir, Doa, Taubat, dan Istighfar",
+      "total": 61,
+      "startNumber": 2675
+    },
+    {
+      "no": 49,
+      "name": "Kitab Raqaq",
+      "total": 8,
+      "startNumber": 2736
+    },
+    {
+      "no": 50,
+      "name": "Kitab Taubat",
+      "total": 28,
+      "startNumber": 2744
+    },
+    {
+      "no": 51,
+      "name": "Kitab Sifat Munafikin dan Hukum-Hukumnya",
+      "total": 13,
+      "startNumber": 2772
+    },
+    {
+      "no": 52,
+      "name": "Kitab Deskripsi Hari Kiamat, Surga, dan Neraka",
+      "total": 37,
+      "startNumber": 2785
+    },
+    {
+      "no": 53,
+      "name": "Kitab Surga dan Deskripsi Kenikmatannya serta Penghuninya",
+      "total": 58,
+      "startNumber": 2822
+    },
+    {
+      "no": 54,
+      "name": "Kitab Fitnah dan Tanda-Tanda Hari Kiamat",
+      "total": 76,
+      "startNumber": 2880
+    },
+    {
+      "no": 55,
+      "name": "Kitab Zuhd dan Raqaiq",
+      "total": 51,
+      "startNumber": 2956
+    },
+    {
+      "no": 56,
+      "name": "Kitab Tafsir",
+      "total": 19,
+      "startNumber": 3015
+    }
+  ],
+  "abudawud": [
+    {
+      "no": 1,
+      "name": "Kitab Thaharah",
+      "total": 390,
+      "startNumber": 1
+    },
+    {
+      "no": 2,
+      "name": "Kitab Shalat",
+      "total": 770,
+      "startNumber": 391
+    },
+    {
+      "no": 3,
+      "name": "Kitab Istisqa",
+      "total": 37,
+      "startNumber": 1161
+    },
+    {
+      "no": 4,
+      "name": "Kitab Shalat Perjalanan",
+      "total": 52,
+      "startNumber": 1198
+    },
+    {
+      "no": 5,
+      "name": "Kitab Sunnah",
+      "total": 121,
+      "startNumber": 1250
+    },
+    {
+      "no": 6,
+      "name": "Kitab Bulan Ramadhan",
+      "total": 30,
+      "startNumber": 1371
+    },
+    {
+      "no": 7,
+      "name": "Kitab Sujud Al-Qur'an",
+      "total": 15,
+      "startNumber": 1401
+    },
+    {
+      "no": 8,
+      "name": "Kitab Witir",
+      "total": 140,
+      "startNumber": 1416
+    },
+    {
+      "no": 9,
+      "name": "Kitab Zakat",
+      "total": 145,
+      "startNumber": 1556
+    },
+    {
+      "no": 10,
+      "name": "Kitab Barang Temuan",
+      "total": 20,
+      "startNumber": 1701
+    },
+    {
+      "no": 11,
+      "name": "Kitab Manasik",
+      "total": 325,
+      "startNumber": 1721
+    },
+    {
+      "no": 12,
+      "name": "Kitab Pernikahan",
+      "total": 129,
+      "startNumber": 2046
+    },
+    {
+      "no": 13,
+      "name": "Kitab Talak",
+      "total": 138,
+      "startNumber": 2175
+    },
+    {
+      "no": 14,
+      "name": "Kitab Puasa",
+      "total": 164,
+      "startNumber": 2313
+    },
+    {
+      "no": 15,
+      "name": "Kitab Jihad",
+      "total": 311,
+      "startNumber": 2477
+    },
+    {
+      "no": 16,
+      "name": "Kitab Korban",
+      "total": 56,
+      "startNumber": 2788
+    },
+    {
+      "no": 17,
+      "name": "Kitab Perburuan",
+      "total": 18,
+      "startNumber": 2844
+    },
+    {
+      "no": 18,
+      "name": "Kitab Wasiat",
+      "total": 23,
+      "startNumber": 2862
+    },
+    {
+      "no": 19,
+      "name": "Kitab Faraid",
+      "total": 43,
+      "startNumber": 2885
+    },
+    {
+      "no": 20,
+      "name": "Kitab Kharaaj dan Imarah",
+      "total": 161,
+      "startNumber": 2928
+    },
+    {
+      "no": 21,
+      "name": "Kitab Jenazah",
+      "total": 153,
+      "startNumber": 3089
+    },
+    {
+      "no": 22,
+      "name": "Kitab Sumpah dan Nazar",
+      "total": 84,
+      "startNumber": 3242
+    },
+    {
+      "no": 23,
+      "name": "Kitab Jual Beli",
+      "total": 90,
+      "startNumber": 3326
+    },
+    {
+      "no": 24,
+      "name": "Kitab Sewa",
+      "total": 155,
+      "startNumber": 3416
+    },
+    {
+      "no": 25,
+      "name": "Kitab Hukum",
+      "total": 70,
+      "startNumber": 3571
+    },
+    {
+      "no": 26,
+      "name": "Kitab Ilmu",
+      "total": 28,
+      "startNumber": 3641
+    },
+    {
+      "no": 27,
+      "name": "Kitab Minuman",
+      "total": 67,
+      "startNumber": 3669
+    },
+    {
+      "no": 28,
+      "name": "Kitab Makanan",
+      "total": 119,
+      "startNumber": 3736
+    },
+    {
+      "no": 29,
+      "name": "Kitab Pengobatan",
+      "total": 49,
+      "startNumber": 3855
+    },
+    {
+      "no": 30,
+      "name": "Kitab Ramalan dan Takhayul",
+      "total": 22,
+      "startNumber": 3904
+    },
+    {
+      "no": 31,
+      "name": "Kitab Pembebasan Budak",
+      "total": 43,
+      "startNumber": 3926
+    },
+    {
+      "no": 32,
+      "name": "Kitab Huruf dan Bacaan",
+      "total": 40,
+      "startNumber": 3969
+    },
+    {
+      "no": 33,
+      "name": "Kitab Mandi",
+      "total": 11,
+      "startNumber": 4009
+    },
+    {
+      "no": 34,
+      "name": "Kitab Pakaian",
+      "total": 139,
+      "startNumber": 4020
+    },
+    {
+      "no": 35,
+      "name": "Kitab Merapikan Diri",
+      "total": 55,
+      "startNumber": 4159
+    },
+    {
+      "no": 36,
+      "name": "Kitab Khatham",
+      "total": 26,
+      "startNumber": 4214
+    },
+    {
+      "no": 37,
+      "name": "Kitab Fitnah dan Malhamah",
+      "total": 39,
+      "startNumber": 4240
+    },
+    {
+      "no": 38,
+      "name": "Kitab Al-Mahdi",
+      "total": 12,
+      "startNumber": 4279
+    },
+    {
+      "no": 39,
+      "name": "Kitab Perang dan Pertempuran",
+      "total": 60,
+      "startNumber": 4291
+    },
+    {
+      "no": 40,
+      "name": "Kitab Hudud",
+      "total": 143,
+      "startNumber": 4351
+    },
+    {
+      "no": 41,
+      "name": "Kitab Diyat",
+      "total": 97,
+      "startNumber": 4494
+    }
+  ],
+  "tirmidzi": [
+    {
+      "no": 1,
+      "name": "Kitab Thaharah",
+      "total": 148,
+      "startNumber": 1
+    },
+    {
+      "no": 2,
+      "name": "Kitab Shalat",
+      "total": 303,
+      "startNumber": 149
+    },
+    {
+      "no": 3,
+      "name": "Bab-Bab Al-Witr",
+      "total": 35,
+      "startNumber": 452
+    },
+    {
+      "no": 4,
+      "name": "Kitab Jum'at",
+      "total": 42,
+      "startNumber": 488
+    },
+    {
+      "no": 5,
+      "name": "Kitab Bab Dua Hari Raya dari Rasulullah",
+      "total": 14,
+      "startNumber": 530
+    },
+    {
+      "no": 6,
+      "name": "Kitab Perjalanan",
+      "total": 73,
+      "startNumber": 544
+    },
+    {
+      "no": 7,
+      "name": "Kitab Zakat dari Rasulullah ﷺ",
+      "total": 65,
+      "startNumber": 617
+    },
+    {
+      "no": 8,
+      "name": "Kitab Puasa dari Rasulullah ﷺ",
+      "total": 127,
+      "startNumber": 682
+    },
+    {
+      "no": 9,
+      "name": "Kitab Haji dari Rasulullah ﷺ",
+      "total": 156,
+      "startNumber": 809
+    },
+    {
+      "no": 10,
+      "name": "Kitab Jenazah dari Rasulullah ﷺ",
+      "total": 115,
+      "startNumber": 965
+    },
+    {
+      "no": 11,
+      "name": "Kitab Pernikahan dari Rasulullah ﷺ",
+      "total": 66,
+      "startNumber": 1080
+    },
+    {
+      "no": 12,
+      "name": "Kitab Menyusui",
+      "total": 29,
+      "startNumber": 1146
+    },
+    {
+      "no": 13,
+      "name": "Kitab Talak dan Li'an dari Rasulullah",
+      "total": 30,
+      "startNumber": 1175
+    },
+    {
+      "no": 14,
+      "name": "Kitab Jual Beli dari Rasulullah ﷺ",
+      "total": 117,
+      "startNumber": 1205
+    },
+    {
+      "no": 15,
+      "name": "Kitab Hukum dari Rasulullah ﷺ",
+      "total": 64,
+      "startNumber": 1322
+    },
+    {
+      "no": 16,
+      "name": "Kitab Diyat dari Rasulullah ﷺ",
+      "total": 37,
+      "startNumber": 1386
+    },
+    {
+      "no": 17,
+      "name": "Kitab Hudud dari Rasulullah ﷺ",
+      "total": 41,
+      "startNumber": 1423
+    },
+    {
+      "no": 18,
+      "name": "Kitab Perburuan dan Penyembelihan dari Rasulullah ﷺ",
+      "total": 29,
+      "startNumber": 1464
+    },
+    {
+      "no": 19,
+      "name": "Kitab Kurban",
+      "total": 31,
+      "startNumber": 1493
+    },
+    {
+      "no": 20,
+      "name": "Kitab Nazar dan Sumpah dari Rasulullah ﷺ",
+      "total": 24,
+      "startNumber": 1524
+    },
+    {
+      "no": 21,
+      "name": "Kitab Sirah Nabi Muhammad ﷺ",
+      "total": 71,
+      "startNumber": 1548
+    },
+    {
+      "no": 22,
+      "name": "Kitab Keutamaan Jihad dari Rasulullah ﷺ",
+      "total": 51,
+      "startNumber": 1619
+    },
+    {
+      "no": 23,
+      "name": "Kitab Jihad dari Rasulullah ﷺ",
+      "total": 50,
+      "startNumber": 1670
+    },
+    {
+      "no": 24,
+      "name": "Kitab Pakaian",
+      "total": 68,
+      "startNumber": 1720
+    },
+    {
+      "no": 26,
+      "name": "Kitab Minuman dari Rasulullah",
+      "total": 36,
+      "startNumber": 1861
+    },
+    {
+      "no": 27,
+      "name": "Kitab Berbakti kepada Orang Tua",
+      "total": 139,
+      "startNumber": 1897
+    },
+    {
+      "no": 28,
+      "name": "Kitab Kedokteran",
+      "total": 53,
+      "startNumber": 2036
+    },
+    {
+      "no": 29,
+      "name": "Kitab Warisan dari Rasulullah ﷺ",
+      "total": 26,
+      "startNumber": 2090
+    },
+    {
+      "no": 30,
+      "name": "Kitab Wasiat dari Rasulullah ﷺ",
+      "total": 9,
+      "startNumber": 2116
+    }
+  ],
+  "nasai": [
+    {
+      "no": 1,
+      "name": "Kitab Thaharah",
+      "total": 324,
+      "startNumber": 1
+    },
+    {
+      "no": 2,
+      "name": "Kitab Air",
+      "total": 23,
+      "startNumber": 325
+    },
+    {
+      "no": 3,
+      "name": "Kitab Haid dan Istihadhah",
+      "total": 48,
+      "startNumber": 348
+    },
+    {
+      "no": 4,
+      "name": "Kitab Mandi dan Tayammum",
+      "total": 52,
+      "startNumber": 396
+    },
+    {
+      "no": 5,
+      "name": "Kitab Shalat",
+      "total": 46,
+      "startNumber": 448
+    },
+    {
+      "no": 6,
+      "name": "Kitab Waktu Shalat",
+      "total": 130,
+      "startNumber": 494
+    },
+    {
+      "no": 7,
+      "name": "Kitab Adzan",
+      "total": 62,
+      "startNumber": 626
+    },
+    {
+      "no": 8,
+      "name": "Kitab Masjid",
+      "total": 54,
+      "startNumber": 688
+    },
+    {
+      "no": 9,
+      "name": "Kitab Kiblat",
+      "total": 35,
+      "startNumber": 742
+    },
+    {
+      "no": 10,
+      "name": "Kitab Kepemimpinan",
+      "total": 99,
+      "startNumber": 777
+    },
+    {
+      "no": 11,
+      "name": "Kitab Pembukaan",
+      "total": 153,
+      "startNumber": 876
+    },
+    {
+      "no": 12,
+      "name": "Kitab Shalat",
+      "total": 150,
+      "startNumber": 1029
+    },
+    {
+      "no": 13,
+      "name": "Kitab Sahu",
+      "total": 188,
+      "startNumber": 1179
+    },
+    {
+      "no": 14,
+      "name": "Kitab Jum'at",
+      "total": 66,
+      "startNumber": 1367
+    },
+    {
+      "no": 15,
+      "name": "Kitab Memendekkan Shalat dalam Perjalanan",
+      "total": 26,
+      "startNumber": 1433
+    },
+    {
+      "no": 16,
+      "name": "Kitab Gerhana",
+      "total": 45,
+      "startNumber": 1459
+    },
+    {
+      "no": 17,
+      "name": "Kitab Istisqa",
+      "total": 25,
+      "startNumber": 1504
+    },
+    {
+      "no": 18,
+      "name": "Kitab Shalat Ketakutan",
+      "total": 27,
+      "startNumber": 1529
+    },
+    {
+      "no": 19,
+      "name": "Kitab Shalat Idul Fitri dan Idul Adha",
+      "total": 42,
+      "startNumber": 1556
+    },
+    {
+      "no": 20,
+      "name": "Kitab Shalat Malam dan Sunnah Siang",
+      "total": 220,
+      "startNumber": 1598
+    },
+    {
+      "no": 21,
+      "name": "Kitab Jenazah",
+      "total": 272,
+      "startNumber": 1818
+    },
+    {
+      "no": 22,
+      "name": "Kitab Puasa",
+      "total": 345,
+      "startNumber": 2090
+    },
+    {
+      "no": 23,
+      "name": "Kitab Zakat",
+      "total": 184,
+      "startNumber": 2435
+    },
+    {
+      "no": 24,
+      "name": "Kitab Manasik Haji",
+      "total": 466,
+      "startNumber": 2619
+    },
+    {
+      "no": 25,
+      "name": "Kitab Jihad",
+      "total": 111,
+      "startNumber": 3085
+    },
+    {
+      "no": 26,
+      "name": "Kitab Nikah",
+      "total": 193,
+      "startNumber": 3196
+    },
+    {
+      "no": 27,
+      "name": "Kitab Talak",
+      "total": 172,
+      "startNumber": 3389
+    },
+    {
+      "no": 28,
+      "name": "Kitab Kuda",
+      "total": 33,
+      "startNumber": 3561
+    },
+    {
+      "no": 29,
+      "name": "Kitab Al-Ihbās",
+      "total": 17,
+      "startNumber": 3594
+    },
+    {
+      "no": 30,
+      "name": "Kitab Wasiat",
+      "total": 61,
+      "startNumber": 3611
+    },
+    {
+      "no": 31,
+      "name": "Kitab Harta",
+      "total": 16,
+      "startNumber": 3672
+    },
+    {
+      "no": 32,
+      "name": "Kitab Hibah",
+      "total": 18,
+      "startNumber": 3688
+    },
+    {
+      "no": 33,
+      "name": "Kitab Raqabah",
+      "total": 14,
+      "startNumber": 3706
+    },
+    {
+      "no": 34,
+      "name": "Kitab Umrah",
+      "total": 41,
+      "startNumber": 3720
+    },
+    {
+      "no": 35,
+      "name": "Kitab Sumpah dan Nadzar",
+      "total": 178,
+      "startNumber": 3761
+    },
+    {
+      "no": 36,
+      "name": "Kitab Cinta Wanita",
+      "total": 27,
+      "startNumber": 3939
+    },
+    {
+      "no": 37,
+      "name": "Kitab Pengharaman Darah",
+      "total": 167,
+      "startNumber": 3966
+    },
+    {
+      "no": 38,
+      "name": "Kitab Pembagian Fai'",
+      "total": 16,
+      "startNumber": 4133
+    },
+    {
+      "no": 39,
+      "name": "Kitab Bai'at",
+      "total": 63,
+      "startNumber": 4149
+    },
+    {
+      "no": 40,
+      "name": "Kitab Aqiqah",
+      "total": 10,
+      "startNumber": 4212
+    },
+    {
+      "no": 41,
+      "name": "Kitab Cabang dan Atirah",
+      "total": 41,
+      "startNumber": 4222
+    },
+    {
+      "no": 42,
+      "name": "Kitab Perburuan dan Penyembelihan",
+      "total": 98,
+      "startNumber": 4263
+    },
+    {
+      "no": 43,
+      "name": "Kitab Korban",
+      "total": 88,
+      "startNumber": 4361
+    },
+    {
+      "no": 44,
+      "name": "Kitab Jual Beli",
+      "total": 257,
+      "startNumber": 4449
+    },
+    {
+      "no": 45,
+      "name": "Kitab Qasamah",
+      "total": 163,
+      "startNumber": 4706
+    },
+    {
+      "no": 46,
+      "name": "Kitab Memotong Pencuri",
+      "total": 115,
+      "startNumber": 4870
+    },
+    {
+      "no": 47,
+      "name": "Kitab Iman dan Syariatnya",
+      "total": 55,
+      "startNumber": 4985
+    },
+    {
+      "no": 48,
+      "name": "Kitab Perhiasan dari Sunnah",
+      "total": 329,
+      "startNumber": 5040
+    },
+    {
+      "no": 49,
+      "name": "Kitab Adab Para Hakim",
+      "total": 48,
+      "startNumber": 5379
+    },
+    {
+      "no": 50,
+      "name": "Kitab Istiadzah",
+      "total": 106,
+      "startNumber": 5428
+    },
+    {
+      "no": 51,
+      "name": "Kitab Minuman",
+      "total": 110,
+      "startNumber": 5540
+    }
+  ],
+  "ibnmajah": [
+    {
+      "no": 1,
+      "name": "Kitab Thaharah dan Sunnah-sunnahnya",
+      "total": 337,
+      "startNumber": 267
+    },
+    {
+      "no": 2,
+      "name": "Kitab Shalat",
+      "total": 37,
+      "startNumber": 667
+    },
+    {
+      "no": 3,
+      "name": "Kitab Adzan dan Sunnahnya",
+      "total": 26,
+      "startNumber": 706
+    },
+    {
+      "no": 4,
+      "name": "Kitab Masjid dan Jamaah",
+      "total": 58,
+      "startNumber": 735
+    },
+    {
+      "no": 5,
+      "name": "Kitab Pelaksanaan Shalat dan Sunnah di Dalamnya",
+      "total": 554,
+      "startNumber": 803
+    },
+    {
+      "no": 6,
+      "name": "Kitab Jenazah",
+      "total": 174,
+      "startNumber": 1434
+    },
+    {
+      "no": 7,
+      "name": "Kitab Puasa",
+      "total": 116,
+      "startNumber": 1638
+    },
+    {
+      "no": 8,
+      "name": "Kitab Zakat",
+      "total": 54,
+      "startNumber": 1783
+    },
+    {
+      "no": 9,
+      "name": "Kitab Pernikahan",
+      "total": 138,
+      "startNumber": 1845
+    },
+    {
+      "no": 10,
+      "name": "Kitab Talak",
+      "total": 66,
+      "startNumber": 2016
+    },
+    {
+      "no": 11,
+      "name": "Kitab Kafarat",
+      "total": 38,
+      "startNumber": 2090
+    },
+    {
+      "no": 12,
+      "name": "Kitab Perdagangan",
+      "total": 140,
+      "startNumber": 2137
+    },
+    {
+      "no": 13,
+      "name": "Kitab Hukum",
+      "total": 55,
+      "startNumber": 2308
+    },
+    {
+      "no": 14,
+      "name": "Kitab Hadiah",
+      "total": 12,
+      "startNumber": 2375
+    },
+    {
+      "no": 15,
+      "name": "Kitab Sedekah",
+      "total": 37,
+      "startNumber": 2391
+    },
+    {
+      "no": 16,
+      "name": "Kitab Rahn",
+      "total": 41,
+      "startNumber": 2436
+    },
+    {
+      "no": 17,
+      "name": "Kitab Syuf'ah",
+      "total": 8,
+      "startNumber": 2492
+    },
+    {
+      "no": 18,
+      "name": "Kitab Barang Hilang",
+      "total": 9,
+      "startNumber": 2502
+    },
+    {
+      "no": 19,
+      "name": "Kitab Pembebasan",
+      "total": 16,
+      "startNumber": 2512
+    },
+    {
+      "no": 20,
+      "name": "Kitab Hudud",
+      "total": 67,
+      "startNumber": 2534
+    },
+    {
+      "no": 21,
+      "name": "Kitab Diyat",
+      "total": 64,
+      "startNumber": 2616
+    },
+    {
+      "no": 22,
+      "name": "Kitab Wasiat",
+      "total": 15,
+      "startNumber": 2695
+    },
+    {
+      "no": 23,
+      "name": "Kitab Warisan",
+      "total": 29,
+      "startNumber": 2719
+    },
+    {
+      "no": 24,
+      "name": "Kitab Jihad",
+      "total": 118,
+      "startNumber": 2753
+    },
+    {
+      "no": 25,
+      "name": "Kitab Manasik",
+      "total": 225,
+      "startNumber": 2882
+    },
+    {
+      "no": 26,
+      "name": "Kitab Kurban",
+      "total": 38,
+      "startNumber": 3120
+    },
+    {
+      "no": 27,
+      "name": "Kitab Penyembelihan",
+      "total": 33,
+      "startNumber": 3162
+    },
+    {
+      "no": 28,
+      "name": "Kitab Perburuan",
+      "total": 43,
+      "startNumber": 3200
+    },
+    {
+      "no": 29,
+      "name": "Kitab Makanan",
+      "total": 97,
+      "startNumber": 3251
+    },
+    {
+      "no": 30,
+      "name": "Kitab Minuman",
+      "total": 56,
+      "startNumber": 3371
+    },
+    {
+      "no": 31,
+      "name": "Kitab Pengobatan",
+      "total": 95,
+      "startNumber": 3436
+    },
+    {
+      "no": 32,
+      "name": "Kitab Pakaian",
+      "total": 81,
+      "startNumber": 3550
+    },
+    {
+      "no": 33,
+      "name": "Kitab Akhlak",
+      "total": 141,
+      "startNumber": 3657
+    },
+    {
+      "no": 34,
+      "name": "Kitab Doa",
+      "total": 56,
+      "startNumber": 3827
+    },
+    {
+      "no": 35,
+      "name": "Kitab Tafsir Mimpi",
+      "total": 27,
+      "startNumber": 3893
+    },
+    {
+      "no": 36,
+      "name": "Kitab Al-Fitan",
+      "total": 143,
+      "startNumber": 3927
+    },
+    {
+      "no": 37,
+      "name": "Kitab Zuhud",
+      "total": 185,
+      "startNumber": 4100
+    }
+  ],
+  "ahmad": [
+    {
+      "no": 1,
+      "name": "Musnad Abu Bakr Ash-Shiddiq",
+      "total": 81,
+      "startNumber": 1
+    },
+    {
+      "no": 2,
+      "name": "Musnad Umar bin Khattab",
+      "total": 309,
+      "startNumber": 82
+    },
+    {
+      "no": 3,
+      "name": "Hadis As-Saqifah",
+      "total": 8,
+      "startNumber": 391
+    },
+    {
+      "no": 4,
+      "name": "Musnad Utsman bin Affan",
+      "total": 163,
+      "startNumber": 399
+    },
+    {
+      "no": 5,
+      "name": "Dan dari Musnad Ali bin Abi Talib",
+      "total": 818,
+      "startNumber": 562
+    },
+    {
+      "no": 6,
+      "name": "Musnad Abu Muhammad Talhah bin Ubaidullah",
+      "total": 24,
+      "startNumber": 1381
+    },
+    {
+      "no": 7,
+      "name": "Musnad Az-Zubair bin Al-Awwam",
+      "total": 34,
+      "startNumber": 1405
+    }
+  ]
+}

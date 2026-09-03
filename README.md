@@ -130,11 +130,15 @@ myQuran-frontend/
 The frontend consumes REST endpoints from the backend:
 
 ### Expected Backend Endpoints:
-| Method | Route        | Description                                                                                                                               |
-| :----- | :----------- | :---------------------------------------------------------------------------------------------------------------------------------------- |
-| `GET`  | `/surah`     | Returns an array of all 114 Surahs (`id`, `surahName`, `arabic`, `numAyah`, `location`).                                                  |
-| `GET`  | `/surah/:id` | Returns metadata for a single Surah (`surahName`, `arabic`, `translation`, etc.).                                                         |
-| `GET`  | `/ayah/:id`  | Returns all Ayahs for the given Surah ID (`ayahNumber`, `arabic`, `latin`, `translation`, `wajizTafsir`, `tahliliTafsir`, `page`, `juz`). |
+| Method | Route                        | Description                                                                                                                               |
+| :----- | :--------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------- |
+| `GET`  | `/surah`                     | Returns an array of all 114 Surahs (`id`, `surahName`, `arabic`, `numAyah`, `location`).                                                  |
+| `GET`  | `/surah/:id`                 | Returns metadata for a single Surah (`surahName`, `arabic`, `translation`, etc.).                                                         |
+| `GET`  | `/ayah/:id`                  | Returns all Ayahs for the given Surah ID (`ayahNumber`, `arabic`, `latin`, `translation`, `wajizTafsir`, `tahliliTafsir`, `page`, `juz`). |
+| `GET`  | `/hadith/books`              | Returns list of available Hadith collections (Bukhari, Muslim, etc.).                                                                     |
+| `GET`  | `/hadith/random`             | Returns a random Hadith across collections for dashboard highlight.                                                                       |
+| `GET`  | `/hadith/:book?page=&limit=` | Returns paginated list of Hadiths for a collection (supports `kitab` filter for volume reading).                                          |
+| `GET`  | `/hadith/:book/:number`      | Returns full detail for a single Hadith.                                                                                                  |
 
 ### Audio Recitation Stream:
 Audio files are fetched directly via HTTPS from the EveryAyah CDN:

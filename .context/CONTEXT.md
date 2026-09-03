@@ -30,6 +30,7 @@ src/
 │   │   ├── components/
 │   │   │   ├── ReaderHeader.vue         # Top navigation & Surah metadata + settings trigger
 │   │   │   ├── ReaderControls.vue       # Bottom controls, qari/rate/mode toggles, audio triggers
+│   │   │   ├── ReaderNavSidebar.vue     # Universal off-canvas navigation sidebar (Quran & Hadith)
 │   │   │   ├── TafsirDrawer.vue         # Slide-up Tafsir commentary drawer (focus trap)
 │   │   │   ├── ReadingSettingsDialog.vue# Typography/paper theme dialog (font + hide toggles)
 │   │   │   └── QuickJumpDialog.vue      # Cmd+K jump to Surah:Ayah/Juz
@@ -43,6 +44,16 @@ src/
 │   │   │   └── useReaderShortcuts.ts    # Keyboard shortcuts (arrows/space/T/S/Ctrl+K/Esc)
 │   │   ├── reader.css                   # Book mount, pf-page, pf-scroll (scrollable), footnote, paper themes
 │   │   └── types.ts                     # Ayah (+footnote), BookPage, SurahMeta type definitions
+│   ├── hadith/                          # Hadith reading & catalog subsystem
+│   │   ├── components/
+│   │   │   ├── HadithCard.vue           # Single Hadith presentation card
+│   │   │   ├── HadithBookCard.vue       # Hadith collection card
+│   │   │   └── RandomHadithWidget.vue   # Dashboard random hadith widget
+│   │   ├── composables/
+│   │   │   ├── useHadith.ts             # API client for books, lists, detail
+│   │   │   └── useHadithBookPages.ts    # RTL pagination & leaf generation for Hadith book
+│   │   ├── formatters.ts                # Bab/Kitab/Grade sanitizers & formatters
+│   │   └── types.ts                     # Hadith, HadithBook, HadithBookPage
 │   └── home/                            # Home directory & search subsystem
 │       ├── components/
 │       │   ├── LastReadHero.vue         # Lanjutkan Membaca hero card
@@ -63,7 +74,12 @@ src/
 │   └── utils.ts                         # Tailwind class merge helper (`cn`)
 ├── views/
 │   ├── HomeView.vue                     # 114 Surahs directory view (<80 lines, LastReadHero + filter)
-│   └── SurahView.vue                    # Lean reader view orchestrator (~300 lines, book + dialogs)
+│   ├── SurahView.vue                    # Lean reader view orchestrator (~300 lines, book + dialogs)
+│   └── hadith/                          # Hadith views
+│       ├── HadithBooksView.vue          # Catalog of Hadith collections
+│       ├── HadithListView.vue           # Paginated list mode with jump controls
+│       ├── HadithBookView.vue           # 3D physical Mushaf book mode per Kitab
+│       └── HadithDetailView.vue         # Single Hadith detail view
 ├── App.vue                              # Root application layout
 ├── main.ts                              # Entrypoint & Sentry init
 └── style.css                            # Tailwind CSS v4 and theme tokens

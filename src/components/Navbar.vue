@@ -1,15 +1,15 @@
 <script setup lang="ts">
-import { Moon, Sun, Info } from 'lucide-vue-next'
-import { useDarkMode } from '@/composables/useDarkMode'
-import { Button } from '@/components/ui/button'
+import { Moon, Sun, Info } from 'lucide-vue-next';
+import { useDarkMode } from '@/composables/useDarkMode';
+import { Button } from '@/components/ui/button';
 import {
   TooltipProvider,
   Tooltip,
   TooltipTrigger,
   TooltipContent,
-} from '@/components/ui/tooltip'
+} from '@/components/ui/tooltip';
 
-const { isDark, toggle } = useDarkMode()
+const { isDark, toggle } = useDarkMode();
 </script>
 
 <template>
@@ -22,7 +22,11 @@ const { isDark, toggle } = useDarkMode()
 
     <!-- Right actions -->
     <div class="flex items-center gap-1">
-      <RouterLink to="/hadith" class="text-sm font-medium px-2 py-1 rounded hover:bg-accent">Hadith</RouterLink>
+      <RouterLink
+        to="/hadith"
+        class="text-sm font-medium px-2 py-1 rounded hover:bg-accent"
+        >Hadith</RouterLink
+      >
       <!-- About tooltip -->
       <TooltipProvider :delay-duration="200">
         <Tooltip>
@@ -34,15 +38,20 @@ const { isDark, toggle } = useDarkMode()
           <TooltipContent side="bottom" class="max-w-64 text-center">
             <p class="font-semibold mb-1">MyQuran</p>
             <p class="text-xs text-muted-foreground leading-relaxed">
-              Baca Al-Quran dengan tampilan buku interaktif, dilengkapi terjemahan
-              dan tafsir. Dibuat dengan Vue 3 + ElysiaJS.
+              Baca Al-Quran dengan tampilan buku interaktif, dilengkapi
+              terjemahan dan tafsir. Dibuat dengan Vue 3 + ElysiaJS.
             </p>
           </TooltipContent>
         </Tooltip>
       </TooltipProvider>
 
       <!-- Dark mode toggle -->
-      <Button variant="ghost" size="icon" @click="toggle" :aria-label="isDark ? 'Switch to light mode' : 'Switch to dark mode'">
+      <Button
+        variant="ghost"
+        size="icon"
+        @click="toggle"
+        :aria-label="isDark ? 'Switch to light mode' : 'Switch to dark mode'"
+      >
         <Sun v-if="isDark" class="w-4 h-4" />
         <Moon v-else class="w-4 h-4" />
       </Button>

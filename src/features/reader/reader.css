@@ -396,3 +396,41 @@
 .font-arabic {
   font-family: 'LPMQ Isep Misbah', 'Amiri', 'Traditional Arabic', serif;
 }
+
+/* Hadith Grade Badges */
+.hadith-grade {
+  display: inline-flex;
+  align-items: center;
+  font-size: 10px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 9999px;
+  border: 1px solid currentColor;
+  line-height: 1.2;
+}
+
+.hadith-grade.grade-sahih {
+  background-color: oklch(0.9 0.08 155 / 0.15);
+  color: oklch(0.55 0.16 155);
+  border-color: oklch(0.55 0.16 155 / 0.3);
+}
+
+.hadith-grade.grade-hasan {
+  background-color: oklch(0.9 0.1 85 / 0.15);
+  color: oklch(0.6 0.16 85);
+  border-color: oklch(0.6 0.16 85 / 0.3);
+}
+
+.hadith-grade.grade-daif {
+  background-color: oklch(0.9 0.05 30 / 0.15);
+  color: oklch(0.6 0.15 30);
+  border-color: oklch(0.6 0.15 30 / 0.3);
+}
+
+.pf-page.paper-dark .hadith-grade.grade-sahih,
+.book-mount.paper-dark .pf-page .hadith-grade.grade-sahih,
+.pf-page.paper-amoled .hadith-grade.grade-sahih,
+.book-mount.paper-amoled .pf-page .hadith-grade.grade-sahih {
+  background-color: oklch(0.3 0.1 155 / 0.3);
+  color: oklch(0.8 0.12 155);
+}
