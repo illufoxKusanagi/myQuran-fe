@@ -1,19 +1,26 @@
 .book-mount {
-  width: min(880px, calc(100vw - 96px));
-  height: min(640px, calc(100vh - 160px));
+  width: min(55rem, calc(100vw - 6rem));
+  height: min(40rem, calc(100vh - 10rem));
   position: relative;
-  border-radius: 8px;
+  border-radius: 0.5rem;
   overflow: visible;
   box-shadow:
-    0 16px 28px rgba(15, 23, 42, 0.12),
-    0 3px 8px rgba(15, 23, 42, 0.08),
-    inset 0 0 0 1px rgba(15, 23, 42, 0.05);
+    0 1rem 1.75rem rgba(15, 23, 42, 0.12),
+    0 0.1875rem 0.5rem rgba(15, 23, 42, 0.08),
+    inset 0 0 0 0.0625rem rgba(15, 23, 42, 0.05);
 }
 
-@media (max-width: 767px) {
+@media (max-width: 47.9375rem) {
   .book-mount {
-    width: min(400px, calc(100vw - 40px));
-    height: min(600px, calc(100vh - 180px));
+    width: min(22.5rem, calc(100vw - 4.5rem));
+    height: min(35rem, calc(100vh - 12.5rem));
+  }
+}
+
+@media (max-width: 23.75rem) {
+  .book-mount {
+    width: calc(100vw - 3.5rem);
+    height: min(32.5rem, calc(100vh - 13.75rem));
   }
 }
 
@@ -31,9 +38,10 @@
 }
 
 .pf-scroll {
-  flex: 1 1 auto;
+  flex: 1 1 0;
   min-height: 0;
-  max-height: 520px;
+  height: 100%;
+  max-height: 100%;
   overflow-y: auto;
   overflow-x: hidden;
   scrollbar-width: thin;
@@ -41,7 +49,9 @@
   touch-action: pan-y;
   overscroll-behavior: contain;
   -webkit-overflow-scrolling: touch;
-  padding-right: 4px;
+  padding-right: 0.25rem;
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
   display: flex;
   flex-direction: column;
   gap: 0;
@@ -53,21 +63,15 @@
   -webkit-user-select: text;
 }
 
-@media (max-width: 767px) {
-  .pf-scroll {
-    max-height: 460px;
-  }
-}
-
 .nav-arrow {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
+  width: 2.5rem;
+  height: 2.5rem;
   border-radius: 50%;
   background-color: oklch(from var(--card) l c h);
-  border: 1px solid oklch(from var(--border) l c h);
+  border: 0.0625rem solid oklch(from var(--border) l c h);
   color: oklch(from var(--foreground) l c h);
   cursor: pointer;
   flex-shrink: 0;
@@ -90,11 +94,11 @@
   width: 100%;
   height: 100%;
   background: #ffffff;
-  border: 1px solid #e5e7eb;
+  border: 0.0625rem solid #e5e7eb;
   display: flex;
   flex-direction: column;
-  padding: 24px 20px 16px;
-  gap: 14px;
+  padding: 1.5rem 1.25rem 4rem;
+  gap: 0.875rem;
   overflow: hidden;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
@@ -113,7 +117,7 @@
 
 .pf-cover-front,
 .pf-cover-back {
-  padding: 28px 22px;
+  padding: 1.75rem 1.375rem;
 }
 
 .pf-cover-inner {
@@ -124,12 +128,12 @@
   align-items: center;
   justify-content: center;
   text-align: center;
-  gap: 10px;
+  gap: 0.625rem;
 }
 
 .pf-cover-label {
   margin: 0;
-  font-size: 11px;
+  font-size: 0.6875rem;
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -138,7 +142,7 @@
 
 .pf-cover-title {
   margin: 0;
-  font-size: clamp(22px, 4vw, 34px);
+  font-size: clamp(1.375rem, 4vw, 2.125rem);
   line-height: 1.2;
   font-weight: 700;
   color: #6f5332;
@@ -146,17 +150,17 @@
 
 .pf-cover-translation {
   margin: 0;
-  font-size: 13px;
+  font-size: 0.8125rem;
   color: #8b6d45;
 }
 
 .pf-cover-arabic {
-  margin: 4px 0 0;
+  margin: 0.25rem 0 0;
   font-family: 'LPMQ Isep Misbah', 'Amiri', 'Traditional Arabic', serif;
   direction: rtl;
   text-align: center;
   line-height: 1.8;
-  font-size: clamp(24px, 4.5vw, 36px);
+  font-size: clamp(1.5rem, 4.5vw, 2.25rem);
   color: #5d4428;
 }
 
@@ -167,8 +171,8 @@
 .pf-cover-back-inner {
   width: 100%;
   height: 100%;
-  border: 1px solid rgba(111, 83, 50, 0.16);
-  border-radius: 2px;
+  border: 0.0625rem solid rgba(111, 83, 50, 0.16);
+  border-radius: 0.125rem;
 }
 
 .pf-blank {
@@ -184,11 +188,11 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 26px;
-  height: 26px;
+  width: 1.625rem;
+  height: 1.625rem;
   border-radius: 50%;
-  border: 1.5px solid #d4d4d8;
-  font-size: 11px;
+  border: 0.09375rem solid #d4d4d8;
+  font-size: 0.6875rem;
   font-weight: 600;
   color: #71717a;
   flex-shrink: 0;
@@ -198,7 +202,7 @@
   font-family: 'LPMQ Isep Misbah', 'Amiri', 'Traditional Arabic', serif;
   direction: rtl;
   text-align: right;
-  font-size: var(--arabic-size, 26px);
+  font-size: var(--arabic-size, 1.625rem);
   line-height: 1.9;
   color: #18181b;
   flex-shrink: 0;
@@ -207,12 +211,12 @@
 }
 
 .pf-scroll::-webkit-scrollbar {
-  width: 4px;
+  width: 0.25rem;
 }
 
 .pf-scroll::-webkit-scrollbar-thumb {
   background: #d4d4d8;
-  border-radius: 999px;
+  border-radius: 62.4375rem;
 }
 
 .pf-scroll::-webkit-scrollbar-track {
@@ -221,32 +225,32 @@
 
 .pf-page.--left {
   border-right: 0;
-  box-shadow: inset -10px 0 26px -10px rgba(15, 23, 42, 0.24);
+  box-shadow: inset -0.625rem 0 1.625rem -0.625rem rgba(15, 23, 42, 0.24);
 }
 
 .pf-page.--right {
   border-left: 0;
-  box-shadow: inset 10px 0 26px -10px rgba(15, 23, 42, 0.24);
+  box-shadow: inset 0.625rem 0 1.625rem -0.625rem rgba(15, 23, 42, 0.24);
 }
 
 .pf-lower {
-  border-top: 1px solid #e4e4e7;
-  padding-top: 10px;
+  border-top: 0.0625rem solid #e4e4e7;
+  padding-top: 0.625rem;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 0.25rem;
   flex-shrink: 0;
 }
 
 .pf-latin {
-  font-size: var(--latin-size, 12px);
+  font-size: var(--latin-size, 0.75rem);
   font-weight: 500;
   color: #18181b;
   line-height: 1.5;
 }
 
 .pf-translation {
-  font-size: var(--translation-size, 11px);
+  font-size: var(--translation-size, 0.6875rem);
   color: #71717a;
   line-height: 1.4;
 }
@@ -254,26 +258,26 @@
 .footnote-marker {
   color: #dc2626;
   font-size: 0.75em;
-  vertical-align: super;
+  vertical-align: baseline;
   font-weight: 700;
-  margin-left: 1px;
+  margin-left: 0.0625rem;
 }
 
 .pf-footnote {
-  margin-top: 6px;
-  padding-top: 6px;
-  border-top: 1px dashed #e7e5e4;
+  margin-top: 0.375rem;
+  padding-top: 0.375rem;
+  border-top: 0.0625rem dashed #e7e5e4;
 }
 
 .pf-footnote-label {
-  font-size: 10px;
+  font-size: 0.625rem;
   font-weight: 700;
   color: #1c1917;
-  margin: 0 0 4px;
+  margin: 0 0 0.25rem;
 }
 
 .pf-footnote-text {
-  font-size: 9px;
+  font-size: 0.5625rem;
   color: #57534e;
   line-height: 1.5;
   margin: 0;
@@ -284,65 +288,79 @@
   background: #fcf8ec !important;
   border-color: #e8dcc0 !important;
 }
+
 .pf-page.paper-dark,
 .book-mount.paper-dark .pf-page {
   background: #1e293b !important;
   border-color: #334155 !important;
   color: #e2e8f0;
 }
+
 .pf-page.paper-dark .pf-arabic,
 .book-mount.paper-dark .pf-page .pf-arabic,
 .pf-page.paper-dark .pf-latin,
 .book-mount.paper-dark .pf-page .pf-latin {
   color: #f1f5f9;
 }
+
 .pf-page.paper-dark .pf-translation,
 .book-mount.paper-dark .pf-page .pf-translation {
   color: #94a3b8;
 }
+
 .pf-page.paper-dark .pf-footnote,
 .book-mount.paper-dark .pf-footnote {
   border-color: #334155 !important;
 }
+
 .pf-page.paper-dark .pf-footnote-label,
 .book-mount.paper-dark .pf-footnote-label {
   color: #e2e8f0;
 }
+
 .pf-page.paper-dark .pf-footnote-text,
 .book-mount.paper-dark .pf-footnote-text {
   color: #94a3b8;
 }
+
 .pf-page.paper-dark .footnote-marker,
 .book-mount.paper-dark .footnote-marker {
   color: #f87171;
 }
+
 .pf-page.paper-amoled,
 .book-mount.paper-amoled .pf-page {
   background: #000000 !important;
   border-color: #1f1f1f !important;
 }
+
 .pf-page.paper-amoled .pf-arabic,
 .book-mount.paper-amoled .pf-page .pf-arabic,
 .pf-page.paper-amoled .pf-latin,
 .book-mount.paper-amoled .pf-page .pf-latin {
   color: #ffffff;
 }
+
 .pf-page.paper-amoled .pf-translation,
 .book-mount.paper-amoled .pf-page .pf-translation {
   color: #a1a1aa;
 }
+
 .pf-page.paper-amoled .pf-footnote,
 .book-mount.paper-amoled .pf-footnote {
   border-color: #27272a !important;
 }
+
 .pf-page.paper-amoled .pf-footnote-label,
 .book-mount.paper-amoled .pf-footnote-label {
   color: #fafafa;
 }
+
 .pf-page.paper-amoled .pf-footnote-text,
 .book-mount.paper-amoled .pf-footnote-text {
   color: #a1a1aa;
 }
+
 .pf-page.paper-amoled .footnote-marker,
 .book-mount.paper-amoled .footnote-marker {
   color: #f87171;
@@ -351,26 +369,68 @@
 .book-mount.hide-arabic .pf-arabic {
   display: none !important;
 }
+
 .book-mount.hide-latin .pf-latin,
 .book-mount.hide-translation .pf-translation,
 .book-mount.hide-translation .pf-footnote {
   display: none !important;
 }
+
 .book-mount.hide-latin.hide-translation .pf-lower {
   display: none !important;
 }
+
 .book-mount.hide-arabic.hide-latin.hide-translation .pf-page {
   display: flex;
   align-items: center;
   justify-content: center;
 }
+
 .pf-page.is-active-ayah {
   box-shadow:
-    inset 0 0 0 2px var(--primary),
-    0 0 16px oklch(from var(--primary) l c h / 0.25);
+    inset 0 0 0 0.125rem var(--primary),
+    0 0 1rem oklch(from var(--primary) l c h / 0.25);
   border-color: var(--primary) !important;
 }
 
 .font-arabic {
   font-family: 'LPMQ Isep Misbah', 'Amiri', 'Traditional Arabic', serif;
+}
+
+/* Hadith Grade Badges */
+.hadith-grade {
+  display: inline-flex;
+  align-items: center;
+  font-size: 10px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 9999px;
+  border: 1px solid currentColor;
+  line-height: 1.2;
+}
+
+.hadith-grade.grade-sahih {
+  background-color: oklch(0.9 0.08 155 / 0.15);
+  color: oklch(0.55 0.16 155);
+  border-color: oklch(0.55 0.16 155 / 0.3);
+}
+
+.hadith-grade.grade-hasan {
+  background-color: oklch(0.9 0.1 85 / 0.15);
+  color: oklch(0.6 0.16 85);
+  border-color: oklch(0.6 0.16 85 / 0.3);
+}
+
+.hadith-grade.grade-daif {
+  background-color: oklch(0.9 0.05 30 / 0.15);
+  color: oklch(0.6 0.15 30);
+  border-color: oklch(0.6 0.15 30 / 0.3);
+}
+
+.pf-page.paper-dark .hadith-grade.grade-sahih,
+.book-mount.paper-dark .pf-page .hadith-grade.grade-sahih,
+.pf-page.paper-amoled .hadith-grade.grade-sahih,
+.book-mount.paper-amoled .pf-page .hadith-grade.grade-sahih {
+  background-color: oklch(0.3 0.1 155 / 0.3);
+  color: oklch(0.8 0.12 155);
 }

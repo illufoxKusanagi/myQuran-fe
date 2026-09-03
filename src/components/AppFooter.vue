@@ -14,7 +14,7 @@
 
 <style scoped>
 .app-footer {
-  border-top: 1px solid hsl(var(--border));
+  border-top: 0.0625rem solid hsl(var(--border));
   background-color: hsl(var(--card));
   padding: 0.75rem 1rem;
   text-align: center;

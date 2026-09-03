@@ -11,8 +11,7 @@ Welcome, AI Agent! This document contains the complete context, architectural pa
 ### Key Value Propositions:
 - **Realistic Page-Turning Physics**: Mimics a physical Quran with spine depth, hard covers, paper shadows, and page-turning animations via `page-flip`.
 - **RTL Quranic Reading Flow**: Custom right-to-left layout and page inversion so readers turn pages naturally as with a real Arabic Mushaf.
-- **Official Indonesian Quran Typography**: Uses the Indonesian Ministry of Religious Affairs (*Kemenag*) standard font (`LPMQ Isep Misbah`).
-- **Synchronized Multimodal Recitation**: Audio recitation by Sheikh Mishary Rashid Alafasy with automated spread progression and dual-layer Tafsir (*Wajiz* & *Tahlili*).
+- **Synchronized Multimodal Recitation**: Audio recitation with multi-qari selection (Alafasy, Sudais, Ghamdi, Husary), playback rate control, automated spread progression, and dual-layer Tafsir (*Wajiz* & *Tahlili*).
 
 ---
 
@@ -98,10 +97,11 @@ myQuran-frontend/
 │   ├── lib/
 │   │   └── utils.ts             # Tailwind class merge helper: cn(...inputs)
 │   ├── router/
-│   │   └── index.ts             # Routes: '/' (HomeView) and '/surah/:id' (SurahView)
+│   │   └── index.ts             # Routes: '/', '/surah/:id', '/hadith', '/hadith/:book', '/hadith/:book/book', '/hadith/:book/:number'
 │   ├── views/
 │   │   ├── HomeView.vue         # 114 Surah directory & search grid
-│   │   └── SurahView.vue        # Core reader engine (PageFlip, audio sync, Tafsir drawer)
+│   │   ├── SurahView.vue        # Core reader engine (PageFlip, audio sync, Tafsir drawer, Nav sidebar)
+│   │   └── hadith/              # Hadith views (catalog, list, 3D Mushaf book mode, detail)
 │   ├── App.vue                  # Root layout: Navbar + flex RouterView
 │   ├── main.ts                  # App entry point, Sentry initialization, router mount
 │   ├── page-flip.d.ts           # Type declaration stub for 'page-flip'

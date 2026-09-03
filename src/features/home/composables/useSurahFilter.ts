@@ -10,22 +10,18 @@ interface Surah {
 
 export function useSurahFilter(surahs: Ref<Surah[]>) {
   const query = ref('')
-  const tab = ref<'all' | 'Makkiyah' | 'Madaniyah'>('all')
 
   const filtered = computed(() => {
     const q = query.value.trim().toLowerCase()
-    return surahs.value.filter((s) => {
-      const matchTab = tab.value === 'all' || s.location === tab.value
-      if (!matchTab) return false
-      if (!q) return true
-      return (
+    if (!q) return surahs.value
+    return surahs.value.filter(
+      (s) =>
         s.surahName.toLowerCase().includes(q) ||
         s.arabic.includes(q) ||
         String(s.id).includes(q) ||
         s.location.toLowerCase().includes(q)
-      )
-    })
+    )
   })
 
-  return { query, tab, filtered }
+  return { query, filtered }
 }

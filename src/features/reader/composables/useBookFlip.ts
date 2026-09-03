@@ -136,7 +136,9 @@ export function useBookFlip(options: BookFlipOptions) {
   }
 
   function goToPage(pageIndex: number) {
-    if (bookInstance && pageIndex >= 0 && pageIndex < options.bookPages.value.length) bookInstance.flip(pageIndex)
+    if (bookInstance && pageIndex >= 0 && pageIndex < options.bookPages.value.length) {
+      bookInstance.flip(pageIndex)
+    }
   }
 
   function destroyBook() {
@@ -156,5 +158,15 @@ export function useBookFlip(options: BookFlipOptions) {
     destroyBook()
   })
 
-  return { detectLayout, initPageFlip, handleResize, flipNext, flipPrev, goToPage, destroyBook, attachObserver, rebuild }
+  return {
+    detectLayout,
+    initPageFlip,
+    handleResize,
+    flipNext,
+    flipPrev,
+    goToPage,
+    destroyBook,
+    attachObserver,
+    rebuild,
+  }
 }
