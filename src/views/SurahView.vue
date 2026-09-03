@@ -39,6 +39,8 @@ const { isRtlBook, bookPages, hasPrevPage, hasNextPage, leftAyah, rightAyah, get
   isPortrait
 )
 
+const currentJuz = computed(() => leftAyah.value?.juz ?? rightAyah.value?.juz ?? null)
+
 const { detectLayout, initPageFlip, handleResize, flipNext, flipPrev, goToPage, attachObserver } = useBookFlip({
   bookWrapRef,
   stageRef,
@@ -166,9 +168,9 @@ function attachScrollGuards() {
 function syncBookTheme() {
   if (!bookWrapRef.value) return
   const root = bookWrapRef.value
-  root.style.setProperty('--arabic-size', readingSettings.value.arabicFontSize + 'px')
-  root.style.setProperty('--translation-size', readingSettings.value.translationFontSize + 'px')
-  root.style.setProperty('--latin-size', readingSettings.value.translationFontSize + 'px')
+  root.style.setProperty('--arabic-size', readingSettings.value.arabicFontSize / 16 + 'rem')
+  root.style.setProperty('--translation-size', readingSettings.value.translationFontSize / 16 + 'rem')
+  root.style.setProperty('--latin-size', readingSettings.value.translationFontSize / 16 + 'rem')
   root.classList.remove('paper-sepia', 'paper-dark', 'paper-amoled', 'hide-arabic', 'hide-latin', 'hide-translation')
   if (readingSettings.value.paperTheme !== 'default') root.classList.add(`paper-${readingSettings.value.paperTheme}`)
   if (!readingSettings.value.showArabic) root.classList.add('hide-arabic')
@@ -250,9 +252,16 @@ onMounted(async () => {
   })
   window.addEventListener('resize', handleResize)
   const qAyah = Number(route.query.ayah)
+  const qJuz = Number(route.query.juz)
   if (qAyah) {
     await nextTick()
     requestAnimationFrame(() => jumpToAyah(qAyah))
+  } else if (qJuz) {
+    const target = ayahs.value.find((a) => a.juz === qJuz)
+    if (target) {
+      await nextTick()
+      requestAnimationFrame(() => jumpToAyah(target.ayahNumber))
+    }
   }
 })
 
@@ -263,7 +272,7 @@ onBeforeUnmount(() => {
 
 <template>
   <div class="flex-1 flex flex-col bg-cyan-100 dark:bg-cyan-900 overflow-hidden select-none">
-    <ReaderHeader :surah-name="surahName" :surah-arabic="surahArabic" :ayah-count="ayahs.length" @back="router.push('/')" @settings="isSettingsOpen = true" />
+    <ReaderHeader :surah-name="surahName" :surah-arabic="surahArabic" :ayah-count="ayahs.length" :current-juz="currentJuz" @back="router.push('/')" @settings="isSettingsOpen = true" />
 
     <div v-if="loading" class="flex-1 flex items-center justify-center">
       <p class="text-muted-foreground animate-pulse">Loading…</p>
@@ -273,7 +282,7 @@ onBeforeUnmount(() => {
     </div>
 
     <template v-else>
-      <div ref="stageRef" aria-hidden="true" style="position: absolute; visibility: hidden; pointer-events: none; left: -9999px">
+      <div ref="stageRef" aria-hidden="true" style="position: absolute; visibility: hidden; pointer-events: none; left: -624.9375rem">
         <div
           v-for="page in bookPages"
           :key="page.key"
@@ -294,7 +303,10 @@ onBeforeUnmount(() => {
             </div>
           </template>
           <template v-else-if="page.type === 'ayah'">
-            <div class="pf-badge">{{ page.ayah.ayahNumber }}</div>
+            <div class="flex items-center justify-between">
+              <div class="pf-badge">{{ page.ayah.ayahNumber }}</div>
+              <span class="rounded-full bg-primary/10 text-primary px-2 py-0.5 text-[0.625rem] font-semibold">Juz {{ page.ayah.juz }}</span>
+            </div>
             <div class="pf-scroll">
               <p class="pf-arabic">{{ page.ayah.arabic }}</p>
               <div class="pf-lower">
@@ -312,13 +324,13 @@ onBeforeUnmount(() => {
         </div>
       </div>
 
-      <main class="flex-1 flex items-center justify-center gap-3 overflow-visible px-2 py-4">
-        <button class="nav-arrow" :disabled="!hasPrevPage" aria-label="Halaman Sebelumnya" @click="flipPrev">
-          <ChevronLeft class="w-5 h-5" />
+      <main class="flex-1 flex items-center justify-center gap-1.5 sm:gap-3 overflow-visible px-1 sm:px-2 py-2 sm:py-4 relative">
+        <button class="nav-arrow w-8 h-8 sm:w-10 sm:h-10 shrink-0" :disabled="!hasPrevPage" aria-label="Halaman Sebelumnya" @click="flipPrev">
+          <ChevronLeft class="w-4 h-4 sm:w-5 sm:h-5" />
         </button>
         <div ref="bookWrapRef" class="book-mount" />
-        <button class="nav-arrow" :disabled="!hasNextPage" aria-label="Halaman Berikutnya" @click="flipNext">
-          <ChevronRight class="w-5 h-5" />
+        <button class="nav-arrow w-8 h-8 sm:w-10 sm:h-10 shrink-0" :disabled="!hasNextPage" aria-label="Halaman Berikutnya" @click="flipNext">
+          <ChevronRight class="w-4 h-4 sm:w-5 sm:h-5" />
         </button>
       </main>
 

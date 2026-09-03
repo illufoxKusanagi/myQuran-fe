@@ -114,7 +114,7 @@ onBeforeUnmount(() => {
   position: absolute;
   inset: 0;
   background: rgba(0, 0, 0, 0.4);
-  backdrop-filter: blur(4px);
+  backdrop-filter: blur(0.25rem);
 }
 .drawer-panel {
   position: absolute;
@@ -126,7 +126,7 @@ onBeforeUnmount(() => {
   border-top-right-radius: 1rem;
   max-height: 80vh;
   overflow-y: auto;
-  box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 -0.625rem 2.5rem rgba(0, 0, 0, 0.15);
 }
 .drawer-enter-active,
 .drawer-leave-active {

@@ -18,7 +18,7 @@
   --mono: ui-monospace, Consolas, monospace;
 
   font-family: var(--sans);
-  font-size: 16px;
+  font-size: 1rem;
   line-height: 1.5;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -98,37 +98,37 @@ body {
 .heading-1 {
   font-family: var(--heading);
   font-weight: 700;
-  font-size: 48px;
+  font-size: 3rem;
   line-height: 1.2;
   letter-spacing: -0.02em;
   color: hsl(var(--foreground));
-  @media (max-width: 1024px) {
-    font-size: 36px;
+  @media (max-width: 64rem) {
+    font-size: 2.25rem;
   }
 }
 
 .heading-2 {
   font-family: var(--heading);
   font-weight: 600;
-  font-size: 30px;
+  font-size: 1.875rem;
   line-height: 1.3;
   letter-spacing: -0.01em;
   color: hsl(var(--foreground));
-  @media (max-width: 1024px) {
-    font-size: 24px;
+  @media (max-width: 64rem) {
+    font-size: 1.5rem;
   }
 }
 
 .body-large {
   font-family: var(--sans);
-  font-size: 18px;
+  font-size: 1.125rem;
   line-height: 1.6;
   color: hsl(var(--foreground));
 }
 
 .body-muted {
   font-family: var(--sans);
-  font-size: 14px;
+  font-size: 0.875rem;
   line-height: 1.5;
   color: var(--muted-foreground);
 }
@@ -136,17 +136,17 @@ body {
 .arabic-text {
   font-family: 'LPMQ Isep Misbah', 'Amiri', 'Traditional Arabic', serif;
   direction: rtl;
-  font-size: 28px;
+  font-size: 1.75rem;
   line-height: 2.2;
   text-align: right;
   color: #18181b;
 }
 
 @theme inline {
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
+  --radius-sm: calc(var(--radius) - 0.25rem);
+  --radius-md: calc(var(--radius) - 0.125rem);
   --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
+  --radius-xl: calc(var(--radius) + 0.25rem);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);

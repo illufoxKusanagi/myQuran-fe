@@ -3,6 +3,8 @@ import { ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { Search } from 'lucide-vue-next'
 import { Button } from '@/components/ui/button'
+import { getJuzStart } from '@/features/reader/juz'
+import { POPULAR_REFS } from '@/features/reader/popular'
 
 const props = defineProps<{
   open: boolean
@@ -41,15 +43,28 @@ function handleSubmit() {
   const q = query.value.trim()
   if (!q) return
 
-  const juzMatch = q.match(/^juz\s*(\d+)$/i) || q.match(/^(\d+)$/)
-  if (juzMatch && q.toLowerCase().startsWith('juz')) {
+  const qLow = q.toLowerCase()
+  const popular = POPULAR_REFS.find((p) => qLow.includes(p.key) || qLow.includes(p.label.toLowerCase()))
+  if (popular) {
+    close()
+    router.push({ name: 'surah', params: { id: popular.surahId }, query: { ayah: String(popular.ayahNumber) } } as any)
+    return
+  }
+
+  const juzMatch = q.match(/^juz\s*(\d+)$/i)
+  if (juzMatch) {
     const juz = Number(juzMatch[1])
     if (juz < 1 || juz > 30) {
       error.value = 'Juz harus 1–30'
       return
     }
+    const start = getJuzStart(juz)
+    if (!start) {
+      error.value = 'Juz tidak ditemukan'
+      return
+    }
     close()
-    router.push({ name: 'home', query: { juz: String(juz) } } as any)
+    router.push({ name: 'surah', params: { id: start.surahId }, query: { ayah: String(start.ayahNumber), juz: String(juz) } } as any)
     return
   }
 
@@ -82,7 +97,7 @@ function handleSubmit() {
     return
   }
 
-  error.value = 'Format: 2:255 atau 18:10 atau juz 5'
+  error.value = 'Format: 2:255, 18:10, juz 5, atau yasin/kursi'
 }
 </script>
 
@@ -101,11 +116,31 @@ function handleSubmit() {
           <input
             ref="inputRef"
             v-model="query"
-            placeholder="Contoh: 2:255  •  18:10  •  36  •  juz 30"
+            placeholder="Contoh: 2:255 • 18:10 • juz 30 • yasin/kursi"
             class="w-full h-11 rounded-xl border border-input bg-background px-4 text-sm outline-none focus:ring-2 focus:ring-ring"
           />
           <p v-if="error" class="text-xs text-destructive mt-2">{{ error }}</p>
-          <p class="text-xs text-muted-foreground mt-2">Tekan Enter untuk lompat. Juz 1–30, Surah 1–114.</p>
+          <p class="text-xs text-muted-foreground mt-2">Tekan Enter. Juz 1–30, Surah 1–114, atau kata kunci populer.</p>
+          <div v-if="!query" class="flex flex-wrap gap-1.5 mt-3">
+            <button
+              v-for="p in POPULAR_REFS"
+              :key="p.key"
+              type="button"
+              class="rounded-full border border-border bg-card px-2.5 py-1 text-xs hover:bg-accent"
+              @click="((query = p.key), handleSubmit())"
+            >
+              {{ p.label }}
+            </button>
+            <button
+              v-for="n in 3"
+              :key="'juz'+n"
+              type="button"
+              class="rounded-full border border-border bg-card px-2.5 py-1 text-xs hover:bg-accent"
+              @click="((query = `juz ${n}`), handleSubmit())"
+            >
+              Juz {{ n }}
+            </button>
+          </div>
         </form>
       </div>
     </div>

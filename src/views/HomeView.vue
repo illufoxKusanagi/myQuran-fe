@@ -3,7 +3,10 @@ import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import AppFooter from '@/components/AppFooter.vue'
 import LastReadHero from '@/features/home/components/LastReadHero.vue'
+import JuzJumpChips from '@/features/home/components/JuzJumpChips.vue'
+import PopularShortcuts from '@/features/home/components/PopularShortcuts.vue'
 import SurahSearchFilter from '@/features/home/components/SurahSearchFilter.vue'
+import RandomHadithWidget from '@/features/hadith/components/RandomHadithWidget.vue'
 import SurahDirectoryCard from '@/features/home/components/SurahDirectoryCard.vue'
 import { useSurahFilter } from '@/features/home/composables/useSurahFilter'
 
@@ -20,7 +23,7 @@ const surahs = ref<Surah[]>([])
 const loading = ref(true)
 const fetchError = ref<string | null>(null)
 
-const { query, tab, filtered } = useSurahFilter(surahs)
+const { query, filtered } = useSurahFilter(surahs)
 
 onMounted(async () => {
   try {
@@ -48,7 +51,10 @@ onMounted(async () => {
       </div>
 
       <LastReadHero />
-      <SurahSearchFilter v-model="query" :tab="tab" @update:tab="tab = $event" />
+      <RandomHadithWidget />
+      <PopularShortcuts />
+      <JuzJumpChips />
+      <SurahSearchFilter v-model="query" />
 
       <div v-if="loading" class="flex justify-center py-20">
         <p class="text-muted-foreground animate-pulse">Memuat surat-surat...</p>

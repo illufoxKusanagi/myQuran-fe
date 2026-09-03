@@ -4,6 +4,9 @@ import { createRouter, createWebHistory } from "vue-router";
 // Import your page components
 import HomeView from "../views/HomeView.vue";
 import SurahView from "../views/SurahView.vue";
+import HadithBooksView from "../views/hadith/HadithBooksView.vue";
+import HadithListView from "../views/hadith/HadithListView.vue";
+import HadithDetailView from "../views/hadith/HadithDetailView.vue";
 
 export const router = createRouter({
   // This tells Vue to use the standard "History API" for the browser
@@ -23,6 +26,9 @@ export const router = createRouter({
       name: "surah",
       component: SurahView,
     },
+    { path: "/hadith", name: "hadith-books", component: HadithBooksView },
+    { path: "/hadith/:book", name: "hadith-list", component: HadithListView },
+    { path: "/hadith/:book/:number", name: "hadith-detail", component: HadithDetailView },
   ],
 });
 

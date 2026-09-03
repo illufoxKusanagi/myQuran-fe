@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, watch, onBeforeUnmount } from 'vue'
-import { Settings, RotateCcw } from 'lucide-vue-next'
+import { Settings, RotateCcw, X } from 'lucide-vue-next'
 import { Button } from '@/components/ui/button'
 import { useReadingSettings, type PaperTheme } from '../composables/useReadingSettings'
 
@@ -54,7 +54,7 @@ onBeforeUnmount(() => document.removeEventListener('keydown', handleEsc))
             <div class="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center"><Settings class="w-4 h-4 text-primary" /></div>
             <h2 class="font-semibold text-foreground">Pengaturan Bacaan</h2>
           </div>
-          <Button variant="ghost" size="sm" @click="close">Tutup</Button>
+          <Button variant="ghost" size="icon" aria-label="Tutup" @click="close"><X class="w-4 h-4" /></Button>
         </div>
 
         <div class="space-y-6">
