@@ -1,9 +1,6 @@
 <script setup lang="ts">
-import { useRouter } from 'vue-router';
-import { ArrowLeft, Settings, ListOrdered, ScrollText } from 'lucide-vue-next';
+import { ArrowLeft, Settings, ListOrdered } from 'lucide-vue-next';
 import { Button } from '@/components/ui/button';
-
-const router = useRouter();
 
 defineProps<{
   surahName: string;
@@ -53,19 +50,6 @@ defineEmits<{ back: []; settings: []; openNav: [] }>();
         </span>
       </p>
     </div>
-
-    <!-- Switch to Mode Daftar Ayat -->
-    <Button
-      v-if="surahId"
-      variant="outline"
-      size="sm"
-      class="gap-1.5 h-8 px-2 sm:px-2.5 text-xs text-foreground border-border hover:border-primary/40 hover:bg-accent shrink-0"
-      title="Beralih ke mode daftar scroll"
-      @click="router.push({ name: 'surah-list', params: { id: surahId } })"
-    >
-      <ScrollText class="w-3.5 h-3.5 text-primary" />
-      <span class="hidden sm:inline">Mode Daftar</span>
-    </Button>
 
     <!-- Explicit Daftar Ayat Button -->
     <Button

@@ -58,11 +58,11 @@ const currentJuz = computed(
 
 const {
   detectLayout,
+  initPageFlip,
   handleResize,
   flipNext,
   flipPrev,
   goToPage,
-  rebuild,
   attachObserver,
 } = useBookFlip({
   bookWrapRef,
@@ -115,140 +115,13 @@ const { settings: readingSettings } = useReadingSettings();
 const isSettingsOpen = ref(false);
 const isQuickJumpOpen = ref(false);
 
-// Dynamic Batch Pagination State
-const totalAyahsCount = ref(0);
-const page = ref(Number(route.query.page ?? 1));
-const limit = ref<number | 'all'>(
-  route.query.limit
-    ? route.query.limit === 'all'
-      ? 'all'
-      : Number(route.query.limit)
-    : 20
-);
-
-const totalBatches = computed(() => {
-  if (limit.value === 'all' || totalAyahsCount.value === 0) return 1;
-  return Math.ceil(totalAyahsCount.value / (limit.value as number));
-});
-
-const currentRangeLabel = computed(() => {
-  if (limit.value === 'all') return `Semua Ayat (1 - ${totalAyahsCount.value})`;
-  const l = limit.value as number;
-  const start = (page.value - 1) * l + 1;
-  const end = Math.min(page.value * l, totalAyahsCount.value);
-  return `Ayat ${start} - ${end}`;
-});
-
-function syncRoute() {
-  router.replace({
-    query: {
-      ...route.query,
-      page: String(page.value),
-      limit: String(limit.value),
-    },
-  });
-}
-
-async function fetchSurahData(
-  targetPage = page.value,
-  targetLimit = limit.value
-) {
-  loading.value = true;
-  error.value = null;
-  try {
-    if (!surahName.value) {
-      const surahRes = await fetch(
-        `${import.meta.env.VITE_API_URL}/surah/${surahId}`
-      );
-      if (!surahRes.ok) throw new Error('Gagal memuat info surah');
-      const surahData = await surahRes.json();
-      surahName.value = surahData.surahName || `Surah ${surahId}`;
-      surahArabic.value = surahData.arabic || '';
-      surahTranslation.value =
-        surahData.translation ||
-        surahData.indonesianTranslation ||
-        surahData.arti ||
-        '';
-      totalAyahsCount.value = surahData.numAyah || 0;
-    }
-
-    let url = `${import.meta.env.VITE_API_URL}/ayah/${surahId}?withTafsir=false`;
-    if (targetLimit !== 'all') {
-      url += `&page=${targetPage}&limit=${targetLimit}&paginate=true`;
-    }
-
-    const ayahRes = await fetch(url);
-    if (!ayahRes.ok) throw new Error('Gagal memuat ayat');
-    const ayahData = await ayahRes.json();
-
-    if (targetLimit !== 'all' && ayahData.ayahs) {
-      ayahs.value = ayahData.ayahs;
-      if (ayahData.pagination?.total)
-        totalAyahsCount.value = ayahData.pagination.total;
-    } else {
-      ayahs.value = Array.isArray(ayahData) ? ayahData : ayahData.ayahs || [];
-      totalAyahsCount.value = ayahs.value.length;
-    }
-  } catch (err: any) {
-    error.value = err.message || 'Failed to load Surah data';
-    console.error(err);
-  } finally {
-    loading.value = false;
-  }
-
-  await nextTick();
-  detectLayout();
-  await nextTick();
-  requestAnimationFrame(() => {
-    rebuild(false);
-    attachObserver();
-    requestAnimationFrame(() => {
-      syncBookTheme();
-      attachScrollGuards();
-    });
-  });
-}
-
-function changeBatch(newPage: number) {
-  if (newPage < 1 || newPage > totalBatches.value) return;
-  page.value = newPage;
-  syncRoute();
-  fetchSurahData(newPage, limit.value);
-}
-
-function setLimit(newLimit: number | 'all') {
-  limit.value = newLimit;
-  page.value = 1;
-  syncRoute();
-  fetchSurahData(1, newLimit);
-}
-
-async function jumpToAyah(ayahNumber: number): Promise<boolean> {
-  const existingIdx = bookPages.value.findIndex(
+function jumpToAyah(ayahNumber: number): boolean {
+  const idx = bookPages.value.findIndex(
     (p) => p.type === 'ayah' && p.ayah.ayahNumber === ayahNumber
   );
-  if (existingIdx !== -1) {
-    goToPage(existingIdx);
-    return true;
-  }
-
-  if (limit.value !== 'all') {
-    const targetPage = Math.ceil(ayahNumber / (limit.value as number));
-    if (targetPage !== page.value) {
-      page.value = targetPage;
-      syncRoute();
-      await fetchSurahData(targetPage, limit.value);
-      await nextTick();
-      const newIdx = bookPages.value.findIndex(
-        (p) => p.type === 'ayah' && p.ayah.ayahNumber === ayahNumber
-      );
-      if (newIdx !== -1) {
-        goToPage(newIdx);
-        return true;
-      }
-    }
-  }
-  return false;
+  if (idx === -1) return false;
+  goToPage(idx);
+  return true;
 }
 
 useReaderShortcuts({
@@ -389,13 +262,50 @@ watch([leftAyah, rightAyah, currentIndex], () => {
     surahName: surahName.value,
     surahArabic: surahArabic.value,
     ayahNumber: ayah.ayahNumber,
-    totalAyahs: totalAyahsCount.value || ayahs.value.length,
+    totalAyahs: ayahs.value.length,
   });
   nextTick(() => requestAnimationFrame(() => attachScrollGuards()));
 });
 
 onMounted(async () => {
-  await fetchSurahData(page.value, limit.value);
+  try {
+    const [surahRes, ayahRes] = await Promise.all([
+      fetch(`${import.meta.env.VITE_API_URL}/surah/${surahId}`),
+      fetch(`${import.meta.env.VITE_API_URL}/ayah/${surahId}?withTafsir=false`),
+    ]);
+    if (!surahRes.ok || !ayahRes.ok) {
+      throw new Error(
+        `Failed to load Surah data: HTTP ${surahRes.status} / ${ayahRes.status}`
+      );
+    }
+    const surahData = await surahRes.json();
+    surahName.value = surahData.surahName || `Surah ${surahId}`;
+    surahArabic.value = surahData.arabic || '';
+    surahTranslation.value =
+      surahData.translation ||
+      surahData.indonesianTranslation ||
+      surahData.arti ||
+      '';
+    const ayahData = await ayahRes.json();
+    ayahs.value = Array.isArray(ayahData) ? ayahData : ayahData.ayahs || [];
+  } catch (err) {
+    error.value = 'Failed to load Surah data';
+    console.error(err);
+  } finally {
+    loading.value = false;
+  }
+
+  await nextTick();
+  detectLayout();
+  await nextTick();
+  requestAnimationFrame(() => {
+    initPageFlip();
+    attachObserver();
+    requestAnimationFrame(() => {
+      syncBookTheme();
+      attachScrollGuards();
+    });
+  });
   window.addEventListener('resize', handleResize);
   const qAyah = Number(route.query.ayah);
   const qJuz = Number(route.query.juz);
@@ -423,69 +333,13 @@ onBeforeUnmount(() => {
     <ReaderHeader
       :surah-name="surahName"
       :surah-arabic="surahArabic"
-      :ayah-count="totalAyahsCount || ayahs.length"
+      :ayah-count="ayahs.length"
       :current-juz="currentJuz"
       :surah-id="surahId"
       @back="router.push('/')"
       @settings="isSettingsOpen = true"
       @open-nav="isNavOpen = true"
     />
-
-    <!-- Sub-header: Dynamic Batch & Limit Bar -->
-    <div
-      v-if="!loading && !error"
-      class="shrink-0 flex items-center justify-between gap-2 px-3 sm:px-4 py-1.5 bg-card/95 border-b border-border/60 text-xs shadow-xs z-10"
-    >
-      <!-- Batch Navigator -->
-      <div class="flex items-center gap-1.5">
-        <button
-          type="button"
-          :disabled="page <= 1"
-          class="h-6 px-1.5 rounded border border-border bg-background text-foreground disabled:opacity-30 hover:bg-accent cursor-pointer disabled:cursor-not-allowed transition-colors text-[11px]"
-          title="Bagian Sebelumnya"
-          @click="changeBatch(page - 1)"
-        >
-          ◀
-        </button>
-        <span class="font-medium text-foreground px-1 tabular-nums">
-          Bagian {{ page }} / {{ totalBatches }} ({{ currentRangeLabel }})
-        </span>
-        <button
-          type="button"
-          :disabled="page >= totalBatches"
-          class="h-6 px-1.5 rounded border border-border bg-background text-foreground disabled:opacity-30 hover:bg-accent cursor-pointer disabled:cursor-not-allowed transition-colors text-[11px]"
-          title="Bagian Berikutnya"
-          @click="changeBatch(page + 1)"
-        >
-          ▶
-        </button>
-      </div>
-
-      <!-- Limit Selector -->
-      <div class="flex items-center gap-1.5">
-        <span class="text-muted-foreground hidden sm:inline text-[11px]"
-          >Limit:</span
-        >
-        <div
-          class="flex items-center bg-muted/50 rounded-md p-0.5 border border-border"
-        >
-          <button
-            v-for="opt in [20, 50, 100, 'all'] as const"
-            :key="opt"
-            type="button"
-            class="px-2 py-0.5 text-[11px] rounded font-medium transition-colors cursor-pointer"
-            :class="
-              limit === opt
-                ? 'bg-card text-foreground shadow-xs font-bold'
-                : 'text-muted-foreground hover:text-foreground'
-            "
-            @click="setLimit(opt)"
-          >
-            {{ opt === 'all' ? 'Semua' : opt }}
-          </button>
-        </div>
-      </div>
-    </div>
 
     <div v-if="loading" class="flex-1 flex items-center justify-center">
       <p class="text-muted-foreground animate-pulse">Loading…</p>
@@ -515,41 +369,19 @@ onBeforeUnmount(() => {
             'pf-blank': pageItem.type === 'blank',
           }"
           :data-density="
-            pageItem.type === 'ayah' || pageItem.type === 'blank'
-              ? 'soft'
-              : 'hard'
+            pageItem.type === 'cover-front' || pageItem.type === 'cover-back'
+              ? 'hard'
+              : 'soft'
           "
         >
           <template v-if="pageItem.type === 'cover-front'">
             <div class="pf-cover-inner">
-              <p class="pf-cover-label">Surah {{ surahId }}</p>
+              <p class="pf-cover-label">Surah</p>
               <h2 class="pf-cover-title">{{ surahName }}</h2>
               <p v-if="surahTranslation" class="pf-cover-translation">
                 {{ surahTranslation }}
               </p>
               <p class="pf-cover-arabic">{{ surahArabic }}</p>
-              <p
-                v-if="limit !== 'all'"
-                class="text-[11px] text-muted-foreground mt-2 font-medium"
-              >
-                Bagian {{ page }} / {{ totalBatches }} ({{ currentRangeLabel }})
-              </p>
-            </div>
-          </template>
-          <template v-else-if="pageItem.type === 'cover-back'">
-            <div class="pf-cover-inner text-center space-y-3 p-4">
-              <p class="pf-cover-label">{{ surahName }}</p>
-              <p class="text-xs text-muted-foreground">
-                Akhir dari {{ currentRangeLabel }}
-              </p>
-              <button
-                v-if="page < totalBatches"
-                type="button"
-                class="mt-2 px-3 py-1.5 rounded-lg bg-primary text-primary-foreground text-xs font-semibold shadow-xs hover:bg-primary/90 transition-colors cursor-pointer"
-                @click="changeBatch(page + 1)"
-              >
-                Lanjut ke Bagian {{ page + 1 }} 👉
-              </button>
             </div>
           </template>
           <template v-else-if="pageItem.type === 'ayah'">
@@ -603,7 +435,7 @@ onBeforeUnmount(() => {
       <ReaderControls
         :left-ayah="leftAyah"
         :right-ayah="rightAyah"
-        :total-ayahs="totalAyahsCount || ayahs.length"
+        :total-ayahs="ayahs.length"
         :is-portrait="isPortrait"
         :is-playing="isPlaying"
         :is-continuous="isContinuous"
@@ -640,8 +472,8 @@ onBeforeUnmount(() => {
       v-model:open="isNavOpen"
       mode="quran"
       :title="surahName"
-      :subtitle="`${currentRangeLabel} · ${surahTranslation}`"
-      :total-ayahs="totalAyahsCount || ayahs.length"
+      :subtitle="`${ayahs.length} Ayat · ${surahTranslation}`"
+      :total-ayahs="ayahs.length"
       :active-ayah="
         activeAyahNumber ?? (leftAyah?.ayahNumber || rightAyah?.ayahNumber)
       "

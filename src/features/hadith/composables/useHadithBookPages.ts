@@ -12,6 +12,8 @@ export function useHadithBookPages(
   const isRtlBook = computed(() => true);
 
   const bookPages = computed<HadithBookPage[]>(() => {
+    if (hadiths.value.length === 0) return [];
+
     const pages: HadithBookPage[] = [];
     const logicPages: HadithBookPage[] = [];
 

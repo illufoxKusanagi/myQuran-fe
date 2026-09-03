@@ -240,13 +240,13 @@ Search across translation, Latin transliteration, and Arabic text in all 6,236 v
 GET /ayah/search?q={query}&surah={surahId}&page={page}&limit={limit}&withTafsir={boolean}
 ```
 
-| Parameter | Type | Required | Default | Description |
-| :--- | :--- | :--- | :--- | :--- |
-| `q` | `string` | **Yes** | — | Search term (min 1 non-whitespace char). |
-| `surah` | `number` | No | — | Filter search to specific Surah (1–114). |
-| `page` | `number` | No | `1` | Page number (min 1). |
-| `limit` | `number` | No | `20` | Results per page (min 1, max 100). |
-| `withTafsir` | `boolean`| No | `false` | Set `true` to include full tafsirs in search results. |
+| Parameter    | Type      | Required | Default | Description                                           |
+| :----------- | :-------- | :------- | :------ | :---------------------------------------------------- |
+| `q`          | `string`  | **Yes**  | —       | Search term (min 1 non-whitespace char).              |
+| `surah`      | `number`  | No       | —       | Filter search to specific Surah (1–114).              |
+| `page`       | `number`  | No       | `1`     | Page number (min 1).                                  |
+| `limit`      | `number`  | No       | `20`    | Results per page (min 1, max 100).                    |
+| `withTafsir` | `boolean` | No       | `false` | Set `true` to include full tafsirs in search results. |
 
 **Example Frontend Call**:
 ```typescript
@@ -271,14 +271,14 @@ Fetch verses for a surah. Offers two modes: **Direct Array** (legacy compatible)
 GET /ayah/:surahId?page={page}&limit={limit}&from={from}&to={to}&withTafsir={boolean}&paginate={boolean}
 ```
 
-| Parameter | Type | Required | Default | Description |
-| :--- | :--- | :--- | :--- | :--- |
-| `page` | `number` | No | `1` | Page number (requires `limit`). |
-| `limit` | `number` | No | — | Page size (min 1, max 100). |
-| `from` | `number` | No | — | Start verse number (e.g. `?from=1`). |
-| `to` | `number` | No | — | End verse number (e.g. `?to=20`). |
-| `withTafsir` | `boolean`| No | `true` | **Set `false` in reading views to cut payload by ~70%!** |
-| `paginate` | `boolean`| No | `false` | Set `true` to return `{ pagination, ayahs }` envelope. |
+| Parameter    | Type      | Required | Default | Description                                                                               |
+| :----------- | :-------- | :------- | :------ | :---------------------------------------------------------------------------------------- |
+| `page`       | `number`  | No       | `1`     | Page number (requires `limit`).                                                           |
+| `limit`      | `number`  | No       | —       | Page size (min 1, max 300). Supports fetching all 286 ayahs of Al-Baqarah in one request. |
+| `from`       | `number`  | No       | —       | Start verse number (e.g. `?from=1`).                                                      |
+| `to`         | `number`  | No       | —       | End verse number (e.g. `?to=20`).                                                         |
+| `withTafsir` | `boolean` | No       | `true`  | **Set `false` in reading views to cut payload by ~70%!**                                  |
+| `paginate`   | `boolean` | No       | `false` | Set `true` to return `{ pagination, ayahs }` envelope.                                    |
 
 > [!TIP]
 > **Performance Recommendation**: When building reader views, always pass `?withTafsir=false`. If the user taps a specific verse to read its Tafsir, fetch on-demand using `/ayah/:surahId/:ayahNumber/tafsir`.
@@ -334,12 +334,12 @@ Search through all **29,187 hadiths** across all 7 books (Bukhari, Muslim, Abu D
 GET /hadith/search?q={query}&book={slugs}&page={page}&limit={limit}
 ```
 
-| Parameter | Type | Required | Default | Description |
-| :--- | :--- | :--- | :--- | :--- |
-| `q` | `string` | **Yes** | — | Keyword (searches Indonesian translation & Arabic). |
-| `book` | `string` | No | — | Filter by book slugs (comma-separated, e.g. `bukhari,muslim`). |
-| `page` | `number` | No | `1` | Page number. |
-| `limit` | `number` | No | `20` | Limit (max 100). |
+| Parameter | Type     | Required | Default | Description                                                    |
+| :-------- | :------- | :------- | :------ | :------------------------------------------------------------- |
+| `q`       | `string` | **Yes**  | —       | Keyword (searches Indonesian translation & Arabic).            |
+| `book`    | `string` | No       | —       | Filter by book slugs (comma-separated, e.g. `bukhari,muslim`). |
+| `page`    | `number` | No       | `1`     | Page number.                                                   |
+| `limit`   | `number` | No       | `20`    | Limit (max 100).                                               |
 
 **Example Frontend Call**:
 ```typescript
@@ -368,13 +368,13 @@ Browse a collection with chapter filtering and search.
 GET /hadith/:bookSlug?page={page}&limit={limit}&kitab={kitabNo}&search={keyword}
 ```
 
-| Parameter | Type | Required | Default | Description |
-| :--- | :--- | :--- | :--- | :--- |
-| `bookSlug` | `string` | **Path** | — | `bukhari`, `muslim`, `abudawud`, `tirmidzi`, `nasai`, `ibnumajah`, `ahmad`. |
-| `page` | `number` | No | `1` | Page number. |
-| `limit` | `number` | No | `20` | Items per page (max 100). |
-| `kitab` | `number` | No | — | Filter by Kitab / chapter ID (e.g. `?kitab=1`). |
-| `search` | `string` | No | — | Keyword search within this specific book. |
+| Parameter  | Type     | Required | Default | Description                                                                 |
+| :--------- | :------- | :------- | :------ | :-------------------------------------------------------------------------- |
+| `bookSlug` | `string` | **Path** | —       | `bukhari`, `muslim`, `abudawud`, `tirmidzi`, `nasai`, `ibnumajah`, `ahmad`. |
+| `page`     | `number` | No       | `1`     | Page number.                                                                |
+| `limit`    | `number` | No       | `20`    | Items per page (max 100).                                                   |
+| `kitab`    | `number` | No       | —       | Filter by Kitab / chapter ID (e.g. `?kitab=1`).                             |
+| `search`   | `string` | No       | —       | Keyword search within this specific book.                                   |
 
 **Example Frontend Call**:
 ```typescript
@@ -440,11 +440,33 @@ GET /reciter
 ```
 Returns list of 40+ verified reciters with `subfolder` and `bitrate`. Default reciter ID is `3` (Mishary Rashid Al-Afasy).
 
-### B. Surah Playlist
+### B. Surah Playlist & Range Batching
 ```http
-GET /audio/surah/:surahId?reciterId={reciterId}
+GET /audio/surah/:surahId?reciterId={reciterId}&from={from}&to={to}
 ```
-Returns an array of direct `.mp3` streaming URLs for every verse in the surah.
+Returns an object envelope containing an array of direct `.mp3` streaming URLs for the surah (`audioUrls`). Supports range batching (e.g. `?from=1&to=20` for flipbook or batch players).
+
+| Parameter   | Type     | Required | Default   | Description                 |
+| :---------- | :------- | :------- | :-------- | :-------------------------- |
+| `reciterId` | `number` | No       | Alafasy   | Reciter ID from `/reciter`. |
+| `from`      | `number` | No       | `1`       | Start verse number.         |
+| `to`        | `number` | No       | `numAyah` | End verse number.           |
+
+**Response**:
+```json
+{
+  "surahId": 2,
+  "reciterId": 47,
+  "from": 1,
+  "to": 20,
+  "totalAyahs": 20,
+  "audioUrls": [
+    "https://everyayah.com/data/Alafasy_128kbps/002001.mp3",
+    "https://everyayah.com/data/Alafasy_128kbps/002002.mp3",
+    "..."
+  ]
+}
+```
 
 ### C. Single Verse Audio
 ```http

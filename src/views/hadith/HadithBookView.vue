@@ -71,6 +71,7 @@ const {
   flipPrev,
   goToPage,
   attachObserver,
+  destroyBook,
 } = useBookFlip({
   bookWrapRef,
   stageRef,
@@ -217,6 +218,7 @@ watch([leftHadith, rightHadith, currentIndex], () => {
 });
 
 async function loadData() {
+  destroyBook();
   await fetchList(1, 100, kitabNo.value);
   await nextTick();
   detectLayout();
