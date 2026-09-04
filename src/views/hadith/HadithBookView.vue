@@ -169,18 +169,28 @@ function attachScrollGuards() {
 function syncBookTheme() {
   if (!bookWrapRef.value) return;
   const root = bookWrapRef.value;
-  root.style.setProperty(
-    '--arabic-size',
-    readingSettings.value.arabicFontSize + 'px'
-  );
-  root.style.setProperty(
-    '--translation-size',
-    readingSettings.value.translationFontSize + 'px'
-  );
-  root.style.setProperty(
-    '--latin-size',
-    readingSettings.value.translationFontSize + 'px'
-  );
+  const arabicSize = `${readingSettings.value.arabicFontSize}px`;
+  const translationSize = `${readingSettings.value.translationFontSize}px`;
+
+  root.style.setProperty('--arabic-size', arabicSize);
+  root.style.setProperty('--translation-size', translationSize);
+  root.style.setProperty('--latin-size', translationSize);
+
+  if (stageRef.value) {
+    stageRef.value.style.setProperty('--arabic-size', arabicSize);
+    stageRef.value.style.setProperty('--translation-size', translationSize);
+    stageRef.value.style.setProperty('--latin-size', translationSize);
+  }
+
+  root.querySelectorAll<HTMLElement>('.pf-arabic').forEach((el) => {
+    el.style.fontSize = arabicSize;
+  });
+  root.querySelectorAll<HTMLElement>('.pf-translation').forEach((el) => {
+    el.style.fontSize = translationSize;
+  });
+  root.querySelectorAll<HTMLElement>('.pf-latin').forEach((el) => {
+    el.style.fontSize = translationSize;
+  });
   root.classList.remove(
     'paper-sepia',
     'paper-dark',
@@ -402,12 +412,30 @@ watch(
               >
                 {{ page.hadith.babName }}
               </p>
-              <p class="pf-arabic">{{ page.hadith.arabic }}</p>
+              <p
+                class="pf-arabic"
+                :style="{ fontSize: `${readingSettings.arabicFontSize}px` }"
+              >
+                {{ page.hadith.arabic }}
+              </p>
               <div class="pf-lower">
-                <p v-if="page.hadith.latin" class="pf-latin">
+                <p
+                  v-if="page.hadith.latin"
+                  class="pf-latin"
+                  :style="{
+                    fontSize: `${readingSettings.translationFontSize}px`,
+                  }"
+                >
                   {{ page.hadith.latin }}
                 </p>
-                <p class="pf-translation">{{ page.hadith.translation }}</p>
+                <p
+                  class="pf-translation"
+                  :style="{
+                    fontSize: `${readingSettings.translationFontSize}px`,
+                  }"
+                >
+                  {{ page.hadith.translation }}
+                </p>
               </div>
             </div>
           </template>
