@@ -206,27 +206,81 @@ function attachScrollGuards() {
   });
 }
 
+const ALL_PAPER_THEMES = [
+  'paper-sepia',
+  'paper-dark',
+  'paper-amoled',
+  'paper-cream',
+  'paper-white',
+  'paper-default',
+];
+
 function syncBookTheme() {
   const wrap = bookWrapRef.value;
   if (!wrap) return;
   const theme = readingSettings.value.paperTheme;
-  const oldThemes = ['paper-cream', 'paper-white', 'paper-sepia', 'paper-dark'];
-  oldThemes.forEach((t) => wrap.classList.remove(t));
-  wrap.classList.add(`paper-${theme}`);
+
+  ALL_PAPER_THEMES.forEach((t) => {
+    wrap.classList.remove(t);
+    if (stageRef.value) stageRef.value.classList.remove(t);
+  });
+
+  if (theme !== 'default') {
+    wrap.classList.add(`paper-${theme}`);
+    if (stageRef.value) stageRef.value.classList.add(`paper-${theme}`);
+  }
+
   wrap.classList.toggle('hide-arabic', !readingSettings.value.showArabic);
   wrap.classList.toggle('hide-latin', !readingSettings.value.showLatin);
   wrap.classList.toggle(
     'hide-translation',
     !readingSettings.value.showTranslation
   );
-  wrap.style.setProperty(
-    '--arabic-font-scale',
-    String(readingSettings.value.arabicFontSize)
-  );
-  wrap.style.setProperty(
-    '--translation-font-scale',
-    String(readingSettings.value.translationFontSize)
-  );
+
+  if (stageRef.value) {
+    stageRef.value.classList.toggle(
+      'hide-arabic',
+      !readingSettings.value.showArabic
+    );
+    stageRef.value.classList.toggle(
+      'hide-latin',
+      !readingSettings.value.showLatin
+    );
+    stageRef.value.classList.toggle(
+      'hide-translation',
+      !readingSettings.value.showTranslation
+    );
+  }
+
+  wrap.querySelectorAll<HTMLElement>('.pf-page').forEach((pageEl) => {
+    ALL_PAPER_THEMES.forEach((t) => pageEl.classList.remove(t));
+    if (theme !== 'default') {
+      pageEl.classList.add(`paper-${theme}`);
+    }
+  });
+
+  const arabicSize = `${readingSettings.value.arabicFontSize}px`;
+  const translationSize = `${readingSettings.value.translationFontSize}px`;
+
+  wrap.style.setProperty('--arabic-size', arabicSize);
+  wrap.style.setProperty('--translation-size', translationSize);
+  wrap.style.setProperty('--latin-size', translationSize);
+
+  if (stageRef.value) {
+    stageRef.value.style.setProperty('--arabic-size', arabicSize);
+    stageRef.value.style.setProperty('--translation-size', translationSize);
+    stageRef.value.style.setProperty('--latin-size', translationSize);
+  }
+
+  wrap.querySelectorAll<HTMLElement>('.pf-arabic').forEach((el) => {
+    el.style.fontSize = arabicSize;
+  });
+  wrap.querySelectorAll<HTMLElement>('.pf-translation').forEach((el) => {
+    el.style.fontSize = translationSize;
+  });
+  wrap.querySelectorAll<HTMLElement>('.pf-latin').forEach((el) => {
+    el.style.fontSize = translationSize;
+  });
 }
 
 watch(
@@ -393,11 +447,26 @@ onBeforeUnmount(() => {
               >
             </div>
             <div class="pf-scroll">
-              <p class="pf-arabic">{{ pageItem.ayah.arabic }}</p>
+              <p
+                class="pf-arabic"
+                :style="{ fontSize: `${readingSettings.arabicFontSize}px` }"
+              >
+                {{ pageItem.ayah.arabic }}
+              </p>
               <div class="pf-lower">
-                <p class="pf-latin">{{ pageItem.ayah.latin }}</p>
+                <p
+                  class="pf-latin"
+                  :style="{
+                    fontSize: `${readingSettings.translationFontSize}px`,
+                  }"
+                >
+                  {{ pageItem.ayah.latin }}
+                </p>
                 <p
                   class="pf-translation"
+                  :style="{
+                    fontSize: `${readingSettings.translationFontSize}px`,
+                  }"
                   v-html="formatTranslation(pageItem.ayah.translation)"
                 ></p>
                 <div v-if="pageItem.ayah.footnote" class="pf-footnote">
