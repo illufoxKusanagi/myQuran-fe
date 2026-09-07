@@ -7,7 +7,7 @@
   "rewrites": [
     {
       "source": "/api/:path*",
-      "destination": "http://my-quran-be.vercel.app/:path*"
+      "destination": "https://my-quran-be.vercel.app/:path*"
     },
     {
       "source": "/(.*)",
