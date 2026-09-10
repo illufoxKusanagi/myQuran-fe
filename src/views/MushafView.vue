@@ -276,7 +276,7 @@ onBeforeUnmount(() => {
           <!-- 2. Blank / Endpaper Page -->
           <div
             v-else-if="p.type === 'blank'"
-            class="w-full h-full bg-[#fbf9f1] dark:bg-[#191614] flex items-center justify-center p-6 border border-border/30"
+            class="w-full h-full bg-[#fbf9f1] flex items-center justify-center p-6 border border-border/30"
           >
             <div
               class="w-full h-full border border-dashed border-border/40 rounded-lg flex items-center justify-center opacity-30"
