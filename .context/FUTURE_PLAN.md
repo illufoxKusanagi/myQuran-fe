@@ -6,21 +6,21 @@ This document outlines the architectural roadmap, planned features, and technica
 
 ## 🧭 Roadmap Overview & Impact Matrix
 
-| Phase | Feature Initiative                               |  Impact  | Complexity | Target Endpoints                                   |
-| :---- | :----------------------------------------------- | :------: | :--------: | :------------------------------------------------- |
-| **1** | **Global Ayah & Keyword Search**                 |  🔴 High  |   Medium   | `GET /ayah/search`                                 |
-| **2** | **Bookmarks, Favorites & History**               |  🔴 High  |    Low     | Client-side (`localStorage` / IndexedDB)           |
-| **3** | **Dynamic Audio Engine (40+ Qaris)**             | 🟡 Medium |   Medium   | `GET /reciter`, `GET /audio/surah/:id`             |
-| **4** | **Daily Inspiration (Hadith & Ayah of the Day)** | 🟡 Medium |    Low     | `GET /hadith/random`                               |
-| **5** | **604-Page Authentic Kemenag Mushaf Mode**       |  🔴 High  |    High    | `GET /page/:pageNumber`, `/page/:pageNumber/image` |
-| **6** | **PWA & Offline First Architecture**             | 🟡 Medium |   Medium   | Service Worker / Cache API                         |
-| **7** | **Social Quote & Ayah Card Exporter**            |  🟢 Low   |   Medium   | HTML5 Canvas / DOM-to-Image                        |
+| Phase | Feature Initiative                               |  Impact   | Complexity | Target Endpoints                                   |
+| :---- | :----------------------------------------------- | :-------: | :--------: | :------------------------------------------------- |
+| **1** | **Global Ayah & Keyword Search**                 | ✅ Selesai |   Medium   | `GET /ayah/search`                                 |
+| **2** | **Bookmarks, Favorites & History**               |  🔴 High   |    Low     | Client-side (`localStorage` / IndexedDB)           |
+| **3** | **Dynamic Audio Engine (40+ Qaris)**             | 🟡 Medium  |   Medium   | `GET /reciter`, `GET /audio/surah/:id`             |
+| **4** | **Daily Inspiration (Hadith & Ayah of the Day)** | 🟡 Medium  |    Low     | `GET /hadith/random`                               |
+| **5** | **604-Page Authentic Kemenag Mushaf Mode**       | ✅ Selesai |    High    | `GET /page/:pageNumber`, `/page/:pageNumber/image` |
+| **6** | **PWA & Offline First Architecture**             | 🟡 Medium  |   Medium   | Service Worker / Cache API                         |
+| **7** | **Social Quote & Ayah Card Exporter**            |   🟢 Low   |   Medium   | HTML5 Canvas / DOM-to-Image                        |
 
 ---
 
 ## 📌 Detailed Implementation Specifications
 
-### Phase 1: Global Ayah & Keyword Search (`Ctrl + K` / `Cmd + K`)
+### Phase 1: Global Ayah & Keyword Search (`Ctrl + K` / `Cmd + K`) (✅ Selesai)
 * **Objective**: Enable full-text search across all 6,236 verses instead of only filtering Surah names.
 * **Technical Details**:
   * **Endpoint**: `GET /ayah/search?q={query}&surah={surahId}&page={page}&limit={limit}&withTafsir=false`
@@ -70,7 +70,7 @@ This document outlines the architectural roadmap, planned features, and technica
 
 ---
 
-### Phase 5: Authentic 604-Page Kemenag Mushaf Mode
+### Phase 5: Authentic 604-Page Kemenag Mushaf Mode (✅ Selesai)
 * **Objective**: Offer readers the authentic visual experience of physical printed Indonesian Mushafs alongside the interactive digital layout.
 * **Technical Details**:
   * **Endpoints**:

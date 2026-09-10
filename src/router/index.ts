@@ -22,10 +22,14 @@ export const router = createRouter({
       component: HomeView,
     },
     {
-      // You can define dynamic variables in the path using a colon (:)
       path: '/surah/:id',
       name: 'surah',
       component: SurahView,
+    },
+    {
+      path: '/mushaf/:page?',
+      name: 'mushaf',
+      component: () => import('../views/MushafView.vue'),
     },
     { path: '/hadith', name: 'hadith-books', component: HadithBooksView },
     {

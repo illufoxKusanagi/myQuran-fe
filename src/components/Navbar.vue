@@ -56,6 +56,11 @@ onBeforeUnmount(() => {
       </button>
 
       <RouterLink
+        to="/mushaf"
+        class="text-xs sm:text-sm font-medium px-2 py-1 rounded hover:bg-accent text-foreground"
+        >Mushaf</RouterLink
+      >
+      <RouterLink
         to="/hadith"
         class="text-xs sm:text-sm font-medium px-2 py-1 rounded hover:bg-accent text-foreground"
         >Hadith</RouterLink

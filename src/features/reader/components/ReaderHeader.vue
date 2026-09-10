@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ArrowLeft, Settings, ListOrdered } from 'lucide-vue-next';
+import { ArrowLeft, Settings, ListOrdered, BookOpen } from 'lucide-vue-next';
 import { Button } from '@/components/ui/button';
 
 defineProps<{
@@ -61,6 +61,17 @@ defineEmits<{ back: []; settings: []; openNav: [] }>();
       <ListOrdered class="w-3.5 h-3.5 text-primary" />
       <span class="hidden sm:inline">Daftar Ayat</span>
     </Button>
+
+    <!-- Mode Mushaf 604 Halaman Button -->
+    <RouterLink
+      v-if="surahId"
+      :to="`/mushaf?surah=${surahId}`"
+      class="inline-flex items-center gap-1.5 h-8 px-2 sm:px-2.5 rounded-md border border-border hover:border-primary/40 hover:bg-accent text-xs font-medium text-foreground shrink-0 transition-colors"
+      title="Buka Mushaf Standar Indonesia 604 Halaman"
+    >
+      <BookOpen class="w-3.5 h-3.5 text-primary" />
+      <span class="hidden sm:inline">Mode Mushaf</span>
+    </RouterLink>
 
     <p
       class="font-arabic text-xl sm:text-2xl text-foreground leading-none shrink-0 hidden md:block"
