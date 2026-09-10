@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { Moon, Sun, Info } from 'lucide-vue-next';
+import { ref, onMounted, onBeforeUnmount } from 'vue';
+import { Moon, Sun, Info, Search } from 'lucide-vue-next';
 import { useDarkMode } from '@/composables/useDarkMode';
 import { Button } from '@/components/ui/button';
 import {
@@ -8,8 +9,25 @@ import {
   TooltipTrigger,
   TooltipContent,
 } from '@/components/ui/tooltip';
+import GlobalSearchDialog from '@/components/GlobalSearchDialog.vue';
 
 const { isDark, toggle } = useDarkMode();
+const isSearchOpen = ref(false);
+
+function handleGlobalKeydown(e: KeyboardEvent) {
+  if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+    e.preventDefault();
+    isSearchOpen.value = !isSearchOpen.value;
+  }
+}
+
+onMounted(() => {
+  window.addEventListener('keydown', handleGlobalKeydown);
+});
+
+onBeforeUnmount(() => {
+  window.removeEventListener('keydown', handleGlobalKeydown);
+});
 </script>
 
 <template>
@@ -21,10 +39,25 @@ const { isDark, toggle } = useDarkMode();
     </RouterLink>
 
     <!-- Right actions -->
-    <div class="flex items-center gap-1">
+    <div class="flex items-center gap-1.5">
+      <!-- Global Search Button -->
+      <button
+        type="button"
+        class="flex items-center gap-2 h-8 px-2.5 rounded-lg border border-border bg-muted/40 hover:bg-accent text-muted-foreground hover:text-foreground text-xs transition-colors cursor-pointer"
+        @click="isSearchOpen = true"
+        aria-label="Cari Ayat dan Surah (Ctrl+K)"
+      >
+        <Search class="w-3.5 h-3.5" />
+        <span class="hidden sm:inline">Cari ayat...</span>
+        <kbd
+          class="hidden md:inline-block px-1.5 py-0.5 text-[0.625rem] font-mono rounded bg-card border border-border/80"
+          >Ctrl K</kbd
+        >
+      </button>
+
       <RouterLink
         to="/hadith"
-        class="text-sm font-medium px-2 py-1 rounded hover:bg-accent"
+        class="text-xs sm:text-sm font-medium px-2 py-1 rounded hover:bg-accent text-foreground"
         >Hadith</RouterLink
       >
       <!-- About tooltip -->
@@ -57,6 +90,8 @@ const { isDark, toggle } = useDarkMode();
       </Button>
     </div>
   </nav>
+
+  <GlobalSearchDialog v-model:open="isSearchOpen" />
 </template>
 
 <style scoped>

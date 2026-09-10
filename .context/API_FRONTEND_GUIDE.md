@@ -217,6 +217,8 @@ export interface Reciter {
 export interface AudioPlaylistResponse {
   surahId: number;
   reciterId: number;
+  from?: number;
+  to?: number;
   totalAyahs: number;
   audioUrls: string[];
 }
