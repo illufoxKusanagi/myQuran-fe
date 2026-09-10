@@ -1,27 +1,29 @@
-import { ref, computed, type Ref } from 'vue'
+import { ref, computed, type Ref } from 'vue';
+import { matchesTransliteration } from '@/lib/transliteration';
 
 interface Surah {
-  id: number
-  surahName: string
-  arabic: string
-  numAyah: number
-  location: string
+  id: number;
+  surahName: string;
+  arabic: string;
+  numAyah: number;
+  location: string;
 }
 
 export function useSurahFilter(surahs: Ref<Surah[]>) {
-  const query = ref('')
+  const query = ref('');
 
   const filtered = computed(() => {
-    const q = query.value.trim().toLowerCase()
-    if (!q) return surahs.value
+    const q = query.value.trim();
+    if (!q) return surahs.value;
     return surahs.value.filter(
       (s) =>
-        s.surahName.toLowerCase().includes(q) ||
+        matchesTransliteration(s.surahName, q) ||
         s.arabic.includes(q) ||
-        String(s.id).includes(q) ||
-        s.location.toLowerCase().includes(q)
-    )
-  })
+        String(s.id) === q ||
+        String(s.id).startsWith(q) ||
+        matchesTransliteration(s.location, q)
+    );
+  });
 
-  return { query, filtered }
+  return { query, filtered };
 }

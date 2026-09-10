@@ -5,6 +5,7 @@ import { Search } from 'lucide-vue-next';
 import { Button } from '@/components/ui/button';
 import { getJuzStart } from '@/features/reader/juz';
 import { POPULAR_REFS } from '@/features/reader/popular';
+import { matchesTransliteration } from '@/lib/transliteration';
 
 const props = defineProps<{
   open: boolean;
@@ -43,9 +44,9 @@ function handleSubmit() {
   const q = query.value.trim();
   if (!q) return;
 
-  const qLow = q.toLowerCase();
   const popular = POPULAR_REFS.find(
-    (p) => qLow.includes(p.key) || qLow.includes(p.label.toLowerCase())
+    (p) =>
+      matchesTransliteration(p.label, q) || matchesTransliteration(p.key, q)
   );
   if (popular) {
     close();
