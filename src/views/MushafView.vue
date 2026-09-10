@@ -114,6 +114,8 @@ function navigateToDigital() {
   router.push({ name: 'surah', params: { id: surahId } });
 }
 
+let initialJumpTimer: ReturnType<typeof setTimeout> | null = null;
+
 onMounted(() => {
   detectLayout();
   window.addEventListener('resize', handleResize);
@@ -123,7 +125,7 @@ onMounted(() => {
     initPageFlip();
     // Jump to requested initial page if greater than 1
     if (initialTargetPage.value > 1) {
-      setTimeout(() => {
+      initialJumpTimer = setTimeout(() => {
         jumpToPageNumber(initialTargetPage.value);
       }, 150);
     }
@@ -131,6 +133,10 @@ onMounted(() => {
 });
 
 onBeforeUnmount(() => {
+  if (initialJumpTimer) {
+    clearTimeout(initialJumpTimer);
+    initialJumpTimer = null;
+  }
   window.removeEventListener('resize', handleResize);
   window.removeEventListener('keydown', handleKeydown);
   destroyBook();

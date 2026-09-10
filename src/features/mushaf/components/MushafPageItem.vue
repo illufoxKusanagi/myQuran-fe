@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue';
+import { ref, watch, nextTick } from 'vue';
 import { Loader2, ImageOff } from 'lucide-vue-next';
 import type { MushafBookPage } from '../types';
 
@@ -38,6 +38,19 @@ function handleImageError() {
   }
   imageError.value = true;
   imageLoaded.value = false;
+}
+
+function handleRetry() {
+  imageError.value = false;
+  imageLoaded.value = false;
+  retryCount.value = 0;
+  const baseSrc = props.page.imageUrl || props.page.cdnFallbackUrl || '';
+  currentSrc.value = '';
+  nextTick(() => {
+    currentSrc.value = baseSrc
+      ? `${baseSrc}${baseSrc.includes('?') ? '&' : '?'}retry=${Date.now()}`
+      : '';
+  });
 }
 </script>
 
@@ -81,10 +94,7 @@ function handleImageError() {
       <button
         type="button"
         class="text-[0.6875rem] text-emerald-700 underline cursor-pointer hover:text-emerald-900 font-medium"
-        @click="
-          retryCount = 0;
-          currentSrc = page.cdnFallbackUrl || page.imageUrl || '';
-        "
+        @click="handleRetry"
       >
         Coba Lagi
       </button>

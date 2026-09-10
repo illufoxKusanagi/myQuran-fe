@@ -157,7 +157,8 @@ watch(
       if (previousFocus && typeof previousFocus.focus === 'function')
         previousFocus.focus();
     }
-  }
+  },
+  { immediate: true }
 );
 
 onBeforeUnmount(() => {

@@ -65,9 +65,13 @@ const filteredHadiths = computed(() => {
 })
 
 // Hadith Kitabs for current collection
-const bookKitabs = computed(() => {
+const allKitabs = computed(() => {
   const slug = props.bookSlug || 'bukhari'
-  const list = (kitabsJson as Record<string, { no: number; name: string; total: number; startNumber: number }[]>)[slug] || []
+  return (kitabsJson as Record<string, { no: number; name: string; total: number; startNumber: number }[]>)[slug] || []
+})
+
+const bookKitabs = computed(() => {
+  const list = allKitabs.value
   const q = searchQuery.value.trim().toLowerCase()
   if (!q) return list
   return list.filter((k) => k.name.toLowerCase().includes(q) || String(k.no).includes(q))
@@ -85,7 +89,8 @@ function handleHadithClick(hadithNumber: number) {
 
 function handleKitabSubmit() {
   const k = Number(targetKitabInput.value)
-  if (!isNaN(k) && k > 0) {
+  const max = allKitabs.value.length
+  if (!isNaN(k) && k > 0 && (max === 0 || k <= max)) {
     emit('changeKitab', k)
     close()
   }
@@ -112,9 +117,13 @@ function handleKitabSubmit() {
         aria-modal="true"
       >
         <!-- Sidebar Header -->
-        <div class="h-16 px-4 border-b border-border flex items-center justify-between gap-3 shrink-0 bg-card">
+        <div
+          class="h-16 px-4 border-b border-border flex items-center justify-between gap-3 shrink-0 bg-card"
+        >
           <div class="flex items-center gap-2.5 min-w-0">
-            <div class="w-8 h-8 rounded-lg bg-primary/10 text-primary flex items-center justify-center shrink-0">
+            <div
+              class="w-8 h-8 rounded-lg bg-primary/10 text-primary flex items-center justify-center shrink-0"
+            >
               <BookOpen v-if="mode === 'quran'" class="w-4 h-4" />
               <Layers v-else class="w-4 h-4" />
             </div>
@@ -125,24 +134,40 @@ function handleKitabSubmit() {
               <p class="text-xs text-muted-foreground truncate">{{ title }}</p>
             </div>
           </div>
-          <Button variant="ghost" size="icon" class="w-8 h-8 shrink-0 text-muted-foreground hover:text-foreground" @click="close" aria-label="Tutup Navigasi">
+          <Button
+            variant="ghost"
+            size="icon"
+            class="w-8 h-8 shrink-0 text-muted-foreground hover:text-foreground"
+            @click="close"
+            aria-label="Tutup Navigasi"
+          >
             <X class="w-4 h-4" />
           </Button>
         </div>
 
         <!-- Mode Subheader / Tabs for Hadith -->
         <div v-if="mode === 'hadith'" class="px-4 pt-3 shrink-0">
-          <div class="grid grid-cols-2 p-1 bg-muted/60 rounded-lg text-xs font-medium">
+          <div
+            class="grid grid-cols-2 p-1 bg-muted/60 rounded-lg text-xs font-medium"
+          >
             <button
               class="py-1.5 rounded-md transition-colors text-center"
-              :class="activeTab === 'items' ? 'bg-card text-foreground shadow-xs font-semibold' : 'text-muted-foreground hover:text-foreground'"
+              :class="
+                activeTab === 'items'
+                  ? 'bg-card text-foreground shadow-xs font-semibold'
+                  : 'text-muted-foreground hover:text-foreground'
+              "
               @click="activeTab = 'items'"
             >
               Hadits di Kitab Ini
             </button>
             <button
               class="py-1.5 rounded-md transition-colors text-center"
-              :class="activeTab === 'kitab' ? 'bg-card text-foreground shadow-xs font-semibold' : 'text-muted-foreground hover:text-foreground'"
+              :class="
+                activeTab === 'kitab'
+                  ? 'bg-card text-foreground shadow-xs font-semibold'
+                  : 'text-muted-foreground hover:text-foreground'
+              "
               @click="activeTab = 'kitab'"
             >
               Daftar Kitab (Bab)
@@ -153,7 +178,9 @@ function handleKitabSubmit() {
         <!-- Search Input Box (Always Visible) -->
         <div class="p-4 pb-2 shrink-0">
           <div class="relative">
-            <Search class="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none" />
+            <Search
+              class="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none"
+            />
             <input
               v-model="searchQuery"
               type="text"
@@ -190,15 +217,24 @@ function handleKitabSubmit() {
               {{ num }}
             </button>
           </div>
-          <div v-if="filteredAyahs.length === 0" class="py-8 text-center text-xs text-muted-foreground">
+          <div
+            v-if="filteredAyahs.length === 0"
+            class="py-8 text-center text-xs text-muted-foreground"
+          >
             Ayat tidak ditemukan
           </div>
         </div>
 
         <!-- Content Area: Hadith in Current Kitab -->
-        <div v-else-if="activeTab === 'items'" class="flex-1 overflow-y-auto px-4 py-2">
+        <div
+          v-else-if="activeTab === 'items'"
+          class="flex-1 overflow-y-auto px-4 py-2"
+        >
           <p class="text-[11px] font-medium text-muted-foreground mb-2.5">
-            Hadits pada Kitab {{ currentKitabNo }} ({{ hadiths?.length ?? 0 }} Hadits)
+            Hadits pada Kitab {{ currentKitabNo }} ({{
+              hadiths?.length ?? 0
+            }}
+            Hadits)
           </p>
           <div class="grid grid-cols-4 sm:grid-cols-5 gap-1.5 pb-6">
             <button
@@ -216,7 +252,10 @@ function handleKitabSubmit() {
               {{ h.number }}
             </button>
           </div>
-          <div v-if="filteredHadiths.length === 0" class="py-8 text-center text-xs text-muted-foreground">
+          <div
+            v-if="filteredHadiths.length === 0"
+            class="py-8 text-center text-xs text-muted-foreground"
+          >
             Hadits tidak ditemukan
           </div>
         </div>
@@ -224,8 +263,12 @@ function handleKitabSubmit() {
         <!-- Content Area: Hadith Kitab Switcher -->
         <div v-else class="flex-1 overflow-y-auto px-4 py-3 space-y-4">
           <!-- Manual Kitab Number Jump -->
-          <div class="p-3 bg-muted/30 border border-border rounded-lg space-y-2">
-            <p class="text-xs font-semibold text-foreground flex items-center gap-1.5">
+          <div
+            class="p-3 bg-muted/30 border border-border rounded-lg space-y-2"
+          >
+            <p
+              class="text-xs font-semibold text-foreground flex items-center gap-1.5"
+            >
               <Hash class="w-3.5 h-3.5 text-primary" />
               <span>Lompat ke Nomor Kitab</span>
             </p>
@@ -234,6 +277,7 @@ function handleKitabSubmit() {
                 v-model="targetKitabInput"
                 type="number"
                 min="1"
+                :max="allKitabs.length || undefined"
                 placeholder="No. Kitab..."
                 class="flex-1 h-9 px-3 text-xs bg-card border border-input rounded-md focus:outline-none focus:ring-1 focus:ring-primary text-foreground"
               />
@@ -246,7 +290,13 @@ function handleKitabSubmit() {
           <!-- All Kitabs in this Book -->
           <div>
             <p class="text-[11px] font-medium text-muted-foreground mb-2">
-              Daftar Kitab (Total {{ bookKitabs.length }} Kitab)
+              Daftar Kitab (Total {{ bookKitabs.length }} Kitab) Daftar Kitab
+              ({{
+                searchQuery.trim()
+                  ? `${bookKitabs.length} dari ${allKitabs.length}`
+                  : `Total ${allKitabs.length}`
+              }}
+              Kitab)
             </p>
             <div class="space-y-1 pb-6">
               <button
@@ -259,7 +309,7 @@ function handleKitabSubmit() {
                     ? 'bg-primary/10 text-primary font-semibold border-primary/30'
                     : 'text-foreground'
                 "
-                @click="emit('changeKitab', k.no), close()"
+                @click="(emit('changeKitab', k.no), close())"
               >
                 <div class="min-w-0 pr-2">
                   <span class="truncate block font-medium">{{ k.name }}</span>
@@ -267,7 +317,9 @@ function handleKitabSubmit() {
                     {{ k.total }} hadits · Mulai No. {{ k.startNumber }}
                   </span>
                 </div>
-                <span class="text-[10px] text-muted-foreground font-mono shrink-0 ml-2 bg-muted/60 px-2 py-1 rounded">
+                <span
+                  class="text-[10px] text-muted-foreground font-mono shrink-0 ml-2 bg-muted/60 px-2 py-1 rounded"
+                >
                   Kitab {{ k.no }}
                 </span>
               </button>
@@ -276,7 +328,9 @@ function handleKitabSubmit() {
         </div>
 
         <!-- Footer indicator -->
-        <div class="p-3 border-t border-border bg-muted/20 shrink-0 text-center text-[11px] text-muted-foreground">
+        <div
+          class="p-3 border-t border-border bg-muted/20 shrink-0 text-center text-[11px] text-muted-foreground"
+        >
           {{ subtitle || title }}
         </div>
       </aside>

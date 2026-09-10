@@ -1,55 +1,81 @@
-import { onBeforeUnmount, nextTick, watch, type Ref, type ComputedRef } from 'vue'
-import { PageFlip } from 'page-flip'
-import type { BookPage } from '../types'
+import {
+  onBeforeUnmount,
+  nextTick,
+  watch,
+  type Ref,
+  type ComputedRef,
+} from 'vue';
+import { PageFlip } from 'page-flip';
+import type { BookPage } from '../types';
 
 interface BookFlipOptions {
-  bookWrapRef: Ref<HTMLElement | null>
-  stageRef: Ref<HTMLElement | null>
-  bookPages: ComputedRef<BookPage[]>
-  isRtlBook: ComputedRef<boolean>
-  currentIndex: Ref<number>
-  isPortrait: Ref<boolean>
+  bookWrapRef: Ref<HTMLElement | null>;
+  stageRef: Ref<HTMLElement | null>;
+  bookPages: ComputedRef<BookPage[]>;
+  isRtlBook: ComputedRef<boolean>;
+  currentIndex: Ref<number>;
+  isPortrait: Ref<boolean>;
 }
 
 export function useBookFlip(options: BookFlipOptions) {
-  let bookInstance: any = null
-  let resizeTimeout: number | null = null
-  let resizeObserver: ResizeObserver | null = null
-  let lastW = 0
-  let lastH = 0
+  let bookInstance: any = null;
+  let resizeTimeout: number | null = null;
+  let resizeObserver: ResizeObserver | null = null;
+  let initRafId: number | null = null;
+  let initRetryCount = 0;
+  const MAX_INIT_RETRIES = 15;
+  let lastW = 0;
+  let lastH = 0;
 
   function detectLayout() {
-    options.isPortrait.value = window.innerWidth < 768
+    options.isPortrait.value = window.innerWidth < 768;
   }
 
   function getPageSize() {
-    const wrap = options.bookWrapRef.value!
-    const rect = wrap.getBoundingClientRect()
-    const w = Math.round(rect.width)
-    const h = Math.round(rect.height)
-    if (w < 80 || h < 80) return null
-    const pageW = options.isPortrait.value ? w : Math.round(w / 2)
-    return { w, h, pageW, pageH: h }
+    const wrap = options.bookWrapRef.value!;
+    const rect = wrap.getBoundingClientRect();
+    const w = Math.round(rect.width);
+    const h = Math.round(rect.height);
+    if (w < 80 || h < 80) return null;
+    const pageW = options.isPortrait.value ? w : Math.round(w / 2);
+    return { w, h, pageW, pageH: h };
   }
 
   function initPageFlip(preserveIndex = false) {
-    if (bookInstance) return
-    if (!options.bookWrapRef.value || !options.stageRef.value || options.bookPages.value.length === 0) return
-    const pages = Array.from(options.stageRef.value.querySelectorAll('.pf-page'))
-    if (pages.length === 0) return
-    const size = getPageSize()
+    if (bookInstance) return;
+    if (
+      !options.bookWrapRef.value ||
+      !options.stageRef.value ||
+      options.bookPages.value.length === 0
+    )
+      return;
+    const pages = Array.from(
+      options.stageRef.value.querySelectorAll('.pf-page')
+    );
+    if (pages.length === 0) return;
+    const size = getPageSize();
     if (!size) {
-      requestAnimationFrame(() => initPageFlip(preserveIndex))
-      return
+      requestAnimationFrame(() => initPageFlip(preserveIndex));
+      if (initRetryCount < MAX_INIT_RETRIES) {
+        initRetryCount++;
+        initRafId = requestAnimationFrame(() => initPageFlip(preserveIndex));
+      } else {
+        console.warn(
+          'PageFlip init aborted: container dimensions unavailable after maximum retries'
+        );
+      }
+      return;
     }
-    lastW = size.w
-    lastH = size.h
+    initRetryCount = 0;
+    initRafId = null;
+    lastW = size.w;
+    lastH = size.h;
 
     const startPage = preserveIndex
       ? Math.min(options.currentIndex.value, options.bookPages.value.length - 1)
       : options.isRtlBook.value
         ? Math.max(0, options.bookPages.value.length - 1)
-        : 0
+        : 0;
 
     bookInstance = new PageFlip(options.bookWrapRef.value, {
       width: size.pageW,
@@ -63,100 +89,111 @@ export function useBookFlip(options: BookFlipOptions) {
       startPage,
       usePortrait: options.isPortrait.value,
       autoSize: false,
-    })
+    });
 
-    bookInstance.loadFromHTML(pages)
-    options.currentIndex.value = startPage
+    bookInstance.loadFromHTML(pages);
+    options.currentIndex.value = startPage;
     bookInstance.on('flip', (e: any) => {
-      options.currentIndex.value = e.data
-    })
+      options.currentIndex.value = e.data;
+    });
   }
 
   function rebuild(preserveIndex = false) {
-    const idx = options.currentIndex.value
-    destroyBook()
+    const idx = options.currentIndex.value;
+    destroyBook();
     nextTick(() =>
       requestAnimationFrame(() => {
-        if (preserveIndex) options.currentIndex.value = idx
-        initPageFlip(preserveIndex)
+        if (preserveIndex) options.currentIndex.value = idx;
+        initPageFlip(preserveIndex);
       })
-    )
+    );
   }
 
   function scheduleReinit() {
-    if (resizeTimeout) clearTimeout(resizeTimeout)
+    if (resizeTimeout) clearTimeout(resizeTimeout);
     resizeTimeout = window.setTimeout(() => {
-      const wrap = options.bookWrapRef.value
-      if (!wrap) return
-      const rect = wrap.getBoundingClientRect()
-      const w = Math.round(rect.width)
-      const h = Math.round(rect.height)
-      const portraitNow = window.innerWidth < 768
-      const sizeChanged = Math.abs(w - lastW) > 2 || Math.abs(h - lastH) > 2
+      const wrap = options.bookWrapRef.value;
+      if (!wrap) return;
+      const rect = wrap.getBoundingClientRect();
+      const w = Math.round(rect.width);
+      const h = Math.round(rect.height);
+      const portraitNow = window.innerWidth < 768;
+      const sizeChanged = Math.abs(w - lastW) > 2 || Math.abs(h - lastH) > 2;
       if (portraitNow !== options.isPortrait.value || sizeChanged) {
-        options.isPortrait.value = portraitNow
-        destroyBook()
-        nextTick(() => requestAnimationFrame(() => initPageFlip()))
+        options.isPortrait.value = portraitNow;
+        destroyBook();
+        nextTick(() => requestAnimationFrame(() => initPageFlip()));
+        rebuild(true);
       }
-    }, 150)
+    }, 150);
   }
 
   function handleResize() {
-    scheduleReinit()
+    scheduleReinit();
   }
 
   function attachObserver() {
-    if (!options.bookWrapRef.value || typeof ResizeObserver === 'undefined') return
-    resizeObserver = new ResizeObserver(() => scheduleReinit())
-    resizeObserver.observe(options.bookWrapRef.value)
+    if (!options.bookWrapRef.value || typeof ResizeObserver === 'undefined')
+      return;
+    resizeObserver = new ResizeObserver(() => scheduleReinit());
+    resizeObserver.observe(options.bookWrapRef.value);
   }
 
   watch(
     () => options.bookWrapRef.value,
     (el) => {
-      if (el && !resizeObserver) attachObserver()
+      if (el && !resizeObserver) attachObserver();
     }
-  )
+  );
 
   watch(
     () => options.bookPages.value.length,
     (len, prev) => {
       if (len > 0 && prev === 0) {
-        nextTick(() => requestAnimationFrame(() => initPageFlip()))
+        nextTick(() => requestAnimationFrame(() => initPageFlip()));
       }
     }
-  )
+  );
 
   function flipNext() {
-    if (bookInstance) bookInstance.flipNext('top')
+    if (bookInstance) bookInstance.flipNext('top');
   }
 
   function flipPrev() {
-    if (bookInstance) bookInstance.flipPrev('top')
+    if (bookInstance) bookInstance.flipPrev('top');
   }
 
   function goToPage(pageIndex: number) {
-    if (bookInstance && pageIndex >= 0 && pageIndex < options.bookPages.value.length) {
-      bookInstance.flip(pageIndex)
+    if (
+      bookInstance &&
+      pageIndex >= 0 &&
+      pageIndex < options.bookPages.value.length
+    ) {
+      bookInstance.flip(pageIndex);
     }
   }
 
   function destroyBook() {
+    if (initRafId !== null) {
+      cancelAnimationFrame(initRafId);
+      initRafId = null;
+    }
+    initRetryCount = 0;
     if (bookInstance) {
-      bookInstance.destroy()
-      bookInstance = null
+      bookInstance.destroy();
+      bookInstance = null;
     }
   }
 
   onBeforeUnmount(() => {
-    if (resizeTimeout) clearTimeout(resizeTimeout)
+    if (resizeTimeout) clearTimeout(resizeTimeout);
     if (resizeObserver) {
-      resizeObserver.disconnect()
-      resizeObserver = null
+      resizeObserver.disconnect();
+      resizeObserver = null;
     }
-    window.removeEventListener('resize', handleResize)
-    destroyBook()
-  })
+    window.removeEventListener('resize', handleResize);
+    destroyBook();
+  });
 
   return {
     detectLayout,
@@ -168,5 +205,5 @@ export function useBookFlip(options: BookFlipOptions) {
     destroyBook,
     attachObserver,
     rebuild,
-  }
+  };
 }

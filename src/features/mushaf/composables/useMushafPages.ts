@@ -1,5 +1,5 @@
 // src/features/mushaf/composables/useMushafPages.ts
-import { computed, ref, type Ref } from 'vue';
+import { computed, ref, watch, type Ref } from 'vue';
 import type { MushafBookPage } from '../types';
 import {
   TOTAL_MUSHAF_PAGES,
@@ -14,6 +14,7 @@ export function useMushafPages(
   isPortrait: Ref<boolean>
 ) {
   const isRtlBook = ref(true);
+  const requestedTargetPage = ref<number | null>(null);
 
   // Generate 604 logical pages with front cover, blanks, and back cover
   const bookPages = computed<MushafBookPage[]>(() => {
@@ -67,7 +68,36 @@ export function useMushafPages(
   });
 
   // In RTL spread: right page is read first, then left page
+  watch(currentIndex, () => {
+    if (requestedTargetPage.value) {
+      const isVisible =
+        (rightPage.value?.type === 'mushaf-page' &&
+          rightPage.value.pageNumber === requestedTargetPage.value) ||
+        (leftPage.value?.type === 'mushaf-page' &&
+          leftPage.value.pageNumber === requestedTargetPage.value);
+      if (!isVisible) {
+        requestedTargetPage.value = null;
+      }
+    }
+  });
+
+  // In RTL spread: right page is read first, then left page, prioritizing explicit jump target if visible
   const activePageNumber = computed<number>(() => {
+    if (requestedTargetPage.value) {
+      if (
+        rightPage.value?.type === 'mushaf-page' &&
+        rightPage.value.pageNumber === requestedTargetPage.value
+      ) {
+        return requestedTargetPage.value;
+      }
+      if (
+        leftPage.value?.type === 'mushaf-page' &&
+        leftPage.value.pageNumber === requestedTargetPage.value
+      ) {
+        return requestedTargetPage.value;
+      }
+    }
+
     if (rightPage.value?.type === 'mushaf-page' && rightPage.value.pageNumber) {
       return rightPage.value.pageNumber;
     }
@@ -86,6 +116,7 @@ export function useMushafPages(
   // Find index in bookPages array for a given physical page number (1–604)
   function findPageIndexByPageNumber(pageNum: number): number {
     const p = Math.max(1, Math.min(TOTAL_MUSHAF_PAGES, pageNum));
+    requestedTargetPage.value = p;
     const idx = bookPages.value.findIndex(
       (item) => item.type === 'mushaf-page' && item.pageNumber === p
     );
@@ -98,12 +129,12 @@ export function useMushafPages(
     return idx;
   }
 
-  // Active preload window: load images within ±4 pages of current spread
+  // Active preload window: load images within ±8 pages of current spread for instantaneous flips
   const preloadedPages = computed<Set<number>>(() => {
     const set = new Set<number>();
     const current = activePageNumber.value;
-    const start = Math.max(1, current - 4);
-    const end = Math.min(TOTAL_MUSHAF_PAGES, current + 4);
+    const start = Math.max(1, current - 8);
+    const end = Math.min(TOTAL_MUSHAF_PAGES, current + 8);
 
     for (let i = start; i <= end; i++) {
       set.add(i);

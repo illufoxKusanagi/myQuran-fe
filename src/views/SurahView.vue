@@ -64,6 +64,7 @@ const {
   flipPrev,
   goToPage,
   attachObserver,
+  destroyBook,
 } = useBookFlip({
   bookWrapRef,
   stageRef,
@@ -377,6 +378,7 @@ onMounted(async () => {
 
 onBeforeUnmount(() => {
   window.removeEventListener('resize', handleResize);
+  destroyBook();
 });
 </script>
 

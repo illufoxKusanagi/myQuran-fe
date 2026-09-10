@@ -40,7 +40,7 @@ function onBackdrop(e: MouseEvent) {
   if (e.target === e.currentTarget) close();
 }
 
-function handleSubmit() {
+async function handleSubmit() {
   const q = query.value.trim();
   if (!q) return;
 
@@ -88,7 +88,7 @@ function handleSubmit() {
       return;
     }
     if (s === props.currentSurahId) {
-      const ok = props.jumpToAyah(a);
+      const ok = await props.jumpToAyah(a);
       if (!ok) {
         error.value = `Ayat ${a} tidak ditemukan`;
         return;
@@ -99,9 +99,9 @@ function handleSubmit() {
     close();
     router.push({
       name: 'surah',
-      params: { id: s },
+      params: { id: String(s) },
       query: { ayah: String(a) },
-    } as any);
+    });
     return;
   }
 

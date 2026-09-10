@@ -301,7 +301,10 @@ const filteredSurahs = computed(() => {
                   </span>
                 </div>
               </div>
-              <span class="font-arabic text-sm text-foreground/80 pl-2">
+              <span
+                dir="rtl"
+                class="font-arabic text-sm text-foreground/80 pl-2 text-right"
+              >
                 {{ s.arabic }}
               </span>
             </button>

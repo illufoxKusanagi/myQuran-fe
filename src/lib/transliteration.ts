@@ -53,9 +53,9 @@ const DIACRITIC_MAP: Record<string, string> = {
   ñ: 'n',
 };
 
-// Regex to strip Arabic prefixes: al-, an-, ar-, as-, at-, az-, ad-, adz-, ash-, asy-
-const PREFIX_REGEX =
-  /^(?:al|an|ar|as|at|az|ad|adz|ash|asy|al-|an-|ar-|as-|at-|az-|ad-|adz-|ash-|asy-)\s*/i;
+// Regex to strip Arabic prefixes: adz-, ash-, asy-, al-, an-, ar-, as-, at-, az-, ad-
+// 3-letter prefixes (adz, ash, asy) must precede 2-letter ones (ad, as) to prevent partial prefix stripping
+const PREFIX_REGEX = /^(?:adz|ash|asy|al|an|ar|as|at|az|ad)[\s-]+/i;
 
 /**
  * Normalizes an Arabic transliterated string into a plain lowercase ASCII string.

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, onMounted, onBeforeUnmount } from 'vue';
 import {
   ChevronLeft,
   ChevronRight,
@@ -27,6 +27,10 @@ const emit = defineEmits<{
 
 const isFullscreen = ref(false);
 
+function syncFullscreen() {
+  isFullscreen.value = !!document.fullscreenElement;
+}
+
 function handleFullscreen() {
   if (!document.fullscreenElement) {
     document.documentElement.requestFullscreen?.().catch(() => {});
@@ -37,6 +41,15 @@ function handleFullscreen() {
   }
   emit('toggleFullscreen');
 }
+
+onMounted(() => {
+  document.addEventListener('fullscreenchange', syncFullscreen);
+  syncFullscreen();
+});
+
+onBeforeUnmount(() => {
+  document.removeEventListener('fullscreenchange', syncFullscreen);
+});
 </script>
 
 <template>
