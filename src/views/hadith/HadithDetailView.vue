@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, watch } from 'vue';
+import { ref, onMounted, onBeforeUnmount, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import AppFooter from '@/components/AppFooter.vue';
 import HadithCard from '@/features/hadith/components/HadithCard.vue';
@@ -13,28 +13,51 @@ const book = ref<HadithBook | null>(null);
 const loading = ref(false);
 const error = ref<string | null>(null);
 
+let activeController: AbortController | null = null;
+let currentRequestId = 0;
+
 async function fetchOne() {
+  if (activeController) {
+    activeController.abort();
+  }
+  const controller = new AbortController();
+  activeController = controller;
+  const requestId = ++currentRequestId;
+
   loading.value = true;
   error.value = null;
   try {
     const slug = route.params.book as string;
     const num = route.params.number as string;
     const res = await fetch(
-      `${import.meta.env.VITE_API_URL}/hadith/${slug}/${num}`
+      `${import.meta.env.VITE_API_URL}/hadith/${slug}/${num}`,
+      { signal: controller.signal }
     );
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const data = await res.json();
-    hadith.value = data.hadith;
-    book.value = data.book;
+    if (requestId === currentRequestId) {
+      hadith.value = data.hadith;
+      book.value = data.book;
+    }
   } catch (e: any) {
+    if (e.name === 'AbortError' || requestId !== currentRequestId) return;
     error.value = e.message;
   } finally {
-    loading.value = false;
+    if (requestId === currentRequestId) {
+      loading.value = false;
+      activeController = null;
+    }
   }
 }
 
 onMounted(fetchOne);
 watch(() => [route.params.book, route.params.number], fetchOne);
+onBeforeUnmount(() => {
+  if (activeController) {
+    activeController.abort();
+    activeController = null;
+  }
+});
 </script>
 
 <template>

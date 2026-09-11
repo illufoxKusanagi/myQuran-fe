@@ -54,6 +54,18 @@ src/
 │   │   │   └── useHadithBookPages.ts    # RTL pagination & leaf generation for Hadith book
 │   │   ├── formatters.ts                # Bab/Kitab/Grade sanitizers & formatters
 │   │   └── types.ts                     # Hadith, HadithBook, HadithBookPage
+│   ├── mushaf/                          # 604-Page Authentic Kemenag Mushaf subsystem
+│   │   ├── components/
+│   │   │   ├── MushafHeader.vue         # Top sub-header bar with breadcrumbs & search trigger
+│   │   │   ├── MushafCoverFront.vue     # Authentic Indonesian Ministry of Religious Affairs front cover
+│   │   │   ├── MushafCoverBack.vue      # Authentic back cover with restart trigger
+│   │   │   ├── MushafPageItem.vue       # Pure white scanned page plate with fallback CDN
+│   │   │   ├── MushafControls.vue       # Floating bottom pill toolbar (spread nav, jump, digital switch)
+│   │   │   └── MushafJumpDialog.vue     # 3-tab modal jump dialog (Halaman 1–604, Juz 1–30, Surah 1–114)
+│   │   ├── composables/
+│   │   │   └── useMushafPages.ts        # 604-page RTL spread mapping (Spread 1: P1 right/P2 left) & preloader
+│   │   ├── mushafData.ts                # 30 Juz & 114 Surahs lookup tables and CDN URL resolvers
+│   │   └── types.ts                     # MushafBookPage, MushafPageMeta, SurahPageRef
 │   └── home/                            # Home directory & search subsystem
 │       ├── components/
 │       │   ├── LastReadHero.vue         # Lanjutkan Membaca hero card
@@ -114,3 +126,14 @@ src/
   - Fix: Footnote Kemenag (`footnote` field) with dark/amoled contrast fix; footnote hidden with translation.
   - Fix: Long ayah scroll via `.pf-scroll` (`flex:1; overflow-y:auto; touch-action:pan-y`) + `attachScrollGuards()` capture `stopPropagation` for wheel/touch/pointer to prevent PageFlip hijack. No truncation (`-webkit-line-clamp` removed).
   - Verified `bun run build` clean (2647 modules).
+- **2026-09-10 (Phase 5 — Authentic 604-Page Kemenag Mushaf Subsystem)**:
+  - Created `src/features/mushaf/` with high-resolution Kemenag scanned plates (`https://media.qurankemenag.net/khat2/QK_{001..604}.webp`), lookup tables (`mushafData.ts`), and sliding window preloader (`useMushafPages.ts`).
+  - Architecture Decomposition per `anti-superficial-engineering`: Decomposed `MushafView.vue` into focused presentation components:
+    - `MushafHeader.vue`: Route navigation, active surah/juz breadcrumbs, and search trigger.
+    - `MushafCoverFront.vue`: Authentic Indonesian Ministry of Religious Affairs hardcover styling.
+    - `MushafCoverBack.vue`: Authentic back cover plate with restart trigger.
+    - `MushafPageItem.vue`: Statically white paper (`#ffffff !important`), clean margins (`p-4 sm:p-6 md:p-8`), and shimmer placeholder.
+    - `MushafControls.vue`: Floating pill toolbar with spread navigation, modal jump trigger, and digital mode toggle.
+    - `MushafJumpDialog.vue`: 3-tab quick jump modal (Halaman 1–604, Juz 1–30, and Surah 1–114 with transliteration search).
+  - Fixed Canonical Spread Mathematics: Removed artificial blank pages so all 604 pages map directly to 302 canonical spreads (Odd pages on the right, even pages on the left; Spread 1: Al-Fatihah Right / Al-Baqarah Left).
+  - Verified build clean with `bun run build` (2694 modules transformed, 0 errors).

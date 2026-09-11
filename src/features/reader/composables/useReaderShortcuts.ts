@@ -16,6 +16,7 @@ export function useReaderShortcuts(handlers: ShortcutHandlers) {
     if (
       target.tagName === 'INPUT' ||
       target.tagName === 'TEXTAREA' ||
+      target.tagName === 'SELECT' ||
       target.isContentEditable
     )
       return;
@@ -42,11 +43,17 @@ export function useReaderShortcuts(handlers: ShortcutHandlers) {
         break;
       case 't':
       case 'T':
-        handlers.onToggleTafsir?.();
+        if (!e.ctrlKey && !e.metaKey && !e.altKey) {
+          e.preventDefault();
+          handlers.onToggleTafsir?.();
+        }
         break;
       case 's':
       case 'S':
-        handlers.onToggleSettings?.();
+        if (!e.ctrlKey && !e.metaKey && !e.altKey) {
+          e.preventDefault();
+          handlers.onToggleSettings?.();
+        }
         break;
       case 'Escape':
         handlers.onClose?.();

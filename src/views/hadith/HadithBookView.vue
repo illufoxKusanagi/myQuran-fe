@@ -250,6 +250,7 @@ onMounted(() => {
 
 onBeforeUnmount(() => {
   window.removeEventListener('resize', handleResize);
+  destroyBook();
 });
 
 function openDetail(hadithNumber: number) {

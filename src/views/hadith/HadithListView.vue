@@ -9,8 +9,12 @@ import { BookOpen } from 'lucide-vue-next';
 
 const route = useRoute();
 const router = useRouter();
-const slug = route.params.book as string;
-const page = ref(Number(route.query.page ?? 1));
+function parsePageQuery(q: unknown): number {
+  const n = parseInt(String(q), 10);
+  return Number.isFinite(n) && n > 0 ? n : 1;
+}
+
+const page = ref(parsePageQuery(route.query.page));
 
 const { hadiths, pagination, book, loading, error, fetchList } =
   useHadithList(slug);
@@ -21,6 +25,15 @@ function load() {
 
 onMounted(load);
 watch(page, load);
+watch(
+  () => route.query.page,
+  (newPage) => {
+    const p = parsePageQuery(newPage);
+    if (page.value !== p) {
+      page.value = p;
+    }
+  }
+);
 watch(
   () => route.params.book,
   () => location.reload()
@@ -89,9 +102,22 @@ function openBookMode() {
       >
         <div>
           <h1 class="text-xl font-bold">{{ book?.name ?? slug }}</h1>
-          <p class="text-sm text-muted-foreground">
-            {{ book?.arabicName }} ·
-            {{ pagination?.total.toLocaleString() }} hadith
+          <p
+            class="text-sm text-muted-foreground flex items-center gap-1.5 flex-wrap"
+          >
+            <span
+              v-if="book?.arabicName"
+              class="font-arabic text-base text-foreground/80"
+              dir="rtl"
+              >{{ book.arabicName }}</span
+            >
+            <span v-if="book?.arabicName">·</span>
+            <span
+              >{{
+                (pagination?.total ?? 0).toLocaleString('id-ID')
+              }}
+              hadith</span
+            >
           </p>
         </div>
         <Button

@@ -104,10 +104,16 @@ const matchedSurahs = computed(() => {
 async function executeAyahSearch(page = 1, append = false) {
   const q = query.value.trim();
   if (!q) {
+    if (activeAbortController) {
+      activeAbortController.abort();
+      activeAbortController = null;
+    }
     ayahResults.value = [];
     totalAyahs.value = 0;
     hasNextPage.value = false;
     loading.value = false;
+    loadingMore.value = false;
+    searchError.value = null;
     return;
   }
 
