@@ -337,8 +337,11 @@ export const SURAHS_PAGES: SurahPageRef[] = [
  * Returns the direct URL for a page image from backend proxy
  */
 export function getPageImageUrl(page: number): string {
-  const base = import.meta.env.VITE_API_URL || 'http://localhost:3000';
-  return `${base}/page/${page}/image`;
+  const base = import.meta.env.VITE_API_URL;
+  if (base) {
+    return `${base}/page/${page}/image`;
+  }
+  return getCdnFallbackUrl(page);
 }
 
 /**

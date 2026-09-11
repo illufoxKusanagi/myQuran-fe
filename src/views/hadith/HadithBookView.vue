@@ -82,6 +82,10 @@ const {
   isRtlBook,
   currentIndex,
   isPortrait,
+  onFlipInit: () => {
+    syncBookTheme();
+    attachScrollGuards();
+  },
 });
 
 const isNavOpen = ref(false);

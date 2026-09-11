@@ -76,6 +76,11 @@ const {
   isRtlBook,
   currentIndex,
   isPortrait,
+  onFlipInit: () => {
+    syncBookTheme();
+    attachScrollGuards();
+    syncActiveAyah();
+  },
 });
 
 const {
@@ -294,14 +299,19 @@ watch(
   }
 );
 
-watch(activeAyahNumber, (num) => {
+function syncActiveAyah() {
   if (!bookWrapRef.value) return;
+  const num = activeAyahNumber.value;
   const pages = bookWrapRef.value.querySelectorAll('.pf-page');
   pages.forEach((el) => {
     const badge = el.querySelector('.pf-badge');
     const n = badge ? Number(badge.textContent) : null;
     el.classList.toggle('is-active-ayah', n !== null && n === num);
   });
+}
+
+watch(activeAyahNumber, () => {
+  syncActiveAyah();
 });
 
 watch([leftAyah, rightAyah, currentIndex], () => {

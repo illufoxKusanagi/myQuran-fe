@@ -51,6 +51,47 @@ const {
   isPagePreloaded,
 } = useMushafPages(currentIndex, isPortrait);
 
+function syncMushafImages() {
+  const wrap = bookWrapRef.value;
+  if (!wrap) return;
+  const imgs = wrap.querySelectorAll<HTMLImageElement>('.mushaf-page-img');
+  imgs.forEach((img) => {
+    const parent = img.parentElement;
+    if (!parent) return;
+    const spinner = parent.querySelector<HTMLElement>('.mushaf-spinner');
+    const errorEl = parent.querySelector<HTMLElement>('.mushaf-error');
+
+    function showImage() {
+      img.classList.remove('opacity-0');
+      img.classList.add('opacity-100');
+      if (spinner) spinner.style.display = 'none';
+      if (errorEl) errorEl.classList.add('hidden');
+    }
+
+    function showError() {
+      const fallback = img.dataset.fallback;
+      if (fallback && !img.dataset.fallbackTried) {
+        img.dataset.fallbackTried = '1';
+        img.src = fallback;
+      } else {
+        if (spinner) spinner.style.display = 'none';
+        if (errorEl) errorEl.classList.remove('hidden');
+      }
+    }
+
+    if (img.complete) {
+      if (img.naturalWidth > 0) {
+        showImage();
+      } else {
+        showError();
+      }
+    } else {
+      img.addEventListener('load', showImage, { once: true });
+      img.addEventListener('error', showError, { once: true });
+    }
+  });
+}
+
 const {
   detectLayout,
   initPageFlip,
@@ -66,6 +107,15 @@ const {
   isRtlBook: computed(() => isRtlBook.value),
   currentIndex,
   isPortrait,
+  onFlipInit: () => {
+    syncMushafImages();
+  },
+});
+
+watch(currentIndex, () => {
+  nextTick(() => {
+    syncMushafImages();
+  });
 });
 
 function jumpToPageNumber(pageNum: number) {
@@ -102,13 +152,7 @@ function handleKeydown(e: KeyboardEvent) {
   } else if (e.key === 'ArrowLeft') {
     e.preventDefault();
     handlePrevSpread();
-  } else if (e.key.toLowerCase() === 'j') {
-  } else if (
-    e.key.toLowerCase() === 'j' &&
-    !e.ctrlKey &&
-    !e.metaKey &&
-    !e.altKey
-  ) {
+  } else if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
     e.preventDefault();
     isJumpOpen.value = true;
   }
@@ -195,10 +239,6 @@ onBeforeUnmount(() => {
         >
           <Search class="w-3 h-3" />
           <span class="hidden sm:inline">Pindah Hal.</span>
-          <kbd
-            class="hidden md:inline-block px-1 text-[0.5625rem] font-mono rounded bg-muted"
-            >J</kbd
-          >
         </Button>
       </div>
     </header>
