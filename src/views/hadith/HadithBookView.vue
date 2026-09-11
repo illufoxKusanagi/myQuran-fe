@@ -265,7 +265,9 @@ function getGradeClass(grade?: string) {
   const g = grade.toLowerCase();
   if (g.includes('shahih') || g.includes('sahih')) return 'grade-sahih';
   if (g.includes('hasan')) return 'grade-hasan';
-  return 'grade-daif';
+  if (g.includes('daif') || g.includes('dhaif') || g.includes("dha'if"))
+    return 'grade-daif';
+  return '';
 }
 
 watch(

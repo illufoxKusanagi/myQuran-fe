@@ -52,9 +52,9 @@ async function handleSubmit() {
     close();
     router.push({
       name: 'surah',
-      params: { id: popular.surahId },
+      params: { id: String(popular.surahId) },
       query: { ayah: String(popular.ayahNumber) },
-    } as any);
+    });
     return;
   }
 
@@ -73,9 +73,9 @@ async function handleSubmit() {
     close();
     router.push({
       name: 'surah',
-      params: { id: start.surahId },
+      params: { id: String(start.surahId) },
       query: { ayah: String(start.ayahNumber), juz: String(juz) },
-    } as any);
+    });
     return;
   }
 
