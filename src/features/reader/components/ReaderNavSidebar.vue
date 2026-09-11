@@ -1,98 +1,111 @@
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue'
-import { X, Search, BookOpen, Layers, Hash } from 'lucide-vue-next'
-import { Button } from '@/components/ui/button'
-import kitabsJson from '@/features/hadith/data/kitabs.json'
+import { ref, computed, watch } from 'vue';
+import { X, Search, BookOpen, Layers, Hash } from 'lucide-vue-next';
+import { Button } from '@/components/ui/button';
+import kitabsJson from '@/features/hadith/data/kitabs.json';
 
 const props = defineProps<{
-  open: boolean
-  mode: 'quran' | 'hadith'
-  title: string
-  subtitle?: string
-  totalAyahs?: number
-  activeAyah?: number
-  hadiths?: { number: number; grade?: string; babName?: string }[]
-  activeHadith?: number
-  currentKitabNo?: number
-  bookSlug?: string
-}>()
+  open: boolean;
+  mode: 'quran' | 'hadith';
+  title: string;
+  subtitle?: string;
+  totalAyahs?: number;
+  activeAyah?: number;
+  hadiths?: { number: number; grade?: string; babName?: string }[];
+  activeHadith?: number;
+  currentKitabNo?: number;
+  bookSlug?: string;
+}>();
 
 const emit = defineEmits<{
-  'update:open': [v: boolean]
-  'selectAyah': [ayahNumber: number]
-  'selectHadith': [hadithNumber: number]
-  'changeKitab': [kitabNo: number]
-}>()
+  'update:open': [v: boolean];
+  selectAyah: [ayahNumber: number];
+  selectHadith: [hadithNumber: number];
+  changeKitab: [kitabNo: number];
+}>();
 
-const searchQuery = ref('')
-const activeTab = ref<'items' | 'kitab'>('items')
-const targetKitabInput = ref('')
+const searchQuery = ref('');
+const activeTab = ref<'items' | 'kitab'>('items');
+const targetKitabInput = ref('');
 
 watch(
   () => props.open,
   (isOpen) => {
     if (isOpen) {
-      searchQuery.value = ''
-      activeTab.value = 'items'
-      targetKitabInput.value = String(props.currentKitabNo ?? 1)
+      searchQuery.value = '';
+      activeTab.value = 'items';
+      targetKitabInput.value = String(props.currentKitabNo ?? 1);
     }
   }
-)
+);
 
 watch(activeTab, () => {
-  searchQuery.value = ''
-})
+  searchQuery.value = '';
+});
 
 function close() {
-  emit('update:open', false)
+  emit('update:open', false);
 }
 
 // Quran Ayah List filtered
 const filteredAyahs = computed(() => {
-  const count = props.totalAyahs ?? 0
-  const q = searchQuery.value.trim()
-  const list = Array.from({ length: count }, (_, i) => i + 1)
-  if (!q) return list
-  return list.filter((n) => String(n).includes(q))
-})
+  const count = props.totalAyahs ?? 0;
+  const q = searchQuery.value.trim();
+  const list = Array.from({ length: count }, (_, i) => i + 1);
+  if (!q) return list;
+  return list.filter((n) => String(n).includes(q));
+});
 
 // Hadith List filtered
 const filteredHadiths = computed(() => {
-  const list = props.hadiths ?? []
-  const q = searchQuery.value.trim().toLowerCase()
-  if (!q) return list
-  return list.filter((h) => String(h.number).includes(q) || (h.babName && h.babName.toLowerCase().includes(q)))
-})
+  const list = props.hadiths ?? [];
+  const q = searchQuery.value.trim().toLowerCase();
+  if (!q) return list;
+  return list.filter(
+    (h) =>
+      String(h.number).includes(q) ||
+      (h.babName && h.babName.toLowerCase().includes(q))
+  );
+});
 
 // Hadith Kitabs for current collection
 const allKitabs = computed(() => {
-  const slug = props.bookSlug || 'bukhari'
-  return (kitabsJson as Record<string, { no: number; name: string; total: number; startNumber: number }[]>)[slug] || []
-})
+  const slug = props.bookSlug || 'bukhari';
+  return (
+    (
+      kitabsJson as Record<
+        string,
+        { no: number; name: string; total: number; startNumber: number }[]
+      >
+    )[slug] || []
+  );
+});
 
 const bookKitabs = computed(() => {
-  const list = allKitabs.value
-  const q = searchQuery.value.trim().toLowerCase()
-  if (!q) return list
-  return list.filter((k) => k.name.toLowerCase().includes(q) || String(k.no).includes(q))
-})
+  const list = allKitabs.value;
+  const q = searchQuery.value.trim().toLowerCase();
+  if (!q) return list;
+  return list.filter(
+    (k) => k.name.toLowerCase().includes(q) || String(k.no).includes(q)
+  );
+});
 
 function handleAyahClick(ayahNumber: number) {
-  emit('selectAyah', ayahNumber)
-  close()
+  emit('selectAyah', ayahNumber);
+  close();
 }
 
 function handleHadithClick(hadithNumber: number) {
-  emit('selectHadith', hadithNumber)
-  close()
+  emit('selectHadith', hadithNumber);
+  close();
 }
 
 function handleKitabSubmit() {
-  const k = Number(targetKitabInput.value)
-  const max = allKitabs.value.length
+  const k = Number(targetKitabInput.value);
+  const max = allKitabs.value.length;
   if (!isNaN(k) && k > 0 && (max === 0 || k <= max)) {
-    emit('changeKitab', k)
-    close()
+    emit('changeKitab', k);
+    close();
   }
 }
 </script>
@@ -231,9 +244,7 @@ function handleKitabSubmit() {
           class="flex-1 overflow-y-auto px-4 py-2"
         >
           <p class="text-[11px] font-medium text-muted-foreground mb-2.5">
-            Hadits pada Kitab {{ currentKitabNo }} ({{
-              hadiths?.length ?? 0
-            }}
+            Hadits pada Kitab {{ currentKitabNo }} ({{ hadiths?.length ?? 0 }}
             Hadits)
           </p>
           <div class="grid grid-cols-4 sm:grid-cols-5 gap-1.5 pb-6">
@@ -290,8 +301,7 @@ function handleKitabSubmit() {
           <!-- All Kitabs in this Book -->
           <div>
             <p class="text-[11px] font-medium text-muted-foreground mb-2">
-              Daftar Kitab (Total {{ bookKitabs.length }} Kitab) Daftar Kitab
-              ({{
+              Daftar Kitab ({{
                 searchQuery.trim()
                   ? `${bookKitabs.length} dari ${allKitabs.length}`
                   : `Total ${allKitabs.length}`

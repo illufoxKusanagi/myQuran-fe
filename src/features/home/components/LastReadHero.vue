@@ -8,7 +8,6 @@ const { lastRead, timeAgo } = useLastRead();
 
 function continueReading() {
   if (!lastRead.value) return;
-  router.push({ name: 'surah', params: { id: lastRead.value.surahId } });
   router.push({
     name: 'surah',
     params: { id: lastRead.value.surahId },
@@ -37,9 +36,6 @@ function continueReading() {
         <p class="font-semibold text-foreground truncate">
           {{ lastRead.surahName }}
         </p>
-        <span class="font-arabic text-lg text-foreground shrink-0" dir="rtl">{{
-          lastRead.surahArabic
-        }}</span>
         <span
           class="font-arabic text-lg text-foreground shrink-0 text-right"
           dir="rtl"

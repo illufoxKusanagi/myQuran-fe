@@ -9,6 +9,8 @@ import { BookOpen } from 'lucide-vue-next';
 
 const route = useRoute();
 const router = useRouter();
+const slug = route.params.book as string;
+
 function parsePageQuery(q: unknown): number {
   const n = parseInt(String(q), 10);
   return Number.isFinite(n) && n > 0 ? n : 1;
@@ -107,7 +109,7 @@ function openBookMode() {
           >
             <span
               v-if="book?.arabicName"
-              class="font-arabic text-base text-foreground/80"
+              class="font-arabic text-base text-foreground/80 text-right"
               dir="rtl"
               >{{ book.arabicName }}</span
             >

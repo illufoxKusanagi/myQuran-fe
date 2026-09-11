@@ -269,3 +269,17 @@ docker run -p 5173:5173 -e VITE_API_URL=http://localhost:3000 myquran-frontend
 2. **Preserve `page-flip` Staging**: Do not delete or inline `.pf-page` template loops without syncing `initPageFlip()` lifecycle.
 3. **Avoid Unnecessary Dependencies**: Keep the bundle lean. Use Vue 3 standard reactivity and existing `@vueuse/core` or Lucide icons.
 4. **Preserve Sentry & Environment Handlers**: Ensure `VITE_API_URL` fallbacks and Sentry initialization in `src/main.ts` remain functional.
+
+---
+
+## 🚫 8. Strict Data & Tool Boundaries (Anti-Over-Engineering)
+
+1. **Zero External API / Data Calls**: 
+   - NEVER call, fetch, curl, or attempt to query third-party APIs (e.g. `api.quran.com`, GitHub raw, unpkg, etc.). 
+   - The ONLY allowed data source is the user's local backend via `VITE_API_URL` and the official Kemenag assets already configured in the repo.
+2. **No Web Search Rabbit Holes**: 
+   - Do NOT run repeated `search_web` or `read_url_content` loops to look for external datasets, algorithms, or boilerplate code. 
+   - If a problem requires domain data not present in the workspace, **STOP immediately and ask the user** instead of guessing or hunting across the internet.
+3. **Local-First Problem Solving**:
+   - Solve code and algorithmic issues using the files, constants, and TypeScript types already in the repository.
+

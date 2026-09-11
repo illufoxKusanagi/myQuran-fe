@@ -51,7 +51,7 @@ async function fetchOne() {
 }
 
 onMounted(fetchOne);
-watch(() => [route.params.book, route.params.number], fetchOne);
+watch([() => route.params.book, () => route.params.number], fetchOne);
 onBeforeUnmount(() => {
   if (activeController) {
     activeController.abort();

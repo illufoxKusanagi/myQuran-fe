@@ -15,8 +15,7 @@ function readStorage(): LastRead | null {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) return null;
-    const parsed = JSON.parse(raw) as LastRead;
-    if (!parsed.surahId || !parsed.surahName) return null;
+    const parsed = JSON.parse(raw);
     if (!parsed || typeof parsed !== 'object') return null;
     if (
       !Number.isInteger(parsed.surahId) ||
@@ -28,7 +27,7 @@ function readStorage(): LastRead | null {
     ) {
       return null;
     }
-    return parsed;
+    return parsed as LastRead;
   } catch {
     return null;
   }

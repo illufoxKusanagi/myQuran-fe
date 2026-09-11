@@ -20,7 +20,10 @@ import { Button } from '@/components/ui/button';
 import { useHadithList } from '@/features/hadith/composables/useHadith';
 import { useHadithBookPages } from '@/features/hadith/composables/useHadithBookPages';
 import { useBookFlip } from '@/features/reader/composables/useBookFlip';
-import { useReadingSettings } from '@/features/reader/composables/useReadingSettings';
+import {
+  useReadingSettings,
+  ALL_PAPER_THEMES,
+} from '@/features/reader/composables/useReadingSettings';
 import ReadingSettingsDialog from '@/features/reader/components/ReadingSettingsDialog.vue';
 import ReaderNavSidebar from '@/features/reader/components/ReaderNavSidebar.vue';
 import '@/features/reader/reader.css';
@@ -79,6 +82,10 @@ const {
   isRtlBook,
   currentIndex,
   isPortrait,
+  onFlipInit: () => {
+    syncBookTheme();
+    attachScrollGuards();
+  },
 });
 
 const isNavOpen = ref(false);
@@ -195,6 +202,7 @@ function syncBookTheme() {
     'paper-sepia',
     'paper-dark',
     'paper-amoled',
+    ...ALL_PAPER_THEMES,
     'hide-arabic',
     'hide-latin',
     'hide-translation'
@@ -265,7 +273,9 @@ function getGradeClass(grade?: string) {
   const g = grade.toLowerCase();
   if (g.includes('shahih') || g.includes('sahih')) return 'grade-sahih';
   if (g.includes('hasan')) return 'grade-hasan';
-  return 'grade-daif';
+  if (g.includes('daif') || g.includes('dhaif') || g.includes("dha'if"))
+    return 'grade-daif';
+  return '';
 }
 
 watch(

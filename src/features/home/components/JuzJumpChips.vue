@@ -12,11 +12,6 @@ function onChange() {
   if (!juz) return;
   const s = JUZ_STARTS.find((j) => j.juz === juz);
   if (!s) return;
-  router.push({
-    name: 'surah',
-    params: { id: s.surahId },
-    query: { ayah: String(s.ayahNumber), juz: String(juz) },
-  } as any);
   selected.value = '';
   router.push({
     name: 'surah',

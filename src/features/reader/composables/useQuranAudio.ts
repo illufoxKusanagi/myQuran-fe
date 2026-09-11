@@ -89,6 +89,7 @@ export function useQuranAudio(options: AudioOptions) {
   function playSingleAyah(pageIndex: number): boolean {
     const ayah = options.getAyahByPageIndex(pageIndex);
     if (!ayah) return false;
+    clearPendingTimeout();
     if (!audioEl) audioEl = new Audio();
     audioEl.onended = () => {
       isPlaying.value = false;

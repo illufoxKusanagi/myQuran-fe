@@ -1,57 +1,11 @@
 <script setup lang="ts">
-import { ref, watch, nextTick } from 'vue';
 import { Loader2, ImageOff } from 'lucide-vue-next';
 import type { MushafBookPage } from '../types';
 
-const props = defineProps<{
+defineProps<{
   page: MushafBookPage;
-  preloaded: boolean;
+  preloaded?: boolean;
 }>();
-
-const imageLoaded = ref(false);
-const imageError = ref(false);
-const currentSrc = ref('');
-const retryCount = ref(0);
-
-// Initialize or update image source when preloaded status changes
-watch(
-  () => props.preloaded,
-  (isPreloaded) => {
-    if (isPreloaded && !currentSrc.value && props.page.imageUrl) {
-      currentSrc.value = props.page.imageUrl;
-    }
-  },
-  { immediate: true }
-);
-
-function handleImageLoad() {
-  imageLoaded.value = true;
-  imageError.value = false;
-}
-
-function handleImageError() {
-  // If backend proxy failed and we haven't tried the direct CDN yet, fallback to Kemenag CDN
-  if (retryCount.value === 0 && props.page.cdnFallbackUrl) {
-    retryCount.value++;
-    currentSrc.value = props.page.cdnFallbackUrl;
-    return;
-  }
-  imageError.value = true;
-  imageLoaded.value = false;
-}
-
-function handleRetry() {
-  imageError.value = false;
-  imageLoaded.value = false;
-  retryCount.value = 0;
-  const baseSrc = props.page.imageUrl || props.page.cdnFallbackUrl || '';
-  currentSrc.value = '';
-  nextTick(() => {
-    currentSrc.value = baseSrc
-      ? `${baseSrc}${baseSrc.includes('?') ? '&' : '?'}retry=${Date.now()}`
-      : '';
-  });
-}
 </script>
 
 <template>
@@ -60,8 +14,7 @@ function handleRetry() {
   >
     <!-- Shimmer Placeholder while loading -->
     <div
-      v-if="!imageLoaded && !imageError && preloaded"
-      class="absolute inset-4 sm:inset-6 md:inset-8 flex flex-col items-center justify-center bg-neutral-100 animate-pulse rounded-xl"
+      class="mushaf-spinner absolute inset-4 sm:inset-6 md:inset-8 flex flex-col items-center justify-center bg-neutral-100 animate-pulse rounded-xl pointer-events-none"
     >
       <Loader2 class="w-8 h-8 text-neutral-400 animate-spin mb-2" />
       <span class="text-xs text-neutral-500 font-medium"
@@ -71,21 +24,34 @@ function handleRetry() {
 
     <!-- Scanned Mushaf Image (Fills page authentically) -->
     <img
-      v-if="currentSrc"
-      :src="currentSrc"
+      :src="page.imageUrl"
+      :data-fallback="page.cdnFallbackUrl"
       :alt="`Mushaf Halaman ${page.pageNumber}`"
-      class="w-full h-full object-contain transition-opacity duration-300 pointer-events-none"
-      :class="{ 'opacity-0': !imageLoaded, 'opacity-100': imageLoaded }"
-      @load="handleImageLoad"
-      @error="handleImageError"
+      class="mushaf-page-img w-full h-full object-contain transition-opacity duration-300 pointer-events-none opacity-0"
       loading="lazy"
       draggable="false"
+      onload="
+        this.classList.remove('opacity-0');
+        this.classList.add('opacity-100');
+        const s = this.parentElement.querySelector('.mushaf-spinner');
+        if (s) s.style.display = 'none';
+      "
+      onerror="
+        if (!this.dataset.fallbackTried && this.dataset.fallback) {
+          this.dataset.fallbackTried = '1';
+          this.src = this.dataset.fallback;
+        } else {
+          const e = this.parentElement.querySelector('.mushaf-error');
+          if (e) e.classList.remove('hidden');
+          const s = this.parentElement.querySelector('.mushaf-spinner');
+          if (s) s.style.display = 'none';
+        }
+      "
     />
 
     <!-- Error State -->
     <div
-      v-if="imageError"
-      class="flex flex-col items-center justify-center p-4 text-center space-y-2 bg-neutral-50 rounded-xl border border-neutral-200 m-4"
+      class="mushaf-error hidden flex flex-col items-center justify-center p-4 text-center space-y-2 bg-neutral-50 rounded-xl border border-neutral-200 m-4"
     >
       <ImageOff class="w-8 h-8 text-neutral-400" />
       <p class="text-xs text-neutral-600">
@@ -94,7 +60,20 @@ function handleRetry() {
       <button
         type="button"
         class="text-[0.6875rem] text-emerald-700 underline cursor-pointer hover:text-emerald-900 font-medium"
-        @click="handleRetry"
+        onclick="
+          const p = this.closest('.mushaf-page-container');
+          const img = p?.querySelector('.mushaf-page-img');
+          const s = p?.querySelector('.mushaf-spinner');
+          const e = p?.querySelector('.mushaf-error');
+          if (img) {
+            img.dataset.fallbackTried = '';
+            const src = img.dataset.fallback || img.src;
+            img.src =
+              src + (src.includes('?') ? '&' : '?') + 'retry=' + Date.now();
+          }
+          if (s) s.style.display = 'flex';
+          if (e) e.classList.add('hidden');
+        "
       >
         Coba Lagi
       </button>

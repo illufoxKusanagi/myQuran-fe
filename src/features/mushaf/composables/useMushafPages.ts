@@ -129,22 +129,24 @@ export function useMushafPages(
     return idx;
   }
 
-  // Active preload window: load images within ±8 pages of current spread for instantaneous flips
-  const preloadedPages = computed<Set<number>>(() => {
-    const set = new Set<number>();
-    const current = activePageNumber.value;
-    const start = Math.max(1, current - 8);
-    const end = Math.min(TOTAL_MUSHAF_PAGES, current + 8);
+  // Active preload window: preload adjacent pages into browser cache for instantaneous flips
+  watch(
+    activePageNumber,
+    (pageNum) => {
+      if (!pageNum || typeof Image === 'undefined') return;
+      const start = Math.max(1, pageNum - 6);
+      const end = Math.min(TOTAL_MUSHAF_PAGES, pageNum + 6);
+      for (let i = start; i <= end; i++) {
+        const url = getPageImageUrl(i);
+        const img = new Image();
+        img.src = url;
+      }
+    },
+    { immediate: true }
+  );
 
-    for (let i = start; i <= end; i++) {
-      set.add(i);
-    }
-    return set;
-  });
-
-  function isPagePreloaded(pageNum?: number): boolean {
-    if (!pageNum) return false;
-    return preloadedPages.value.has(pageNum);
+  function isPagePreloaded(_pageNum?: number): boolean {
+    return true;
   }
 
   return {

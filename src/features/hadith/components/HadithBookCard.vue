@@ -15,9 +15,6 @@ defineEmits<{ open: [slug: string] }>();
     </p>
     <p class="font-semibold text-foreground leading-tight">{{ book.name }}</p>
     <p class="text-xs text-muted-foreground">
-      {{ book.author }} · {{ book.availableHadiths.toLocaleString() }} hadith
-    </p>
-    <p class="text-xs text-muted-foreground">
       {{ book.author }} ·
       {{ (book.availableHadiths ?? 0).toLocaleString('id-ID') }} hadith
     </p>

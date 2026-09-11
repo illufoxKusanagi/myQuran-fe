@@ -20,7 +20,10 @@ import TafsirDrawer from '@/features/reader/components/TafsirDrawer.vue';
 import ReadingSettingsDialog from '@/features/reader/components/ReadingSettingsDialog.vue';
 import QuickJumpDialog from '@/features/reader/components/QuickJumpDialog.vue';
 import ReaderNavSidebar from '@/features/reader/components/ReaderNavSidebar.vue';
-import { useReadingSettings } from '@/features/reader/composables/useReadingSettings';
+import {
+  useReadingSettings,
+  ALL_PAPER_THEMES,
+} from '@/features/reader/composables/useReadingSettings';
 import { useReaderShortcuts } from '@/features/reader/composables/useReaderShortcuts';
 import '@/features/reader/reader.css';
 
@@ -41,6 +44,7 @@ const stageRef = ref<HTMLElement | null>(null);
 const bookWrapRef = ref<HTMLElement | null>(null);
 const currentIndex = ref(0);
 const isPortrait = ref(false);
+let mountRafId: number | null = null;
 
 const {
   isRtlBook,
@@ -72,6 +76,11 @@ const {
   isRtlBook,
   currentIndex,
   isPortrait,
+  onFlipInit: () => {
+    syncBookTheme();
+    attachScrollGuards();
+    syncActiveAyah();
+  },
 });
 
 const {
@@ -207,15 +216,6 @@ function attachScrollGuards() {
   });
 }
 
-const ALL_PAPER_THEMES = [
-  'paper-sepia',
-  'paper-dark',
-  'paper-amoled',
-  'paper-cream',
-  'paper-white',
-  'paper-default',
-];
-
 function syncBookTheme() {
   const wrap = bookWrapRef.value;
   if (!wrap) return;
@@ -299,14 +299,19 @@ watch(
   }
 );
 
-watch(activeAyahNumber, (num) => {
+function syncActiveAyah() {
   if (!bookWrapRef.value) return;
+  const num = activeAyahNumber.value;
   const pages = bookWrapRef.value.querySelectorAll('.pf-page');
   pages.forEach((el) => {
     const badge = el.querySelector('.pf-badge');
     const n = badge ? Number(badge.textContent) : null;
     el.classList.toggle('is-active-ayah', n !== null && n === num);
   });
+}
+
+watch(activeAyahNumber, () => {
+  syncActiveAyah();
 });
 
 watch([leftAyah, rightAyah, currentIndex], () => {
@@ -353,30 +358,33 @@ onMounted(async () => {
   await nextTick();
   detectLayout();
   await nextTick();
-  requestAnimationFrame(() => {
+  mountRafId = requestAnimationFrame(() => {
     initPageFlip();
     attachObserver();
     requestAnimationFrame(() => {
       syncBookTheme();
       attachScrollGuards();
     });
+
+    const qAyah = Number(route.query.ayah);
+    const qJuz = Number(route.query.juz);
+    if (qAyah) {
+      jumpToAyah(qAyah);
+    } else if (qJuz) {
+      const target = ayahs.value.find((a) => a.juz === qJuz);
+      if (target) {
+        jumpToAyah(target.ayahNumber);
+      }
+    }
   });
   window.addEventListener('resize', handleResize);
-  const qAyah = Number(route.query.ayah);
-  const qJuz = Number(route.query.juz);
-  if (qAyah) {
-    await nextTick();
-    requestAnimationFrame(() => jumpToAyah(qAyah));
-  } else if (qJuz) {
-    const target = ayahs.value.find((a) => a.juz === qJuz);
-    if (target) {
-      await nextTick();
-      requestAnimationFrame(() => jumpToAyah(target.ayahNumber));
-    }
-  }
 });
 
 onBeforeUnmount(() => {
+  if (mountRafId !== null) {
+    cancelAnimationFrame(mountRafId);
+    mountRafId = null;
+  }
   window.removeEventListener('resize', handleResize);
   destroyBook();
 });
