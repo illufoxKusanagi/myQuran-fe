@@ -363,12 +363,71 @@ export function getJuzByPage(page: number): number {
 }
 
 /**
+ * Explicit end page for surahs where the surah concluding on a page
+ * shares that page with the start of the next surah (or multiple surahs per page).
+ */
+const SURAH_EXPLICIT_END_PAGES: Record<number, number> = {
+  62: 554, // Al-Jumu'ah concludes on p. 554, sharing with Al-Munafiqun (p. 554)
+  67: 564, // Al-Mulk concludes on p. 564, sharing with Al-Qalam (p. 564)
+  68: 566, // Al-Qalam concludes on p. 566, sharing with Al-Haqqah (p. 566)
+  69: 568, // Al-Haqqah concludes on p. 568, sharing with Al-Ma'arij (p. 568)
+  70: 570, // Al-Ma'arij concludes on p. 570, sharing with Nuh (p. 570)
+  73: 575, // Al-Muzzammil concludes on p. 575, sharing with Al-Muddassir (p. 575)
+  74: 577, // Al-Muddassir concludes on p. 577, sharing with Al-Qiyamah (p. 577)
+  75: 578, // Al-Qiyamah concludes on p. 578, sharing with Al-Insan (p. 578)
+  76: 580, // Al-Insan concludes on p. 580, sharing with Al-Mursalat (p. 580)
+  77: 582, // Al-Mursalat concludes on p. 582, sharing with An-Naba' (p. 582)
+  78: 583, // An-Naba' concludes on p. 583, sharing with An-Nazi'at (p. 583)
+  79: 585, // An-Nazi'at concludes on p. 585, sharing with 'Abasa (p. 585)
+  80: 586, // 'Abasa concludes on p. 586, sharing with At-Takwir (p. 586)
+  82: 587, // Al-Infitar is entirely on p. 587, sharing with Al-Mutaffifin
+  83: 589, // Al-Mutaffifin concludes on p. 589, sharing with Al-Insyiqaq (p. 589)
+  84: 590, // Al-Insyiqaq concludes on p. 590, sharing with Al-Buruj (p. 590)
+  85: 591, // Al-Buruj concludes on p. 591, sharing with At-Tariq (p. 591)
+  86: 591, // At-Tariq is entirely on p. 591, sharing with Al-A'la
+  87: 592, // Al-A'la concludes on p. 592, sharing with Al-Gasyiyah (p. 592)
+  88: 593, // Al-Gasyiyah concludes on p. 593, sharing with Al-Fajr (p. 593)
+  89: 594, // Al-Fajr concludes on p. 594, sharing with Al-Balad (p. 594)
+  90: 595, // Al-Balad concludes on p. 595, sharing with Asy-Syams (p. 595)
+  91: 595, // Asy-Syams is entirely on p. 595, sharing with Al-Lail
+  92: 596, // Al-Lail concludes on p. 596, sharing with Ad-Duha (p. 596)
+  93: 596, // Ad-Duha is entirely on p. 596, sharing with Asy-Syarh
+  94: 597, // Asy-Syarh concludes on p. 597, sharing with At-Tin (p. 597)
+  95: 597, // At-Tin is entirely on p. 597, sharing with Al-'Alaq
+  96: 598, // Al-'Alaq concludes on p. 598, sharing with Al-Qadr (p. 598)
+  97: 598, // Al-Qadr is entirely on p. 598, sharing with Al-Bayyinah
+  98: 599, // Al-Bayyinah concludes on p. 599, sharing with Az-Zalzalah (p. 599)
+  99: 599, // Az-Zalzalah is entirely on p. 599, sharing with Al-'Adiyat
+  100: 600, // Al-'Adiyat concludes on p. 600, sharing with Al-Qari'ah (p. 600)
+  101: 600, // Al-Qari'ah is entirely on p. 600, sharing with At-Takasur
+  102: 601, // At-Takasur concludes on p. 601, sharing with Al-'Asr (p. 601)
+  103: 601, // Al-'Asr is entirely on p. 601
+  104: 601, // Al-Humazah is entirely on p. 601
+  105: 602, // Al-Fil concludes on p. 602, sharing with Quraisy (p. 602)
+  106: 602, // Quraisy is entirely on p. 602
+  107: 602, // Al-Ma'un is entirely on p. 602
+  108: 603, // Al-Kausar concludes on p. 603, sharing with Al-Kafirun (p. 603)
+  109: 603, // Al-Kafirun is entirely on p. 603
+  110: 603, // An-Nasr is entirely on p. 603
+  111: 604, // Al-Lahab concludes on p. 604, sharing with Al-Ikhlas (p. 604)
+  112: 604, // Al-Ikhlas is on p. 604
+  113: 604, // Al-Falaq is on p. 604
+  114: 604, // An-Nas is on p. 604
+};
+
+/**
  * Returns all Surahs that appear or start on a given page
  */
 export function getSurahsByPage(page: number): SurahPageRef[] {
   return SURAHS_PAGES.filter((s, idx) => {
     const nextSurah = SURAHS_PAGES[idx + 1];
-    const endPage = nextSurah ? nextSurah.startPage : 604;
-    return page >= s.startPage && page <= endPage;
+    if (!nextSurah) {
+      return page >= s.startPage && page <= TOTAL_MUSHAF_PAGES;
+    }
+    const explicitEnd = SURAH_EXPLICIT_END_PAGES[s.id];
+    const endPage = explicitEnd ?? nextSurah.startPage;
+    return explicitEnd !== undefined
+      ? page >= s.startPage && page <= endPage
+      : page >= s.startPage && page < endPage;
   });
 }

@@ -34,10 +34,8 @@ function syncFullscreen() {
 function handleFullscreen() {
   if (!document.fullscreenElement) {
     document.documentElement.requestFullscreen?.().catch(() => {});
-    isFullscreen.value = true;
   } else {
     document.exitFullscreen?.().catch(() => {});
-    isFullscreen.value = false;
   }
   emit('toggleFullscreen');
 }

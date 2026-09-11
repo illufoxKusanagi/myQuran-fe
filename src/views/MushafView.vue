@@ -103,6 +103,12 @@ function handleKeydown(e: KeyboardEvent) {
     e.preventDefault();
     handlePrevSpread();
   } else if (e.key.toLowerCase() === 'j') {
+  } else if (
+    e.key.toLowerCase() === 'j' &&
+    !e.ctrlKey &&
+    !e.metaKey &&
+    !e.altKey
+  ) {
     e.preventDefault();
     isJumpOpen.value = true;
   }

@@ -55,7 +55,6 @@ export function useBookFlip(options: BookFlipOptions) {
     if (pages.length === 0) return;
     const size = getPageSize();
     if (!size) {
-      requestAnimationFrame(() => initPageFlip(preserveIndex));
       if (initRetryCount < MAX_INIT_RETRIES) {
         initRetryCount++;
         initRafId = requestAnimationFrame(() => initPageFlip(preserveIndex));
@@ -121,8 +120,6 @@ export function useBookFlip(options: BookFlipOptions) {
       const sizeChanged = Math.abs(w - lastW) > 2 || Math.abs(h - lastH) > 2;
       if (portraitNow !== options.isPortrait.value || sizeChanged) {
         options.isPortrait.value = portraitNow;
-        destroyBook();
-        nextTick(() => requestAnimationFrame(() => initPageFlip()));
         rebuild(true);
       }
     }, 150);

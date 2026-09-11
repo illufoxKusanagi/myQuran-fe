@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue';
+import { ref, watch, onBeforeUnmount } from 'vue';
 import { useRouter } from 'vue-router';
 import { Search } from 'lucide-vue-next';
 import { Button } from '@/components/ui/button';
@@ -20,6 +20,13 @@ const query = ref('');
 const error = ref('');
 const inputRef = ref<HTMLInputElement | null>(null);
 
+function handleKeydown(e: KeyboardEvent) {
+  if (e.key === 'Escape') {
+    e.preventDefault();
+    close();
+  }
+}
+
 watch(
   () => props.open,
   (v) => {
@@ -27,9 +34,17 @@ watch(
       query.value = '';
       error.value = '';
       setTimeout(() => inputRef.value?.focus(), 50);
+      document.addEventListener('keydown', handleKeydown);
+    } else {
+      document.removeEventListener('keydown', handleKeydown);
     }
-  }
+  },
+  { immediate: true }
 );
+
+onBeforeUnmount(() => {
+  document.removeEventListener('keydown', handleKeydown);
+});
 
 function close() {
   emit('update:open', false);
@@ -85,6 +100,10 @@ async function handleSubmit() {
     const a = Number(saMatch[2]);
     if (s < 1 || s > 114) {
       error.value = 'Surah harus 1–114';
+      return;
+    }
+    if (a < 1) {
+      error.value = 'Nomor ayat harus lebih dari 0';
       return;
     }
     if (s === props.currentSurahId) {

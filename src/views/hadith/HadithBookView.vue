@@ -20,7 +20,10 @@ import { Button } from '@/components/ui/button';
 import { useHadithList } from '@/features/hadith/composables/useHadith';
 import { useHadithBookPages } from '@/features/hadith/composables/useHadithBookPages';
 import { useBookFlip } from '@/features/reader/composables/useBookFlip';
-import { useReadingSettings } from '@/features/reader/composables/useReadingSettings';
+import {
+  useReadingSettings,
+  ALL_PAPER_THEMES,
+} from '@/features/reader/composables/useReadingSettings';
 import ReadingSettingsDialog from '@/features/reader/components/ReadingSettingsDialog.vue';
 import ReaderNavSidebar from '@/features/reader/components/ReaderNavSidebar.vue';
 import '@/features/reader/reader.css';
@@ -195,6 +198,7 @@ function syncBookTheme() {
     'paper-sepia',
     'paper-dark',
     'paper-amoled',
+    ...ALL_PAPER_THEMES,
     'hide-arabic',
     'hide-latin',
     'hide-translation'
